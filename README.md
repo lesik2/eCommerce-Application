@@ -1,6 +1,6 @@
 ## eCommerce-Application
 
-### The project name is **Online  restaurant of Italian dishes** 🍕
+### The project name is *Online  restaurant of Italian dishes* 🍕
  The purpose of project: 
   - Getting skills and knowledge of development eCommerce-Application.
   - Learn how to work in a development team.
