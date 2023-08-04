@@ -1,0 +1,11 @@
+{
+  "name": "ecommerce-application",
+  "version": "1.0.0",
+  "description": "RSschool stage#2 final task",
+  "main": "index.ts",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "",
+  "license": "ISC"
+}
