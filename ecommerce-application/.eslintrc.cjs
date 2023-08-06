@@ -4,16 +4,18 @@ module.exports = {
   extends: [
     'airbnb',
     'airbnb-typescript',
-    'airbnb:react/recommended',
+    'airbnb/hooks',
     'plugin:@typescript-eslint/recommended',
     'plugin:react-hooks/recommended',
-    'plugin: prettier/recommended',
+    'plugin:prettier/recommended',
+
   ],
   ignorePatterns: ['dist', '.eslintrc.cjs'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module',
+    tsconfigRootDir: __dirname,
     project: './tsconfig.json',
   },
   plugins: [
@@ -29,7 +31,8 @@ module.exports = {
     'react/react-in-jsx-scope':0,
     'no-debugger': 'off',
     'no-console': 0,
-    '@typescript-eslint/no-explicit-any': 2,
-    '@typescript-eslint/no-var-requires': 0,
+    '@typescript-eslint/no-explicit-any': "error",
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": "error",
   },
 }
