@@ -1,13 +1,5 @@
-import {
-    ClientBuilder,
-    type PasswordAuthMiddlewareOptions,
-} from '@commercetools/sdk-client-v2';
-import {
-    createApiBuilderFromCtpClient,
-    CustomerSignInResult,
-} from '@commercetools/platform-sdk';
-import { httpMiddlewareOptions } from './middlewareOptions';
-import SCOPES from './scopes';
+import { CustomerSignInResult } from '@commercetools/platform-sdk';
+import { getApiRootAnon } from './anonymousClient';
 
 function backValidation(username: string) {
     const symbolsToFind = '!`=+,<>(){}[]?/\\|#$^;~:*';
@@ -29,33 +21,10 @@ async function login(
         console.error('Error: invalid email');
     } else {
         try {
-            const passwordAuthMiddlewareOptions: PasswordAuthMiddlewareOptions =
-                {
-                    host: import.meta.env.VITE_AUTH_URL,
+            const clientData = await getApiRootAnon()
+                .withProjectKey({
                     projectKey: import.meta.env.VITE_PROJECT_KEY,
-                    credentials: {
-                        clientId: import.meta.env.VITE_CLIENT_ID,
-                        clientSecret: import.meta.env.VITE_CLIENT_SECRET,
-                        user: {
-                            username,
-                            password,
-                        },
-                    },
-                    scopes: SCOPES,
-                    fetch,
-                };
-
-            const loggedInClient = new ClientBuilder()
-                .withPasswordFlow(passwordAuthMiddlewareOptions)
-                .withLoggerMiddleware()
-                .withHttpMiddleware(httpMiddlewareOptions)
-                .withUserAgentMiddleware()
-                .withLoggerMiddleware()
-                .build();
-            const apiRoot = createApiBuilderFromCtpClient(
-                loggedInClient
-            ).withProjectKey({ projectKey: import.meta.env.VITE_PROJECT_KEY });
-            const clientData = await apiRoot
+                })
                 .me()
                 .login()
                 .post({
@@ -65,8 +34,11 @@ async function login(
                     },
                 })
                 .execute()
-                .then((res) => res.body);
-            return clientData; // returns all user data
+                .then((res) => {
+                    console.log(res.headers);
+                    return res.body;
+                });
+            return clientData; // returns all user's data
         } catch (error) {
             if (error instanceof Error) {
                 console.error(`Login error: ${error.message}`);
