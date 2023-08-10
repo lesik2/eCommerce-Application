@@ -8,22 +8,21 @@ import {
     httpMiddlewareOptions,
 } from './middlewareOptions';
 
-const anonymousClient = new ClientBuilder()
+export const anonymousClient = new ClientBuilder()
     .withAnonymousSessionFlow(authMiddlewareOptions)
     .withHttpMiddleware(httpMiddlewareOptions)
+    .withLoggerMiddleware()
     .build();
 
-const getApiRootAnon: () => ApiRoot = () => {
+export const getApiRootAnon: () => ApiRoot = () => {
     return createApiBuilderFromCtpClient(anonymousClient);
 };
-const products = await getApiRootAnon()
-    .withProjectKey({
-        projectKey: import.meta.env.VITE_PROJECT_KEY,
-    })
-    .productProjections()
-    .get()
-    .execute()
-    .then((res) => res.body.results.map((el) => el.name))
-    .catch((error) => console.error('Product request error ', error));
-
-export default products;
+// export const products = await getApiRootAnon()
+//     .withProjectKey({
+//         projectKey: import.meta.env.VITE_PROJECT_KEY,
+//     })
+//     .productProjections()
+//     .get()
+//     .execute()
+//     .then((res) => res.body.results.map((el) => el.name))
+//     .catch((error) => console.error('Product request error ', error));
