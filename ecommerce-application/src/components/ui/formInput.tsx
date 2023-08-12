@@ -2,9 +2,10 @@ import TextField from '@mui/material/TextField';
 import { useState } from 'react';
 import { IFormInput } from '../../data/types';
 import './formInput.css';
+import PasswordInput from './passwordInput';
 
 function FormInput(props: IFormInput) {
-    const { value, input, onChange, validInputs, setValidInputs } = props;
+    const { value, input, onChange, validInputs, setValidInputs, passwordValue } = props;
     const { pattern, errormessage } = input;
     const [focused, setFocused] = useState(false);
     const checkValidInput = () => {
@@ -16,26 +17,42 @@ function FormInput(props: IFormInput) {
             const userDate = new Date(value);
             const result = input.validdate >= userDate.getTime();
             setValidInputs({ ...validInputs, [input.name]: result });
+        } else if (passwordValue !== undefined) {
+            const result = passwordValue === value;
+            setValidInputs({ ...validInputs, [input.name]: result });
         }
     };
     return (
         <div>
-            <TextField
-                sx={{ marginBottom: 2 }}
-                inputProps={{ style: { fontSize: 18 } }}
-                InputLabelProps={{ style: { fontSize: 18 } }}
-                variant="standard"
-                {...input}
-                autoComplete="off"
-                value={value}
-                onFocus={() => setFocused(false)}
-                onBlur={checkValidInput}
-                onChange={onChange}
-                error={!validInputs[input.name] && focused}
-                helperText={
-                    !validInputs[input.name] && focused ? errormessage : ''
-                }
-            />
+            {input.name === 'confirmPassword' || input.name === 'password' ? (
+                <PasswordInput
+                    onChange={onChange}
+                    value={value}
+                    label={input.label}
+                    name={input.name}
+                    checkValidInput={checkValidInput}
+                    setFocused={setFocused}
+                    focused={focused}
+                    validInputs={validInputs}
+                    errormessage={errormessage}
+                />
+            ) : (
+                <TextField
+                    required
+                    sx={{ marginBottom: 2 }}
+                    inputProps={{ style: { fontSize: 14 } }}
+                    InputLabelProps={{ style: { fontSize: 14 } }}
+                    variant="standard"
+                    {...input}
+                    autoComplete="off"
+                    value={value}
+                    onFocus={() => setFocused(false)}
+                    onBlur={checkValidInput}
+                    onChange={onChange}
+                    error={!validInputs[input.name] && focused}
+                    helperText={!validInputs[input.name] && focused ? errormessage : ''}
+                />
+            )}
         </div>
     );
 }

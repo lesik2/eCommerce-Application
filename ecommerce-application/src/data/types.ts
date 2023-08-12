@@ -1,11 +1,10 @@
-export type InputTypes = 'firstname' | 'lastname' | 'birthday' | 'email';
+export type InputTypes = 'firstname' | 'lastname' | 'birthday' | 'email' | 'password' | 'confirmPassword';
 
 export interface IInput {
     id: string;
     name: InputTypes;
-    type: string;
+    type?: string;
     label?: string;
-    required: boolean;
     pattern?: RegExp;
     errormessage?: string;
     validdate?: number;
@@ -15,6 +14,8 @@ export interface IValidInputs {
     lastname: boolean;
     birthday: boolean;
     email: boolean;
+    password: boolean;
+    confirmPassword: boolean;
 }
 export interface IFormInput {
     value: string;
@@ -22,4 +23,16 @@ export interface IFormInput {
     input: IInput;
     validInputs: IValidInputs;
     setValidInputs: React.Dispatch<React.SetStateAction<IValidInputs>>;
+    passwordValue: string | null;
+}
+export interface IPasswordInput {
+    value: string;
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    label: string | undefined;
+    name: InputTypes;
+    errormessage: string | undefined;
+    validInputs: IValidInputs;
+    checkValidInput: () => void;
+    setFocused: React.Dispatch<React.SetStateAction<boolean>>;
+    focused: boolean;
 }

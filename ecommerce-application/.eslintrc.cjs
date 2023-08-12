@@ -33,7 +33,7 @@ module.exports = {
         'no-use-before-define': 'off',
         'prettier/prettier': 'error',
         'no-use-before-define': 'off',
-        'max-len': ['warn', { code: 80 }],
+        'max-len': ['warn', { code: 120 }],
         "react/jsx-props-no-spreading": "off",
     },
 };

@@ -1,9 +1,18 @@
 
 .MuiFormControl-root .MuiFormHelperText-root{
   width: 350px;
-  font-size: 15px;
+  font-size: 10px;
 }
-
 .MuiFormControl-root input[type="date"]{
   padding-left: 60px;
+}
+.MuiFormControl-root .MuiFormLabel-root{
+  color: #000000;
+}
+.MuiFormControl-root .MuiSvgIcon-root{
+  width: 2em;
+  height: 2em;
+}
+.MuiFormControl-root input{
+  font-size: 18px;
 }
