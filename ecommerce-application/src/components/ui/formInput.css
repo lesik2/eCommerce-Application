@@ -1,0 +1,9 @@
+
+.MuiFormControl-root .MuiFormHelperText-root{
+  width: 350px;
+  font-size: 15px;
+}
+
+.MuiFormControl-root input[type="date"]{
+  padding-left: 60px;
+}

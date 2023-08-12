@@ -34,5 +34,6 @@ module.exports = {
         'prettier/prettier': 'error',
         'no-use-before-define': 'off',
         'max-len': ['warn', { code: 80 }],
+        "react/jsx-props-no-spreading": "off",
     },
 };
