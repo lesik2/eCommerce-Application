@@ -12,11 +12,13 @@ import Poke from './pages/Poke';
 import Beverages from './pages/Beverages';
 import Cart from './pages/Cart';
 import About from './pages/About';
+import ErrorPage from './pages/Error';
 
 const router = createBrowserRouter([
     {
         path: '/',
         element: <Root />,
+        errorElement: <ErrorPage />,
         children: [
             {
                 path: '/',
