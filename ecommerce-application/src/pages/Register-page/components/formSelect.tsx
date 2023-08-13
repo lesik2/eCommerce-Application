@@ -1,6 +1,6 @@
 import { FormControl, FormHelperText, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
 import { useState } from 'react';
-import { ISelectInput } from '../../data/types';
+import { ISelectInput } from '../../../data/types';
 
 function FormSelect(props: ISelectInput) {
     const { setValidInputs, validInputs } = props;
@@ -13,7 +13,7 @@ function FormSelect(props: ISelectInput) {
         }
     };
     return (
-        <FormControl variant="standard" sx={{ minWidth: 120 }} error={!country && focused}>
+        <FormControl variant="standard" error={!country && focused}>
             <InputLabel sx={{ fontSize: 15 }} required id="select-label">
                 Country
             </InputLabel>

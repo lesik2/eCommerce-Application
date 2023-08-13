@@ -2,10 +2,10 @@ import Button from '@mui/material/Button';
 import { useMemo, useState } from 'react';
 import Checkbox from '@mui/material/Checkbox';
 import { FormControlLabel } from '@mui/material';
-import FormInput from '../../components/ui/formInput';
+import FormInput from './components/formInput';
 import Inputs, { addressInputs } from '../../data/data';
-import './register.css';
-import FormSelect from '../../components/ui/formSelect';
+import './styles/register.css';
+import FormSelect from './components/formSelect';
 
 function Register() {
     const [values, setValues] = useState({
@@ -15,12 +15,11 @@ function Register() {
         email: '',
         password: '',
         confirmPassword: '',
+        country: '',
         street: '',
         city: '',
-        country: '',
         postalCode: '',
     });
-
     const [validInputs, setValidInputs] = useState({
         firstname: false,
         lastname: false,
@@ -123,7 +122,7 @@ function Register() {
                 </fieldset>
 
                 <Button
-                    sx={{ fontSize: 18, marginTop: 3 }}
+                    sx={{ fontSize: 17, marginTop: 3 }}
                     className="register-form__submit register-button"
                     variant="contained"
                     disabled={disableButton}

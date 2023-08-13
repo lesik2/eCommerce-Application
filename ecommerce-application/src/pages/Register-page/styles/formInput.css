@@ -1,6 +1,7 @@
 
 .MuiFormControl-root .MuiFormHelperText-root{
   font-size: 10px;
+  margin-top: 0;
 }
 .MuiFormControl-root input[type="date"]{
   padding-left: 60px;
@@ -19,5 +20,5 @@
   color: red;
 }
 .MuiFormControl-root .MuiInputBase-root{
-  margin-top: 10px;
+  margin-top: 7px;
 }

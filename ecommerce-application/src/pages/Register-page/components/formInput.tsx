@@ -1,7 +1,7 @@
 import TextField from '@mui/material/TextField';
 import { useState } from 'react';
-import { IFormInput } from '../../data/types';
-import './formInput.css';
+import { IFormInput } from '../../../data/types';
+import '../styles/formInput.css';
 import PasswordInput from './passwordInput';
 
 function FormInput(props: IFormInput) {

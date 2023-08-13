@@ -1,9 +1,9 @@
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { FormControl, IconButton, Input, InputAdornment, InputLabel } from '@mui/material';
 import { useState } from 'react';
-import './formInput.css';
+import '../styles/formInput.css';
 import FormHelperText from '@mui/material/FormHelperText';
-import { IPasswordInput } from '../../data/types';
+import { IPasswordInput } from '../../../data/types';
 
 function PasswordInput(props: IPasswordInput) {
     const { onChange, label, value, name, errormessage, setFocused, focused, validInputs, checkValidInput } = props;

@@ -27,6 +27,8 @@
 .register-title{
   font-size: 24px;
   margin: 0;
+  font-weight: bold;
+  color: #000000;
 }
 .register-form{
   background-color: #ffffff;
@@ -35,11 +37,12 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+
 }
 .register-button.MuiButton-root{
   background-color: #FF5757;
   border-radius: 20px;
-  padding: 5px 30px 5px 30px;
+  padding: 3px 30px 3px 30px;
   &:hover{
     background-color: #bb0808;
   }
@@ -55,8 +58,8 @@
   align-items: center;
 }
 .register-form__address{
-  width: 100%;
   margin-top: 5px;
+  width: 100%;
 }
 .register-form__default{
   display: flex;

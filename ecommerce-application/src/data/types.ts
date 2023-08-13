@@ -9,7 +9,6 @@ export type InputTypes =
     | 'city'
     | 'postalCode'
     | 'country';
-export type AddressType = 'street' | 'city' | 'postalCode' | 'country';
 export interface IInput {
     id: string;
     name: InputTypes;
