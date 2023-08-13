@@ -39,9 +39,8 @@ function FormInput(props: IFormInput) {
             ) : (
                 <TextField
                     required
-                    sx={{ marginBottom: 2 }}
-                    inputProps={{ style: { fontSize: 14 } }}
-                    InputLabelProps={{ style: { fontSize: 14 } }}
+                    inputProps={{ style: { fontSize: 16 } }}
+                    InputLabelProps={{ style: { fontSize: 15 } }}
                     variant="standard"
                     {...input}
                     autoComplete="off"

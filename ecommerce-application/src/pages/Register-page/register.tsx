@@ -1,8 +1,11 @@
 import Button from '@mui/material/Button';
 import { useMemo, useState } from 'react';
+import Checkbox from '@mui/material/Checkbox';
+import { FormControlLabel } from '@mui/material';
 import FormInput from '../../components/ui/formInput';
-import Inputs from '../../data/data';
+import Inputs, { addressInputs } from '../../data/data';
 import './register.css';
+import FormSelect from '../../components/ui/formSelect';
 
 function Register() {
     const [values, setValues] = useState({
@@ -12,7 +15,12 @@ function Register() {
         email: '',
         password: '',
         confirmPassword: '',
+        street: '',
+        city: '',
+        country: '',
+        postalCode: '',
     });
+
     const [validInputs, setValidInputs] = useState({
         firstname: false,
         lastname: false,
@@ -20,7 +28,19 @@ function Register() {
         email: false,
         password: false,
         confirmPassword: false,
+        street: false,
+        city: false,
+        country: false,
+        postalCode: false,
     });
+    const [defaultShippingAddress, setDefaultShippingAddress] = useState(false);
+    const [defaultBillingAddress, setDefaultBillingAddress] = useState(false);
+    const handleChangeShipping = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setDefaultShippingAddress(event.target.checked);
+    };
+    const handleChangeBilling = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setDefaultBillingAddress(event.target.checked);
+    };
     const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { target } = e;
         if (target && target instanceof HTMLInputElement) {
@@ -46,7 +66,7 @@ function Register() {
                 </div>
             </div>
             <form className="register-form" onSubmit={handleSubmit}>
-                <fieldset>
+                <fieldset className="register-form__user">
                     {Inputs.map((input) => (
                         <FormInput
                             key={input.id}
@@ -59,9 +79,51 @@ function Register() {
                         />
                     ))}
                 </fieldset>
+                <fieldset className="register-form__address">
+                    <div className="register-form__default">
+                        <p className="adrees-title">Address*:</p>
+                        <FormControlLabel
+                            sx={{ m: 0 }}
+                            control={
+                                <Checkbox
+                                    checked={defaultShippingAddress}
+                                    onChange={handleChangeShipping}
+                                    inputProps={{ 'aria-label': 'controlled' }}
+                                    color="default"
+                                />
+                            }
+                            label="defaultShippingAddress"
+                        />
+                        <FormControlLabel
+                            sx={{ m: 0 }}
+                            control={
+                                <Checkbox
+                                    checked={defaultBillingAddress}
+                                    onChange={handleChangeBilling}
+                                    inputProps={{ 'aria-label': 'controlled' }}
+                                    color="default"
+                                />
+                            }
+                            label="defaultBillingAddress"
+                        />
+                    </div>
+                    <div className="register-form__user">
+                        <FormSelect />
+                        {addressInputs.map((input) => (
+                            <FormInput
+                                key={input.id}
+                                input={input}
+                                value={values[input.name]}
+                                onChange={onChange}
+                                validInputs={validInputs}
+                                setValidInputs={setValidInputs}
+                            />
+                        ))}
+                    </div>
+                </fieldset>
 
                 <Button
-                    sx={{ fontSize: 18 }}
+                    sx={{ fontSize: 18, marginTop: 3 }}
                     className="register-form__submit register-button"
                     variant="contained"
                     disabled={disableButton}

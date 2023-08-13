@@ -1,5 +1,15 @@
-export type InputTypes = 'firstname' | 'lastname' | 'birthday' | 'email' | 'password' | 'confirmPassword';
-
+export type InputTypes =
+    | 'firstname'
+    | 'lastname'
+    | 'birthday'
+    | 'email'
+    | 'password'
+    | 'confirmPassword'
+    | 'street'
+    | 'city'
+    | 'postalCode'
+    | 'country';
+export type AddressType = 'street' | 'city' | 'postalCode' | 'country';
 export interface IInput {
     id: string;
     name: InputTypes;
@@ -16,6 +26,10 @@ export interface IValidInputs {
     email: boolean;
     password: boolean;
     confirmPassword: boolean;
+    street: boolean;
+    city: boolean;
+    postalCode: boolean;
+    country: boolean;
 }
 export interface IFormInput {
     value: string;
@@ -23,7 +37,7 @@ export interface IFormInput {
     input: IInput;
     validInputs: IValidInputs;
     setValidInputs: React.Dispatch<React.SetStateAction<IValidInputs>>;
-    passwordValue: string | null;
+    passwordValue?: string | null;
 }
 export interface IPasswordInput {
     value: string;

@@ -13,7 +13,7 @@ const Inputs: IInput[] = [
         type: 'text',
         label: 'Firstname',
         pattern: /^[a-zA-Z][^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{0,}$/,
-        errormessage: ` 1 to 24 characters 
+        errormessage: `
             must contain at least one character
             no special characters or numbers`,
     },
@@ -23,7 +23,7 @@ const Inputs: IInput[] = [
         type: 'text',
         label: 'Lastname',
         pattern: /^[a-zA-Z][^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{0,}$/,
-        errormessage: ` 1 to 24 characters 
+        errormessage: `
             must contain at least one character
             no special characters or numbers`,
     },
@@ -57,6 +57,35 @@ const Inputs: IInput[] = [
         name: 'confirmPassword',
         label: 'Confirm password',
         errormessage: `Passwords don't match!`,
+    },
+];
+export const addressInputs: IInput[] = [
+    {
+        id: '1',
+        name: 'street',
+        type: 'text',
+        label: 'Street',
+        pattern: /^[a-zA-Z]{1,}$/,
+        errormessage: `
+        must contain at least one character`,
+    },
+    {
+        id: '2',
+        name: 'city',
+        type: 'text',
+        label: 'City',
+        pattern: /^[a-zA-Z][^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{1,}$/,
+        errormessage: `
+        must contain at least one character
+        no special characters or numbers`,
+    },
+    {
+        id: '3',
+        name: 'postalCode',
+        type: 'text',
+        label: 'Postal code',
+        pattern: /^[A-Z0-9 _]*[A-Z0-9][A-Z0-9 _]*$/,
+        errormessage: `Enter valid postal code`,
     },
 ];
 

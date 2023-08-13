@@ -47,7 +47,7 @@ function PasswordInput(props: IPasswordInput) {
                 />
             </FormControl>
             {!validInputs[name] && focused ? (
-                <FormHelperText sx={{ fontSize: 10 }} error>
+                <FormHelperText sx={{ fontSize: 10, width: 350 }} error>
                     {errormessage}
                 </FormHelperText>
             ) : null}
