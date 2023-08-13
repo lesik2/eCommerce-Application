@@ -56,6 +56,7 @@
 }
 .register-form__address{
   width: 100%;
+  margin-top: 5px;
 }
 .register-form__default{
   display: flex;

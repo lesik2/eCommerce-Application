@@ -108,7 +108,7 @@ function Register() {
                         />
                     </div>
                     <div className="register-form__user">
-                        <FormSelect />
+                        <FormSelect validInputs={validInputs} setValidInputs={setValidInputs} />
                         {addressInputs.map((input) => (
                             <FormInput
                                 key={input.id}

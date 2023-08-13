@@ -1,11 +1,16 @@
 import { FormControl, FormHelperText, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
 import { useState } from 'react';
+import { ISelectInput } from '../../data/types';
 
-function FormSelect() {
+function FormSelect(props: ISelectInput) {
+    const { setValidInputs, validInputs } = props;
     const [country, setCountry] = useState('');
     const [focused, setFocused] = useState(false);
     const handleChange = (event: SelectChangeEvent) => {
         setCountry(event.target.value);
+        if (country) {
+            setValidInputs({ ...validInputs, country: true });
+        }
     };
     return (
         <FormControl variant="standard" sx={{ minWidth: 120 }} error={!country && focused}>

@@ -50,3 +50,7 @@ export interface IPasswordInput {
     setFocused: React.Dispatch<React.SetStateAction<boolean>>;
     focused: boolean;
 }
+export interface ISelectInput {
+    validInputs: IValidInputs;
+    setValidInputs: React.Dispatch<React.SetStateAction<IValidInputs>>;
+}
