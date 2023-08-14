@@ -1,24 +1,6 @@
-
-.MuiFormControl-root .MuiFormHelperText-root{
-  font-size: 10px;
-  margin-top: 0;
-}
 .MuiFormControl-root input[type="date"]{
   padding-left: 60px;
 }
-.MuiFormControl-root .MuiFormLabel-root{
-  color: #000000;
-}
-.MuiFormControl-root .MuiSvgIcon-root{
-  width: 1.5em;
-  height: 1.5em;
-}
-.MuiFormControl-root input{
-  font-size: 18px;
-}
-.MuiFormLabel-asterisk{
-  color: red;
-}
-.MuiFormControl-root .MuiInputBase-root{
-  margin-top: 7px;
-}
+
+
+

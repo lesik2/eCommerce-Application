@@ -22,7 +22,7 @@
 }
 .register-signIn>p{
   font-size: 25px;
-  margin-bottom: 0;
+  margin: 0;
 }
 .register-title{
   font-size: 24px;
@@ -31,7 +31,6 @@
   color: #000000;
 }
 .register-form{
-  background-color: #ffffff;
   border-radius: 20px;
   padding: 10px;
   display: flex;
@@ -39,27 +38,23 @@
   align-items: center;
 
 }
-.register-button.MuiButton-root{
-  background-color: #FF5757;
-  border-radius: 20px;
-  padding: 3px 30px 3px 30px;
-  &:hover{
-    background-color: #bb0808;
-  }
-}
 .register-form__submit{
   align-self: center;
 }
 .register-form__user{
+  border: none;
   display: grid;
   grid-template-columns: repeat(2,1fr);
   column-gap: 60px;
   justify-content: center;
   align-items: center;
+  padding: 0;
 }
 .register-form__address{
+  border: none;
   margin-top: 5px;
   width: 100%;
+  padding: 0;
 }
 .register-form__default{
   display: flex;
@@ -69,5 +64,5 @@
 .adrees-title{
   font-size: 20px;
   font-weight: bold;
-  margin-bottom: 0;
+  margin: 0;
 }

@@ -1,11 +1,12 @@
-import Button from '@mui/material/Button';
 import { useMemo, useState } from 'react';
 import Checkbox from '@mui/material/Checkbox';
-import { FormControlLabel } from '@mui/material';
+import { FormControlLabel, ThemeProvider } from '@mui/material';
 import FormInput from './components/formInput';
 import Inputs, { addressInputs } from '../../data/data';
 import './styles/register.css';
 import FormSelect from './components/formSelect';
+import CustomizedButton from '../../components/ui/CustomizedButton';
+import theme from '../../utils/theme';
 
 function Register() {
     const [values, setValues] = useState({
@@ -41,16 +42,14 @@ function Register() {
         setDefaultBillingAddress(event.target.checked);
     };
     const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { target } = e;
-        if (target && target instanceof HTMLInputElement) {
-            setValues({ ...values, [target.name]: target.value });
-        }
+        setValues({ ...values, [e.target.name]: e.target.value });
     };
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
     };
     const disableButton = useMemo(() => {
         const validValues = Object.values(validInputs);
+
         return validValues.includes(false);
     }, [validInputs]);
     return (
@@ -59,9 +58,9 @@ function Register() {
                 <h2 className="register-title">SIGN UP</h2>
                 <div className="register-signIn">
                     <p>Have an account?</p>
-                    <Button sx={{ fontSize: 15 }} className="register-button" variant="contained">
+                    <CustomizedButton sx={{ fontSize: 15 }} variant="contained">
                         +LOG IN
-                    </Button>
+                    </CustomizedButton>
                 </div>
             </div>
             <form className="register-form" onSubmit={handleSubmit}>
@@ -81,30 +80,32 @@ function Register() {
                 <fieldset className="register-form__address">
                     <div className="register-form__default">
                         <p className="adrees-title">Address*:</p>
-                        <FormControlLabel
-                            sx={{ m: 0 }}
-                            control={
-                                <Checkbox
-                                    checked={defaultShippingAddress}
-                                    onChange={handleChangeShipping}
-                                    inputProps={{ 'aria-label': 'controlled' }}
-                                    color="default"
-                                />
-                            }
-                            label="defaultShippingAddress"
-                        />
-                        <FormControlLabel
-                            sx={{ m: 0 }}
-                            control={
-                                <Checkbox
-                                    checked={defaultBillingAddress}
-                                    onChange={handleChangeBilling}
-                                    inputProps={{ 'aria-label': 'controlled' }}
-                                    color="default"
-                                />
-                            }
-                            label="defaultBillingAddress"
-                        />
+                        <ThemeProvider theme={theme}>
+                            <FormControlLabel
+                                sx={{ m: 0 }}
+                                control={
+                                    <Checkbox
+                                        checked={defaultShippingAddress}
+                                        onChange={handleChangeShipping}
+                                        inputProps={{ 'aria-label': 'controlled' }}
+                                        color="default"
+                                    />
+                                }
+                                label="defaultShippingAddress"
+                            />
+                            <FormControlLabel
+                                sx={{ m: 0 }}
+                                control={
+                                    <Checkbox
+                                        checked={defaultBillingAddress}
+                                        onChange={handleChangeBilling}
+                                        inputProps={{ 'aria-label': 'controlled' }}
+                                        color="default"
+                                    />
+                                }
+                                label="defaultBillingAddress"
+                            />
+                        </ThemeProvider>
                     </div>
                     <div className="register-form__user">
                         <FormSelect validInputs={validInputs} setValidInputs={setValidInputs} />
@@ -121,14 +122,14 @@ function Register() {
                     </div>
                 </fieldset>
 
-                <Button
+                <CustomizedButton
                     sx={{ fontSize: 17, marginTop: 3 }}
-                    className="register-form__submit register-button"
+                    className="register-form__submit"
                     variant="contained"
                     disabled={disableButton}
                 >
                     SIGN UP
-                </Button>
+                </CustomizedButton>
             </form>
         </div>
     );

@@ -1,8 +1,10 @@
-import TextField from '@mui/material/TextField';
 import { useState } from 'react';
+import { TextField } from '@mui/material';
+import { ThemeProvider } from '@emotion/react';
 import { IFormInput } from '../../../data/types';
 import '../styles/formInput.css';
 import PasswordInput from './passwordInput';
+import theme from '../../../utils/theme';
 
 function FormInput(props: IFormInput) {
     const { value, input, onChange, validInputs, setValidInputs, passwordValue } = props;
@@ -25,32 +27,34 @@ function FormInput(props: IFormInput) {
     return (
         <div>
             {input.name === 'confirmPassword' || input.name === 'password' ? (
-                <PasswordInput
-                    onChange={onChange}
-                    value={value}
-                    label={input.label}
-                    name={input.name}
-                    checkValidInput={checkValidInput}
-                    setFocused={setFocused}
-                    focused={focused}
-                    validInputs={validInputs}
-                    errormessage={errormessage}
-                />
+                <ThemeProvider theme={theme}>
+                    <PasswordInput
+                        onChange={onChange}
+                        value={value}
+                        label={input.label}
+                        name={input.name}
+                        checkValidInput={checkValidInput}
+                        setFocused={setFocused}
+                        focused={focused}
+                        validInputs={validInputs}
+                        errormessage={errormessage}
+                    />
+                </ThemeProvider>
             ) : (
-                <TextField
-                    required
-                    inputProps={{ style: { fontSize: 16 } }}
-                    InputLabelProps={{ style: { fontSize: 15 } }}
-                    variant="standard"
-                    {...input}
-                    autoComplete="off"
-                    value={value}
-                    onFocus={() => setFocused(false)}
-                    onBlur={checkValidInput}
-                    onChange={onChange}
-                    error={!validInputs[input.name] && focused}
-                    helperText={!validInputs[input.name] && focused ? errormessage : ''}
-                />
+                <ThemeProvider theme={theme}>
+                    <TextField
+                        required
+                        variant="standard"
+                        {...input}
+                        autoComplete="off"
+                        value={value}
+                        onFocus={() => setFocused(false)}
+                        onBlur={checkValidInput}
+                        onChange={onChange}
+                        error={!validInputs[input.name] && focused}
+                        helperText={!validInputs[input.name] && focused ? errormessage : ''}
+                    />
+                </ThemeProvider>
             )}
         </div>
     );

@@ -15,12 +15,7 @@ function PasswordInput(props: IPasswordInput) {
     return (
         <div>
             <FormControl variant="standard">
-                <InputLabel
-                    error={!validInputs[name] && focused}
-                    sx={{ fontSize: 14 }}
-                    htmlFor="standard-adornment-password"
-                    required
-                >
+                <InputLabel error={!validInputs[name] && focused} htmlFor="standard-adornment-password" required>
                     {label}
                 </InputLabel>
                 <Input
@@ -46,11 +41,7 @@ function PasswordInput(props: IPasswordInput) {
                     }
                 />
             </FormControl>
-            {!validInputs[name] && focused ? (
-                <FormHelperText sx={{ fontSize: 10, width: 350 }} error>
-                    {errormessage}
-                </FormHelperText>
-            ) : null}
+            {!validInputs[name] && focused ? <FormHelperText error>{errormessage}</FormHelperText> : null}
         </div>
     );
 }

@@ -7,10 +7,11 @@ function FormSelect(props: ISelectInput) {
     const [country, setCountry] = useState('');
     const [focused, setFocused] = useState(false);
     const handleChange = (event: SelectChangeEvent) => {
-        setCountry(event.target.value);
-        if (country) {
-            setValidInputs({ ...validInputs, country: true });
-        }
+        setCountry(event.target.value.toString());
+    };
+    const checkValidInput = () => {
+        setFocused(true);
+        setValidInputs({ ...validInputs, country: !!country });
     };
     return (
         <FormControl variant="standard" error={!country && focused}>
@@ -25,7 +26,7 @@ function FormSelect(props: ISelectInput) {
                 label="Country"
                 onChange={handleChange}
                 onFocus={() => setFocused(false)}
-                onBlur={() => setFocused(true)}
+                onBlur={checkValidInput}
             >
                 <MenuItem value="">
                     <em>None</em>
