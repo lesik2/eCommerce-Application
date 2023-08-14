@@ -3,16 +3,16 @@ import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Root from './Root';
 import './index.css';
-import Login from './pages/Login';
-import Registration from './pages/Registrarion';
-import Menu from './pages/Menu';
+import Login from './pages/Login/Login';
+import Registration from './pages/Registration/Registrarion';
+import Menu from './pages/Menu/Menu';
 import NavBar from './components/NavBar';
-import Soup from './pages/Soup';
-import Poke from './pages/Poke';
-import Beverages from './pages/Beverages';
-import Cart from './pages/Cart';
-import About from './pages/About';
-import ErrorPage from './pages/Error';
+import Soup from './pages/Soup/Soup';
+import Poke from './pages/Poke/Poke';
+import Beverages from './pages/Beverages/Beverages';
+import Cart from './pages/Cart/Cart';
+import About from './pages/About/About';
+import ErrorPage from './pages/Error/Error';
 
 const router = createBrowserRouter([
     {
