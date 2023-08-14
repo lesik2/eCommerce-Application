@@ -1,5 +1,5 @@
 import { NavLink, Outlet } from 'react-router-dom';
-import NavLinks from '../data/navbar-data';
+import { NavLinks } from '../data/data';
 import List from './ui/List';
 
 export default function NavBar() {

@@ -2,8 +2,7 @@ import IconButton from '@mui/material/IconButton';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import LogoutIcon from '@mui/icons-material/Logout';
 import LoginIcon from '@mui/icons-material/Login';
-import { IconButtonTypes } from '../../utils/types/icon-buttons-types';
-import { ButtonSize } from '../../utils/types/button-size';
+import { IconButtonTypes, ButtonSize } from '../../data/types';
 
 type ButtonProps = {
     type: IconButtonTypes;

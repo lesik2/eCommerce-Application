@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import Image from './ui/Image';
 import Logo from '../assets/img/logo.svg';
 import CreateIconButton from './ui/IconButton';
-import HeaderData from '../data/header-data';
+import { HeaderData } from '../data/data';
 
 const headerBg =
     'bg-gradient-menu from-bgStart from-0% via-bgMid via-90% to-bgEnd to-100%';
