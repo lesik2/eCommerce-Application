@@ -113,12 +113,15 @@ function Register() {
                         </ThemeProvider>
                     </div>
                     <div className="register-form__user">
-                        <FormSelect
-                            value={values.country}
-                            onChangeSelect={onChangeSelect}
-                            validInputs={validInputs}
-                            setValidInputs={setValidInputs}
-                        />
+                        <ThemeProvider theme={theme}>
+                            <FormSelect
+                                value={values.country}
+                                onChangeSelect={onChangeSelect}
+                                validInputs={validInputs}
+                                setValidInputs={setValidInputs}
+                            />
+                        </ThemeProvider>
+
                         {addressInputs.map((input) => (
                             <FormInput
                                 key={input.id}
@@ -133,7 +136,7 @@ function Register() {
                 </fieldset>
 
                 <CustomizedButton
-                    sx={{ fontSize: 17, marginTop: 3 }}
+                    sx={{ fontSize: 17, marginTop: 5 }}
                     className="register-form__submit"
                     variant="contained"
                     disabled={disableButton}
