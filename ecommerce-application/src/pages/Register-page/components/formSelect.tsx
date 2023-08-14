@@ -1,30 +1,27 @@
-import { FormControl, FormHelperText, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
+import { FormControl, FormHelperText, InputLabel, MenuItem, Select } from '@mui/material';
 import { useState } from 'react';
 import { ISelectInput } from '../../../data/types';
 
 function FormSelect(props: ISelectInput) {
-    const { setValidInputs, validInputs } = props;
-    const [country, setCountry] = useState('');
+    const { setValidInputs, validInputs, value, onChangeSelect } = props;
     const [focused, setFocused] = useState(false);
-    const handleChange = (event: SelectChangeEvent) => {
-        setCountry(event.target.value.toString());
-    };
     const checkValidInput = () => {
         setFocused(true);
-        setValidInputs({ ...validInputs, country: !!country });
+        setValidInputs({ ...validInputs, country: !!value });
     };
     return (
-        <FormControl variant="standard" error={!country && focused}>
+        <FormControl variant="standard" error={!value && focused}>
             <InputLabel sx={{ fontSize: 15 }} required id="select-label">
                 Country
             </InputLabel>
             <Select
+                name="country"
                 sx={{ fontSize: 16 }}
                 labelId="select-label"
                 id="select"
-                value={country}
+                value={value}
                 label="Country"
-                onChange={handleChange}
+                onChange={onChangeSelect}
                 onFocus={() => setFocused(false)}
                 onBlur={checkValidInput}
             >
@@ -34,7 +31,7 @@ function FormSelect(props: ISelectInput) {
                 <MenuItem value="DE">Germany</MenuItem>
                 <MenuItem value="PT">Portugal</MenuItem>
             </Select>
-            {!country && focused ? <FormHelperText>You have to choose a country</FormHelperText> : null}
+            {!value && focused ? <FormHelperText>You have to choose a country</FormHelperText> : null}
         </FormControl>
     );
 }

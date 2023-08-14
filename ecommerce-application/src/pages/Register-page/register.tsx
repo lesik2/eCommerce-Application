@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import Checkbox from '@mui/material/Checkbox';
-import { FormControlLabel, ThemeProvider } from '@mui/material';
+import { FormControlLabel, SelectChangeEvent, ThemeProvider } from '@mui/material';
 import FormInput from './components/formInput';
 import Inputs, { addressInputs } from '../../data/data';
 import './styles/register.css';
@@ -44,14 +44,19 @@ function Register() {
     const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setValues({ ...values, [e.target.name]: e.target.value });
     };
+    const onChangeSelect = (event: SelectChangeEvent) => {
+        setValues({ ...values, [event.target.name]: event.target.value });
+    };
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
     };
     const disableButton = useMemo(() => {
         const validValues = Object.values(validInputs);
-
-        return validValues.includes(false);
-    }, [validInputs]);
+        const Values = Object.values(values);
+        const validation = validValues.includes(false);
+        const emptyValues = Values.includes('');
+        return validation || emptyValues;
+    }, [validInputs, values]);
     return (
         <div className="register">
             <div className="register-menu">
@@ -108,7 +113,12 @@ function Register() {
                         </ThemeProvider>
                     </div>
                     <div className="register-form__user">
-                        <FormSelect validInputs={validInputs} setValidInputs={setValidInputs} />
+                        <FormSelect
+                            value={values.country}
+                            onChangeSelect={onChangeSelect}
+                            validInputs={validInputs}
+                            setValidInputs={setValidInputs}
+                        />
                         {addressInputs.map((input) => (
                             <FormInput
                                 key={input.id}

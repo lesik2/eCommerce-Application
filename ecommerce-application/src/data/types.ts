@@ -1,3 +1,5 @@
+import { SelectChangeEvent } from '@mui/material';
+
 export type InputTypes =
     | 'firstname'
     | 'lastname'
@@ -52,4 +54,6 @@ export interface IPasswordInput {
 export interface ISelectInput {
     validInputs: IValidInputs;
     setValidInputs: React.Dispatch<React.SetStateAction<IValidInputs>>;
+    value: string;
+    onChangeSelect: (event: SelectChangeEvent) => void;
 }
