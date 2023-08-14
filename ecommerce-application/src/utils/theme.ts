@@ -33,6 +33,7 @@ const theme = createTheme({
                     // Some CSS
                     color: '#000000',
                     fontSize: 16,
+                    marginTop: 0,
                 },
             },
         },
@@ -52,6 +53,16 @@ const theme = createTheme({
                 root: {
                     // Some CSS
                     fontSize: 15,
+                },
+            },
+        },
+        MuiFormControl: {
+            styleOverrides: {
+                // Name of the slot
+                root: {
+                    // Some CSS
+                    height: 40,
+                    width: 335,
                 },
             },
         },
