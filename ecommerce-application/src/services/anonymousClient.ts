@@ -8,6 +8,7 @@ import {
 } from '@commercetools/platform-sdk';
 import { httpMiddlewareOptions } from './credentialsFlow';
 import SCOPES from './scopes';
+import tokenCache from './tokenCache';
 
 export const anonAuthMiddlewareOptions: AnonymousAuthMiddlewareOptions = {
     host: import.meta.env.VITE_AUTH_URL,
@@ -18,27 +19,7 @@ export const anonAuthMiddlewareOptions: AnonymousAuthMiddlewareOptions = {
     },
     scopes: SCOPES,
     fetch,
-    tokenCache: {
-        get: () => {
-            const cacheKey = `token`;
-            const cachedToken = localStorage.getItem(cacheKey);
-            if (cachedToken) {
-                console.log(cachedToken);
-                return {
-                    token: `Bearer: ${JSON.parse(cachedToken)}`,
-                    expirationTime: 0,
-                    refreshToken: '',
-                };
-            }
-            return { token: '', expirationTime: 0, refreshToken: '' };
-        },
-        set: (cache) => {
-            const cacheKey = `token`;
-            const cachedToken = localStorage.getItem(cacheKey);
-            if (!cachedToken)
-                localStorage.setItem(cacheKey, JSON.stringify(cache.token));
-        },
-    },
+    tokenCache,
 };
 
 // create anonymousClient when unauthorized user add smth in the cart
@@ -60,4 +41,4 @@ export const products = await getApiRootAnon()
     .get()
     .execute()
     .then((res) => res.body.results.map((el) => el.name))
-    .catch((error) => console.error('Product request error ', error));
+    .catch((error) => console.error('Products request error ', error));
