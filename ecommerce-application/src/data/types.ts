@@ -57,3 +57,13 @@ export interface ISelectInput {
     value: string;
     onChangeSelect: (event: SelectChangeEvent) => void;
 }
+export interface IAddress {
+    street: string;
+    city: string;
+    postalCode: string;
+}
+export interface IAddressInputs {
+    values: IAddress;
+    setValues: React.Dispatch<React.SetStateAction<IAddress>>;
+    nameOFType: string;
+}

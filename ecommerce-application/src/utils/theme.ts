@@ -10,7 +10,7 @@ const theme = createTheme({
                     // Some CSS
                     fontSize: 10,
                     marginTop: 0,
-                    width: 335,
+                    width: '100%',
                 },
             },
         },
@@ -20,7 +20,7 @@ const theme = createTheme({
                 root: {
                     // Some CSS
                     color: '#000000',
-                    fontSize: 15,
+                    fontSize: 16,
                     margin: 0,
                 },
                 asterisk: {
@@ -36,6 +36,7 @@ const theme = createTheme({
                     color: '#000000',
                     fontSize: 16,
                     marginTop: 0,
+                    width: 300,
                 },
             },
         },
@@ -64,7 +65,7 @@ const theme = createTheme({
                 root: {
                     // Some CSS
                     height: 40,
-                    width: 335,
+                    width: 355,
                 },
             },
         },
