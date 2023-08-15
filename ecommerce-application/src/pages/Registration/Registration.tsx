@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import Checkbox from '@mui/material/Checkbox';
 import { FormControlLabel, SelectChangeEvent, ThemeProvider } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import FormInput from './components/formInput';
 import { Inputs, addressInputs } from '../../data/data';
 import './styles/register.css';
@@ -11,6 +11,7 @@ import theme from '../../utils/theme';
 import AddressInputs from './components/addressInputs';
 
 function Registration() {
+    const navigate = useNavigate();
     const [values, setValues] = useState({
         firstname: '',
         lastname: '',
@@ -66,6 +67,7 @@ function Registration() {
     };
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        navigate('/menu');
     };
     const disableButton = useMemo(() => {
         const validValues = Object.values(validInputs);
@@ -180,6 +182,7 @@ function Registration() {
                     </fieldset>
 
                     <CustomizedButton
+                        type="submit"
                         sx={{ fontSize: 17, marginTop: 5 }}
                         className="register-form__submit"
                         variant="contained"
