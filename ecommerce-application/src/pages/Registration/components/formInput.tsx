@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { TextField } from '@mui/material';
 import { ThemeProvider } from '@emotion/react';
-import { IFormInput } from '../../../data/types';
 import '../styles/formInput.css';
 import PasswordInput from './passwordInput';
 import theme from '../../../utils/theme';
+import { IFormInput } from '../../../data/interfaces';
 
 function FormInput(props: IFormInput) {
     const { value, input, onChange, validInputs, setValidInputs, passwordValue } = props;

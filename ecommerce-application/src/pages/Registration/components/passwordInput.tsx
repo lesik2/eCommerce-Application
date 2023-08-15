@@ -3,8 +3,20 @@ import { FormControl, IconButton, Input, InputAdornment, InputLabel } from '@mui
 import { useState } from 'react';
 import '../styles/formInput.css';
 import FormHelperText from '@mui/material/FormHelperText';
-import { IPasswordInput } from '../../../data/types';
+import { InputTypes } from '../../../data/types';
+import { IValidInputs } from '../../../data/interfaces';
 
+export interface IPasswordInput {
+    value: string;
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    label: string | undefined;
+    name: InputTypes;
+    errormessage: string | undefined;
+    validInputs: IValidInputs;
+    checkValidInput: () => void;
+    setFocused: React.Dispatch<React.SetStateAction<boolean>>;
+    focused: boolean;
+}
 function PasswordInput(props: IPasswordInput) {
     const { onChange, label, value, name, errormessage, setFocused, focused, validInputs, checkValidInput } = props;
     const [showPassword, setShowPassword] = useState(false);

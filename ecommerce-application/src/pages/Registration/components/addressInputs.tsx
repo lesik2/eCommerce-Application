@@ -1,11 +1,16 @@
 import { ThemeProvider } from '@emotion/react';
 import { TextField } from '@mui/material';
 import { useState } from 'react';
-import { IAddressInputs, IInput } from '../../../data/types';
+import { IAddress, IInput } from '../../../data/interfaces';
 import { addressInputs } from '../../../data/data';
 import theme from '../../../utils/theme';
 import '../styles/addressInputs.css';
 
+export interface IAddressInputs {
+    values: IAddress;
+    setValues: React.Dispatch<React.SetStateAction<IAddress>>;
+    nameOFType: string;
+}
 function AddressInputs(props: IAddressInputs) {
     const { values, setValues, nameOFType } = props;
     const [clicked, setClicked] = useState(false);

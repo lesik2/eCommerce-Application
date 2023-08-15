@@ -1,7 +1,13 @@
-import { FormControl, FormHelperText, InputLabel, MenuItem, Select } from '@mui/material';
+import { FormControl, FormHelperText, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
 import { useState } from 'react';
-import { ISelectInput } from '../../../data/types';
+import { IValidInputs } from '../../../data/interfaces';
 
+export interface ISelectInput {
+    validInputs: IValidInputs;
+    setValidInputs: React.Dispatch<React.SetStateAction<IValidInputs>>;
+    value: string;
+    onChangeSelect: (event: SelectChangeEvent) => void;
+}
 function FormSelect(props: ISelectInput) {
     const { setValidInputs, validInputs, value, onChangeSelect } = props;
     const [focused, setFocused] = useState(false);

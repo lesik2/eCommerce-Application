@@ -1,15 +1,16 @@
 import { useMemo, useState } from 'react';
 import Checkbox from '@mui/material/Checkbox';
 import { FormControlLabel, SelectChangeEvent, ThemeProvider } from '@mui/material';
+import { Link } from 'react-router-dom';
 import FormInput from './components/formInput';
-import Inputs, { addressInputs } from '../../data/data';
+import { Inputs, addressInputs } from '../../data/data';
 import './styles/register.css';
 import FormSelect from './components/formSelect';
 import CustomizedButton from '../../components/ui/CustomizedButton';
 import theme from '../../utils/theme';
 import AddressInputs from './components/addressInputs';
 
-function Register() {
+function Registration() {
     const [values, setValues] = useState({
         firstname: '',
         lastname: '',
@@ -80,9 +81,11 @@ function Register() {
                     <h2 className="register-title">SIGN UP</h2>
                     <div className="register-signIn">
                         <p>Have an account?</p>
-                        <CustomizedButton sx={{ fontSize: 15 }} variant="contained">
-                            +LOG IN
-                        </CustomizedButton>
+                        <Link to="/login">
+                            <CustomizedButton sx={{ fontSize: 15 }} variant="contained">
+                                +LOG IN
+                            </CustomizedButton>
+                        </Link>
                     </div>
                 </div>
                 <form className="register-form" onSubmit={handleSubmit}>
@@ -189,4 +192,4 @@ function Register() {
         </div>
     );
 }
-export default Register;
+export default Registration;

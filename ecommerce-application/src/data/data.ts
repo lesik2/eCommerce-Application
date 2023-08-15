@@ -1,12 +1,12 @@
-import { IInput } from './types';
-
+import { IInput } from './interfaces';
+// registration
 const oneYearMilliseconds = 31557600000;
 const validYear = 13;
 const calculateValidDate = () => {
     const date = Date.now();
     return date - validYear * oneYearMilliseconds;
 };
-const Inputs: IInput[] = [
+export const Inputs: IInput[] = [
     {
         id: '1',
         name: 'firstname',
@@ -88,5 +88,39 @@ export const addressInputs: IInput[] = [
         errormessage: `Enter valid postal code`,
     },
 ];
+// registration
 
-export default Inputs;
+export const HeaderData = {
+    titleLine1: 'Delivery of Asian',
+    titleLine2: 'Cuisine',
+    subtitleLine1: '06 593 97 301',
+    subtitleLine2: 'we deliver 10 a.m. to 00:00 a.m.',
+};
+
+export const NavLinks = [
+    {
+        id: 'link1',
+        name: 'MENU',
+        url: '/menu',
+    },
+    {
+        id: 'link2',
+        name: 'POKE BOWL',
+        url: '/poke',
+    },
+    {
+        id: 'link3',
+        name: 'SOUP',
+        url: '/soup',
+    },
+    {
+        id: 'link4',
+        name: 'BEVERAGES',
+        url: '/beverages',
+    },
+    {
+        id: 'link5',
+        name: 'ABOUT US',
+        url: '/about',
+    },
+];
