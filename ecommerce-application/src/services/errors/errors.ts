@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 export const loginErrorMappings: Record<string, string> = {
-    'Customer account with the given credentials not found.':
-        'Invalid username or password. Please check your login information.',
+    InvalidCredentials:
+        'Invalid username or password. Please check your login information and try again.',
     invalid_token: 'Invalid token. Please reload the page.',
     ConcurrentModification:
         'Concurrent modification error. Please try again later.',
