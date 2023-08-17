@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import Checkbox from '@mui/material/Checkbox';
+import { AlertColor } from '@mui/material/Alert';
 import { FormControlLabel, SelectChangeEvent, ThemeProvider } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import FormInput from './components/formInput';
@@ -7,8 +8,11 @@ import { Inputs, addressInputs } from '../../data/data';
 import './styles/register.css';
 import FormSelect from './components/formSelect';
 import CustomizedButton from '../../components/ui/CustomizedButton';
+import FetchResultAlert from '../../components/FetchResultAlert';
 import theme from '../../utils/theme';
 import AddressInputs from './components/addressInputs';
+import registerUser from '../../services/registration';
+import { registrationErrorMappings } from '../../services/errors/errors';
 
 function Registration() {
     const navigate = useNavigate();
@@ -49,6 +53,10 @@ function Registration() {
     const [defaultShippingAddress, setDefaultShippingAddress] = useState(false);
     const [defaultBillingAddress, setDefaultBillingAddress] = useState(false);
     const [sameBillingAddress, setSameBillingAddress] = useState(false);
+    const [successMessage, setSuccessMessage] = useState('');
+    const [sev, setSeverity] = useState<AlertColor>('error');
+    const [error, setError] = useState('');
+
     const handleChangeSameBilling = (event: React.ChangeEvent<HTMLInputElement>) => {
         Object.assign(billingValues, shippingValues);
         setSameBillingAddress(event.target.checked);
@@ -67,7 +75,53 @@ function Registration() {
     };
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        navigate('/menu');
+        const DSA = defaultShippingAddress ? 0 : undefined;
+        const DBA = defaultBillingAddress ? 0 : undefined;
+
+        await registerUser(
+            values.email,
+            values.password,
+            values.firstname,
+            values.lastname,
+            [
+                {
+                    country: values.country,
+                    city: values.city,
+                    streetName: values.street,
+                    postalCode: values.postalCode,
+                },
+                {
+                    country: values.country,
+                    city: shippingValues.city,
+                    streetName: shippingValues.street,
+                    postalCode: shippingValues.postalCode,
+                },
+                {
+                    country: values.country,
+                    city: billingValues.city,
+                    streetName: billingValues.street,
+                    postalCode: billingValues.postalCode,
+                },
+            ],
+            DSA,
+            DBA
+        )
+            .then((res) => {
+                if (res.statusCode === 201) {
+                    setSuccessMessage(`You've successfully registered. You'll be redirected to the main page`);
+                    setSeverity('success');
+                    setError('');
+                    localStorage.setItem('status', 'loggedIn');
+                    setTimeout(() => {
+                        navigate('../');
+                    }, 500);
+                }
+            })
+            .catch((err) => {
+                const message = registrationErrorMappings[err.message] || `${err.message}`;
+                setError(message);
+                setSeverity('error');
+            });
     };
     const disableButton = useMemo(() => {
         const validValues = Object.values(validInputs);
@@ -180,6 +234,9 @@ function Registration() {
                             nameOFType="Billing address"
                         />
                     </fieldset>
+
+                    {error && <FetchResultAlert severity={sev} message={error} />}
+                    {successMessage && <FetchResultAlert severity={sev} message={successMessage} />}
 
                     <CustomizedButton
                         type="submit"

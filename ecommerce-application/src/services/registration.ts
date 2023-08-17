@@ -1,6 +1,5 @@
 import { BaseAddress } from '@commercetools/platform-sdk';
 import { getApiRootAnon } from './anonymousClient';
-import { registrationErrorMappings } from './errors/errors';
 
 export default async function registerUser(
     email: string,
@@ -28,19 +27,6 @@ export default async function registerUser(
                 defaultBillingAddress,
             },
         })
-        .execute()
-        .then((res) => {
-            if (res.statusCode === 201) console.log('Signup successful!');
-        })
-        .catch((error) => {
-            if (error instanceof Error)
-                if (registrationErrorMappings[error.message]) {
-                    console.log(registrationErrorMappings[error.message]);
-                } else {
-                    console.log(
-                        'Unknown regestration error. Please try again later'
-                    );
-                }
-        });
+        .execute();
     return registeredUserData;
 }
