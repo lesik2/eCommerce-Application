@@ -1,0 +1,6 @@
+.MuiFormControl-root input[type="date"]{
+  padding-left: 60px;
+}
+.MuiFormControl-root .MuiInputBase-root{
+  margin-top: 7px;
+}
