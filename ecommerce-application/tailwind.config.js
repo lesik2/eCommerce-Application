@@ -25,8 +25,7 @@ export default {
         },
         extend: {
             backgroundImage: {
-                'gradient-menu':
-                    'linear-gradient(90deg, var(--tw-gradient-stops))',
+                'gradient-menu': 'linear-gradient(90deg, var(--tw-gradient-stops))',
             },
             fontFamily: {
                 serif: ['"Poiret One"', 'ui-sans-serif'],

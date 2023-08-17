@@ -4,7 +4,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Root from './Root';
 import './index.css';
 import Login from './pages/Login/Login';
-import Registration from './pages/Registration/Registrarion';
+import Registration from './pages/Registration/Registration';
 import Menu from './pages/Menu/Menu';
 import NavBar from './components/NavBar';
 import Soup from './pages/Soup/Soup';
