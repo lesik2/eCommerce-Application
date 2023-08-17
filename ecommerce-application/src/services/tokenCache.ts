@@ -10,7 +10,7 @@ const tokenCache: TokenCache = {
                 refreshToken: '',
             };
         }
-        return { token: '', expirationTime: 0, refreshToken: '' };
+        return { token: '', expirationTime: 86400000, refreshToken: '' };
     },
     set: (cache) => {
         const cachedToken = localStorage.getItem('token');
