@@ -5,8 +5,8 @@ import List from './ui/List';
 export default function NavBar() {
     return (
         <>
-            <nav className="h-[70px] px-[10px] py-[10px] flex items-center bg-bgMenu">
-                <ul className="w-full mx-[60px] font-serif text-2xl text-white flex justify-items-start gap-[5%]">
+            <nav className="hidden h-[70px] px-[10px] py-[10px] items-center bg-bgMenu md:flex">
+                <ul className="w-full mx-[60px] font-serif text-xl text-white flex justify-items-start gap-[3%] lg:text-2xl lg:gap-[5%]">
                     {NavLinks.map((navlink) => (
                         <NavLink
                             to={navlink.url}
