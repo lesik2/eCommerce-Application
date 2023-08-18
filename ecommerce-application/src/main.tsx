@@ -13,6 +13,7 @@ import Beverages from './pages/Beverages/Beverages';
 import Cart from './pages/Cart/Cart';
 import About from './pages/About/About';
 import ErrorPage from './pages/Error/Error';
+import Main from './pages/Main/Main';
 
 const router = createBrowserRouter([
     {
@@ -24,6 +25,10 @@ const router = createBrowserRouter([
                 path: '/',
                 element: <NavBar />,
                 children: [
+                    {
+                        path: '/',
+                        element: <Main />,
+                    },
                     {
                         path: 'menu',
                         element: <Menu />,
