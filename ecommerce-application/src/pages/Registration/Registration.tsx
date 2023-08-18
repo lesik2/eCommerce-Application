@@ -77,35 +77,34 @@ function Registration() {
         e.preventDefault();
         const DSA = defaultShippingAddress ? 0 : undefined;
         const DBA = defaultBillingAddress ? 0 : undefined;
-
-        await registerUser(
-            values.email,
-            values.password,
-            values.firstname,
-            values.lastname,
-            [
-                {
-                    country: values.country,
-                    city: values.city,
-                    streetName: values.street,
-                    postalCode: values.postalCode,
-                },
-                {
-                    country: values.country,
-                    city: shippingValues.city,
-                    streetName: shippingValues.street,
-                    postalCode: shippingValues.postalCode,
-                },
-                {
-                    country: values.country,
-                    city: billingValues.city,
-                    streetName: billingValues.street,
-                    postalCode: billingValues.postalCode,
-                },
-            ],
-            DSA,
-            DBA
-        )
+        const baseAddress = {
+            country: values.country,
+            city: values.city,
+            streetName: values.street,
+            postalCode: values.postalCode,
+        };
+        const addresses = [baseAddress];
+        const shippingAddress =
+            Object.values(shippingValues).filter((el) => el.length > 0).length > 0
+                ? {
+                      country: values.country,
+                      city: shippingValues.city,
+                      streetName: shippingValues.street,
+                      postalCode: shippingValues.postalCode,
+                  }
+                : null;
+        const billingAddress =
+            Object.values(billingValues).filter((el) => el.length > 0).length > 0
+                ? {
+                      country: values.country,
+                      city: billingValues.city,
+                      streetName: billingValues.street,
+                      postalCode: billingValues.postalCode,
+                  }
+                : null;
+        if (shippingAddress) addresses.push(shippingAddress);
+        if (billingAddress) addresses.push(billingAddress);
+        await registerUser(values.email, values.password, values.firstname, values.lastname, addresses, DSA, DBA)
             .then((res) => {
                 if (res.statusCode === 201) {
                     setSuccessMessage(`You've successfully registered. You'll be redirected to the main page`);
@@ -114,7 +113,7 @@ function Registration() {
                     localStorage.setItem('status', 'loggedIn');
                     setTimeout(() => {
                         navigate('../');
-                    }, 500);
+                    }, 1000);
                 }
             })
             .catch((err) => {
