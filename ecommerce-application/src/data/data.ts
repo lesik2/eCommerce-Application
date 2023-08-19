@@ -61,11 +61,11 @@ export const Inputs: IInput[] = [
 ];
 export const CountryValidation = {
     DE: {
-        errorMessage: `Enter valid postal code for Germany`,
+        errorMessage: `Enter valid postal code for Germany(5 digits)`,
         pattern: /^\d{5}$/,
     },
     PT: {
-        errorMessage: `Enter valid postal code for Portugal`,
+        errorMessage: `Enter valid postal code for Portugal(4 digits)`,
         pattern: /^\d{4}([-]\d{3})?$/,
     },
 };
@@ -94,8 +94,8 @@ export const addressInputs: IInput[] = [
         name: 'postalCode',
         type: 'text',
         label: 'Postal code',
-        pattern: /^\d{5}$/,
-        errormessage: `Enter valid postal code`,
+        pattern: /^\d{4,5}$/,
+        errormessage: `Enter valid postal code for country`,
     },
 ];
 // registration

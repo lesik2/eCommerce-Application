@@ -13,6 +13,7 @@ function FormInput(props: IFormInput) {
     const [errorText, setErrorText] = useState(errormessage);
 
     const changePatternForCountry = () => {
+        if (input.name !== 'postalCode') return;
         if (values.country === 'DE') {
             errormessage = CountryValidation.DE.errorMessage;
             pattern = CountryValidation.DE.pattern;
