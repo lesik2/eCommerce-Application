@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { AlertColor } from '@mui/material/Alert';
 import handleLogin from '../../services/login';
 import FetchResultAlert from '../../components/FetchResultAlert';
@@ -49,11 +49,11 @@ function Login() {
     const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setValues({ ...values, [e.target.name]: e.target.value });
     };
-    useEffect(() => {
-        if (localStorage.getItem('token') && localStorage.getItem('status') === 'loggedIn') {
-            navigate('../');
-        }
-    }, [navigate]);
+    // useEffect(() => {
+    // if (localStorage.getItem('token') && localStorage.getItem('status') === 'loggedIn') {
+    // navigate('../');
+    // }
+    // }, [navigate]);
 
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();

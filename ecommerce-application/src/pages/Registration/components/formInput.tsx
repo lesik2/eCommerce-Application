@@ -13,6 +13,7 @@ function FormInput(props: IFormInput) {
     const checkValidInput = () => {
         setFocused(true);
         if (pattern) {
+            console.log(value);
             const result = pattern.test(value);
             setValidInputs({ ...validInputs, [input.name]: result });
         } else if (input.validdate) {

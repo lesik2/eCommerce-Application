@@ -25,7 +25,7 @@ function PasswordInput(props: IPasswordInput) {
         event.preventDefault();
     };
     return (
-        <div>
+        <div style={{ height: '40px' }}>
             <FormControl variant="standard">
                 <InputLabel error={!validInputs[name] && focused} htmlFor="standard-adornment-password" required>
                     {label}
