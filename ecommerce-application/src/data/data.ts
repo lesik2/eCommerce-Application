@@ -59,15 +59,25 @@ export const Inputs: IInput[] = [
         errormessage: `Passwords don't match!`,
     },
 ];
+export const CountryValidation = {
+    DE: {
+        errorMessage: `Enter valid postal code for Germany`,
+        pattern: /^\d{5}$/,
+    },
+    PT: {
+        errorMessage: `Enter valid postal code for Portugal`,
+        pattern: /^\d{4}([-]\d{3})?$/,
+    },
+};
 export const addressInputs: IInput[] = [
     {
         id: '1',
         name: 'city',
         type: 'text',
         label: 'City',
-        pattern: /^[a-zA-Z][^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{1,}$/,
+        pattern: /^[a-zA-Z][^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{0,}$/,
         errormessage: `
-        must contain one character
+        must contain at least one character
         no special characters,numbers`,
     },
     {
@@ -84,7 +94,7 @@ export const addressInputs: IInput[] = [
         name: 'postalCode',
         type: 'text',
         label: 'Postal code',
-        pattern: /^[A-Z0-9 _]*[A-Z0-9][A-Z0-9 _]*$/,
+        pattern: /^\d{5}$/,
         errormessage: `Enter valid postal code`,
     },
 ];

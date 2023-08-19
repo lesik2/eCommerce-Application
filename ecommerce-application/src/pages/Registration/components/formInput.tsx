@@ -5,25 +5,45 @@ import '../styles/formInput.css';
 import PasswordInput from './passwordInput';
 import theme from '../../../utils/theme';
 import { IFormInput } from '../../../data/interfaces';
+import { CountryValidation } from '../../../data/data';
 
 function FormInput(props: IFormInput) {
-    const { value, input, onChange, validInputs, setValidInputs, passwordValue } = props;
-    const { pattern, errormessage } = input;
-    const [focused, setFocused] = useState(false);
-    const checkValidInput = () => {
-        setFocused(true);
+    const { input, values, setValues, validInputs, setValidInputs, passwordValue } = props;
+    let { pattern, errormessage } = input;
+    const [errorText, setErrorText] = useState(errormessage);
+
+    const changePatternForCountry = () => {
+        if (values.country === 'DE') {
+            errormessage = CountryValidation.DE.errorMessage;
+            pattern = CountryValidation.DE.pattern;
+        }
+        if (values.country === 'PT') {
+            errormessage = CountryValidation.PT.errorMessage;
+            pattern = CountryValidation.PT.pattern;
+        }
+    };
+    const checkValidInput = (value: string) => {
+        changePatternForCountry();
+        if (value === '') {
+            setErrorText(`${input.name} should be filled`);
+        } else {
+            setErrorText(errormessage);
+        }
         if (pattern) {
-            console.log(value);
             const result = pattern.test(value);
             setValidInputs({ ...validInputs, [input.name]: result });
         } else if (input.validdate) {
             const userDate = new Date(value);
             const result = input.validdate >= userDate.getTime();
             setValidInputs({ ...validInputs, [input.name]: result });
-        } else if (passwordValue !== undefined) {
+        } else if (passwordValue) {
             const result = passwordValue === value;
             setValidInputs({ ...validInputs, [input.name]: result });
         }
+    };
+    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setValues({ ...values, [e.target.name]: e.target.value });
+        checkValidInput(e.target.value);
     };
     return (
         <div>
@@ -31,14 +51,11 @@ function FormInput(props: IFormInput) {
                 <ThemeProvider theme={theme}>
                     <PasswordInput
                         onChange={onChange}
-                        value={value}
+                        value={values[input.name]}
                         label={input.label}
                         name={input.name}
-                        checkValidInput={checkValidInput}
-                        setFocused={setFocused}
-                        focused={focused}
                         validInputs={validInputs}
-                        errormessage={errormessage}
+                        errormessage={errorText}
                     />
                 </ThemeProvider>
             ) : (
@@ -48,12 +65,10 @@ function FormInput(props: IFormInput) {
                         variant="standard"
                         {...input}
                         autoComplete="off"
-                        value={value}
-                        onFocus={() => setFocused(false)}
-                        onBlur={checkValidInput}
+                        value={values[input.name]}
                         onChange={onChange}
-                        error={!validInputs[input.name] && focused}
-                        helperText={!validInputs[input.name] && focused ? errormessage : ''}
+                        error={!validInputs[input.name]}
+                        helperText={!validInputs[input.name] ? errorText : ''}
                     />
                 </ThemeProvider>
             )}

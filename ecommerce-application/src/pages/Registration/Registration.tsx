@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import Checkbox from '@mui/material/Checkbox';
 import { AlertColor } from '@mui/material/Alert';
-import { FormControlLabel, SelectChangeEvent, ThemeProvider } from '@mui/material';
+import { FormControlLabel, ThemeProvider } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import FormInput from './components/formInput';
 import { Inputs, addressInputs } from '../../data/data';
@@ -39,16 +39,16 @@ function Registration() {
         postalCode: '',
     });
     const [validInputs, setValidInputs] = useState({
-        firstname: false,
-        lastname: false,
-        birthday: false,
-        email: false,
-        password: false,
-        confirmPassword: false,
-        street: false,
-        city: false,
-        country: false,
-        postalCode: false,
+        firstname: true,
+        lastname: true,
+        birthday: true,
+        email: true,
+        password: true,
+        confirmPassword: true,
+        street: true,
+        city: true,
+        country: true,
+        postalCode: true,
     });
     const [defaultShippingAddress, setDefaultShippingAddress] = useState(false);
     const [defaultBillingAddress, setDefaultBillingAddress] = useState(false);
@@ -66,12 +66,6 @@ function Registration() {
     };
     const handleChangeBilling = (event: React.ChangeEvent<HTMLInputElement>) => {
         setDefaultBillingAddress(event.target.checked);
-    };
-    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setValues({ ...values, [e.target.name]: e.target.value });
-    };
-    const onChangeSelect = (event: SelectChangeEvent) => {
-        setValues({ ...values, [event.target.name]: event.target.value });
     };
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -149,8 +143,8 @@ function Registration() {
                             <FormInput
                                 key={input.id}
                                 input={input}
-                                value={values[input.name]}
-                                onChange={onChange}
+                                values={values}
+                                setValues={setValues}
                                 validInputs={validInputs}
                                 setValidInputs={setValidInputs}
                                 passwordValue={input.name === 'confirmPassword' ? values.password : ''}
@@ -202,8 +196,8 @@ function Registration() {
                         <div className="register-form__user">
                             <ThemeProvider theme={theme}>
                                 <FormSelect
-                                    value={values.country}
-                                    onChangeSelect={onChangeSelect}
+                                    values={values}
+                                    setValues={setValues}
                                     validInputs={validInputs}
                                     setValidInputs={setValidInputs}
                                 />
@@ -213,8 +207,8 @@ function Registration() {
                                 <FormInput
                                     key={input.id}
                                     input={input}
-                                    value={values[input.name]}
-                                    onChange={onChange}
+                                    values={values}
+                                    setValues={setValues}
                                     validInputs={validInputs}
                                     setValidInputs={setValidInputs}
                                 />
