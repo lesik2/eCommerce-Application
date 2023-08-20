@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import { Link } from 'react-router-dom';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import Image from './ui/Image';
 import Logo from '../assets/img/logo.svg';
 import CreateIconButton from './ui/IconButton';
@@ -41,7 +41,11 @@ export default function Header() {
         logout();
     };
 
-    checkLoginStatus();
+    useEffect(() => {
+        checkLoginStatus();
+    });
+
+    // checkLoginStatus();
 
     return (
         <header
@@ -84,7 +88,7 @@ export default function Header() {
             </div>
             {modalStatus && (
                 <Modal onClose={closeModal}>
-                    <div className="w-[320px] px-3 py-3 text-center rounded-md bg-white/90 absolute top-[60px] right-0 z-10">
+                    <div className="w-[320px] px-3 py-3 text-center rounded-md bg-white/95 absolute top-[60px] right-0 z-10">
                         <h3 className="mb-5">Hello, Username!</h3>
                         <span onClick={handleLogout}>
                             <CreateIconButton type="logout" size="large" />
