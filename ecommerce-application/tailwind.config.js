@@ -12,6 +12,7 @@ export default {
             white: colors.white,
             blue: colors.blue,
             gray: colors.gray,
+            green: colors.green,
             emerald: colors.emerald,
             indigo: colors.indigo,
             yellow: colors.yellow,

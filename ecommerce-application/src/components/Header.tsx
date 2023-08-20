@@ -1,12 +1,30 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import { Link } from 'react-router-dom';
+import { useContext, useState } from 'react';
 import Image from './ui/Image';
 import Logo from '../assets/img/logo.svg';
 import CreateIconButton from './ui/IconButton';
 import { HeaderData } from '../data/data';
+import { ModalContext } from '../context/ModalContext';
+import Modal from './Modal';
 
 const headerBg = 'bg-gradient-menu from-bgStart from-0% via-bgMid via-90% to-bgEnd to-100%';
 
 export default function Header() {
+    const [openUser, setOpenUser] = useState(false);
+
+    const { modalStatus, openModal, closeModal } = useContext(ModalContext);
+
+    const handleUserMenu = () => {
+        setOpenUser(!openUser);
+        if (modalStatus) {
+            closeModal();
+        } else {
+            openModal();
+        }
+    };
+
     return (
         <header
             className={`
@@ -38,7 +56,20 @@ export default function Header() {
                 <Link to="login">
                     <CreateIconButton type="login" size="large" />
                 </Link>
+                <div onClick={handleUserMenu}>
+                    <CreateIconButton type="logout" size="large" />
+                </div>
             </div>
+            {modalStatus && (
+                <Modal onClose={closeModal}>
+                    <div className="w-[320px] px-3 py-3 text-center rounded-md bg-white/90 absolute top-[60px] right-0 z-10">
+                        <h3 className="mb-5">Hello, Username!</h3>
+                        <span onClick={handleUserMenu}>
+                            <CreateIconButton type="logout" size="large" />
+                        </span>
+                    </div>
+                </Modal>
+            )}
         </header>
     );
 }
