@@ -5,7 +5,7 @@
   justify-content: center;
 }
 .register{
-  padding: 30px 50px 0 50px;
+  padding: 30px 10px 30px 10px;
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -16,6 +16,7 @@
   width: 100%;
   justify-content: space-between;
   align-items: center;
+  gap: 50px;
 }
 .register-signIn{
   display: flex;
@@ -69,4 +70,29 @@
   font-weight:200;
   margin: 0;
   color: #000000;
+}
+@media (max-width:828px) {
+  .register-form__user{
+    column-gap: 20px;
+  }
+
+  .register-form__default{
+    gap: 0px;
+  }
+}
+@media (max-width:750px) {
+  .register-form__default{
+    flex-direction: column;
+    align-items: flex-start
+  }
+  .register-form__user{
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width:600px) {
+  .register-menu{
+    flex-direction: column;
+    gap: 30px;
+    align-items: center;
+  }
 }
