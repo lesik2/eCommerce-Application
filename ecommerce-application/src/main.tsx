@@ -14,6 +14,7 @@ import Cart from './pages/Cart/Cart';
 import About from './pages/About/About';
 import ErrorPage from './pages/Error/Error';
 import Main from './pages/Main/Main';
+import { ModalState } from './context/ModalContext';
 
 const router = createBrowserRouter([
     {
@@ -69,6 +70,8 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
-        <RouterProvider router={router} />
+        <ModalState>
+            <RouterProvider router={router} />
+        </ModalState>
     </React.StrictMode>
 );
