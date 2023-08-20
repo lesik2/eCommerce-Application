@@ -37,6 +37,10 @@ function Login() {
     const [successMessage, setSuccessMessage] = useState('');
     const [sev, setSeverity] = useState<AlertColor>('error');
     const [error, setError] = useState('');
+    const [alertOpen, setAlertOpen] = useState(true);
+    const handleAlertToggle = () => {
+        setAlertOpen(!alertOpen);
+    };
 
     const disableButton = useMemo(() => {
         const validValues = [validInputs.email, validInputs.password];
@@ -62,9 +66,10 @@ function Login() {
                 setSuccessMessage(`Successful login. You'll be redirected to the main page`);
                 setSeverity('success');
                 setError('');
+                setAlertOpen(true);
                 setTimeout(() => {
                     navigate('../');
-                }, 500);
+                }, 1000);
             })
             .catch((e) => {
                 if (e.message === 'invalid_token') {
@@ -73,6 +78,7 @@ function Login() {
                 const message = loginErrorMappings[e.body.errors[0].code] || `${e.message}`;
                 setError(message);
                 setSeverity('error');
+                setAlertOpen(true);
             });
         return loginData;
     };
@@ -103,8 +109,22 @@ function Login() {
                             />
                         ))}
                     </fieldset>
-                    {error && <FetchResultAlert severity={sev} message={error} />}
-                    {successMessage && <FetchResultAlert severity={sev} message={successMessage} />}
+                    {error && (
+                        <FetchResultAlert
+                            severity={sev}
+                            message={error}
+                            isOpen={alertOpen}
+                            onChange={handleAlertToggle}
+                        />
+                    )}
+                    {successMessage && (
+                        <FetchResultAlert
+                            severity={sev}
+                            message={successMessage}
+                            isOpen={alertOpen}
+                            onChange={handleAlertToggle}
+                        />
+                    )}
                     <CustomizedButton
                         type="submit"
                         sx={{ fontSize: 17, marginTop: 5 }}

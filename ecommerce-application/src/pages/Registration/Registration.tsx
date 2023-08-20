@@ -56,6 +56,10 @@ function Registration() {
     const [successMessage, setSuccessMessage] = useState('');
     const [sev, setSeverity] = useState<AlertColor>('error');
     const [error, setError] = useState('');
+    const [alertOpen, setAlertOpen] = useState(true);
+    const handleAlertToggle = () => {
+        setAlertOpen(!alertOpen);
+    };
 
     const handleChangeSameBilling = (event: React.ChangeEvent<HTMLInputElement>) => {
         Object.assign(billingValues, shippingValues);
@@ -110,6 +114,7 @@ function Registration() {
                     setSuccessMessage(`You've successfully registered. You'll be redirected to the main page`);
                     setSeverity('success');
                     setError('');
+                    setAlertOpen(true);
                     localStorage.setItem('status', 'loggedIn');
                     setTimeout(() => {
                         navigate('../');
@@ -120,6 +125,7 @@ function Registration() {
                 const message = registrationErrorMappings[err.message] || `${err.message}`;
                 setError(message);
                 setSeverity('error');
+                setAlertOpen(true);
             });
     };
     const disableButton = useMemo(() => {
@@ -234,8 +240,22 @@ function Registration() {
                         />
                     </fieldset>
 
-                    {error && <FetchResultAlert severity={sev} message={error} />}
-                    {successMessage && <FetchResultAlert severity={sev} message={successMessage} />}
+                    {error && (
+                        <FetchResultAlert
+                            severity={sev}
+                            message={error}
+                            isOpen={alertOpen}
+                            onChange={handleAlertToggle}
+                        />
+                    )}
+                    {successMessage && (
+                        <FetchResultAlert
+                            severity={sev}
+                            message={successMessage}
+                            isOpen={alertOpen}
+                            onChange={handleAlertToggle}
+                        />
+                    )}
 
                     <CustomizedButton
                         type="submit"
