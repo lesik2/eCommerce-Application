@@ -1,3 +1,4 @@
+import LoginStatus from './enums';
 import { InputTypes } from './types';
 
 export interface IInput {
@@ -35,4 +36,14 @@ export interface IAddress {
     postalCode: string;
 }
 
-export {};
+export interface ILoginContext {
+    loginStatus: LoginStatus;
+    loginMenu: () => void;
+    logoutMenu: () => void;
+}
+
+export interface IModalContext {
+    modalStatus: boolean;
+    openModal: () => void;
+    closeModal: () => void;
+}
