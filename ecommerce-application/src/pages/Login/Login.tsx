@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { AlertColor } from '@mui/material/Alert';
 import handleLogin from '../../services/login';
 import FetchResultAlert from '../../components/FetchResultAlert';
@@ -46,11 +46,11 @@ function Login() {
         return validation || emptyValues;
     }, [validInputs, values]);
 
-    // useEffect(() => {
-    // if (localStorage.getItem('token') && localStorage.getItem('status') === 'loggedIn') {
-    // navigate('../');
-    // }
-    // }, [navigate]);
+    useEffect(() => {
+        if (localStorage.getItem('token') && localStorage.getItem('status') === 'loggedIn') {
+            navigate('../');
+        }
+    }, [navigate]);
 
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
@@ -81,7 +81,10 @@ function Login() {
                     <div className="register-signIn">
                         <p>Do not have an account?</p>
                         <Link to="/registration">
-                            <CustomizedButton sx={{ fontSize: 15 }} variant="contained">
+                            <CustomizedButton
+                                sx={{ '&&': { fontSize: 15, paddingLeft: '20px', paddingRight: '20px' } }}
+                                variant="contained"
+                            >
                                 +SIGN UP
                             </CustomizedButton>
                         </Link>

@@ -131,7 +131,10 @@ function Registration() {
                     <div className="register-signIn">
                         <p>Have an account?</p>
                         <Link to="/login">
-                            <CustomizedButton sx={{ fontSize: 15 }} variant="contained">
+                            <CustomizedButton
+                                sx={{ '&&': { fontSize: 15, paddingLeft: '20px', paddingRight: '20px' } }}
+                                variant="contained"
+                            >
                                 +LOG IN
                             </CustomizedButton>
                         </Link>

@@ -28,9 +28,8 @@
 .address-inputs>div.MuiFormControl-root{
   width: 250px;
 }
-
 .address-inputs>div .MuiInputBase-root{
-  width: 200px;
+  width: 250px;
 }
 .address-header{
   display: flex;
@@ -56,13 +55,18 @@
   height: 100%;
 }
 @media (max-width:828px) {
-  .address-inputs{
-    gap: 30px;
-  }
   .address-inputs>div.MuiFormControl-root{
     width: 245px;
   }
 }
-@media (max-width:750px) {
-  
+@media (max-width:540px) {
+  .address-inputs>div.MuiFormControl-root{
+    width: 350px;
+  }
+  .address-inputs>div .MuiInputBase-root{
+    width: 350px;
+  }
+  .address-inputs{
+    gap: 15px;
+  }
 }

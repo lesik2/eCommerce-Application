@@ -21,7 +21,7 @@
 .register-signIn{
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 10px;
 }
 .register-signIn>p{
   font-size: 25px;
@@ -95,4 +95,14 @@
     gap: 30px;
     align-items: center;
   }
+}
+@media (max-width:471px) {
+  .register-signIn>p {
+    font-size: 20px;
+}
+}
+@media (max-width:389px) {
+  .register-signIn>p {
+    font-size: 18px;
+}
 }
