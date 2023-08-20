@@ -1,12 +1,5 @@
-import {
-    AuthMiddlewareOptions,
-    HttpMiddlewareOptions,
-    ClientBuilder,
-} from '@commercetools/sdk-client-v2';
-import {
-    createApiBuilderFromCtpClient,
-    ApiRoot,
-} from '@commercetools/platform-sdk';
+import { AuthMiddlewareOptions, HttpMiddlewareOptions, ClientBuilder } from '@commercetools/sdk-client-v2';
+import { createApiBuilderFromCtpClient, ApiRoot } from '@commercetools/platform-sdk';
 
 export const authMiddlewareOptions: AuthMiddlewareOptions = {
     host: import.meta.env.VITE_AUTH_URL,
