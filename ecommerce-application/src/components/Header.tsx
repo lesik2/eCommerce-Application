@@ -1,29 +1,47 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import { Link } from 'react-router-dom';
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import Image from './ui/Image';
 import Logo from '../assets/img/logo.svg';
 import CreateIconButton from './ui/IconButton';
 import { HeaderData } from '../data/data';
 import { ModalContext } from '../context/ModalContext';
 import Modal from './Modal';
+import { LoginContext } from '../context/LoginContext';
+import LoginStatus from '../data/enums';
+import logout from '../services/logout';
 
 const headerBg = 'bg-gradient-menu from-bgStart from-0% via-bgMid via-90% to-bgEnd to-100%';
 
 export default function Header() {
-    const [openUser, setOpenUser] = useState(false);
+    // const [openUser, setOpenUser] = useState(false);
 
     const { modalStatus, openModal, closeModal } = useContext(ModalContext);
 
+    const { loginStatus, loginMenu, logoutMenu } = useContext(LoginContext);
+
+    const checkLoginStatus = () => {
+        if (localStorage.getItem('token') && localStorage.getItem('status') === 'loggedIn') {
+            loginMenu();
+        }
+    };
     const handleUserMenu = () => {
-        setOpenUser(!openUser);
+        // setOpenUser(!openUser);
         if (modalStatus) {
             closeModal();
         } else {
             openModal();
         }
     };
+
+    const handleLogout = () => {
+        logoutMenu();
+        closeModal();
+        logout();
+    };
+
+    checkLoginStatus();
 
     return (
         <header
@@ -53,18 +71,22 @@ export default function Header() {
                 <Link className="hidden md:block" to="cart">
                     <CreateIconButton type="cart" size="large" />
                 </Link>
-                <Link to="login">
-                    <CreateIconButton type="login" size="large" />
-                </Link>
-                <div onClick={handleUserMenu}>
-                    <CreateIconButton type="logout" size="large" />
-                </div>
+                {loginStatus === LoginStatus.anonim && (
+                    <Link to="login">
+                        <CreateIconButton type="login" size="large" />
+                    </Link>
+                )}
+                {loginStatus === LoginStatus.loggedIn && (
+                    <div onClick={handleUserMenu}>
+                        <CreateIconButton type="logged" size="large" />
+                    </div>
+                )}
             </div>
             {modalStatus && (
                 <Modal onClose={closeModal}>
                     <div className="w-[320px] px-3 py-3 text-center rounded-md bg-white/90 absolute top-[60px] right-0 z-10">
                         <h3 className="mb-5">Hello, Username!</h3>
-                        <span onClick={handleUserMenu}>
+                        <span onClick={handleLogout}>
                             <CreateIconButton type="logout" size="large" />
                         </span>
                     </div>

@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useContext, useMemo, useState } from 'react';
 import Checkbox from '@mui/material/Checkbox';
 import { AlertColor } from '@mui/material/Alert';
 import { FormControlLabel, SelectChangeEvent, ThemeProvider } from '@mui/material';
@@ -13,6 +13,7 @@ import theme from '../../utils/theme';
 import AddressInputs from './components/addressInputs';
 import registerUser from '../../services/registration';
 import { registrationErrorMappings } from '../../services/errors/errors';
+import { LoginContext } from '../../context/LoginContext';
 
 function Registration() {
     const navigate = useNavigate();
@@ -56,6 +57,7 @@ function Registration() {
     const [successMessage, setSuccessMessage] = useState('');
     const [sev, setSeverity] = useState<AlertColor>('error');
     const [error, setError] = useState('');
+    const { loginMenu } = useContext(LoginContext);
 
     const handleChangeSameBilling = (event: React.ChangeEvent<HTMLInputElement>) => {
         Object.assign(billingValues, shippingValues);
@@ -113,6 +115,7 @@ function Registration() {
                     localStorage.setItem('status', 'loggedIn');
                     setTimeout(() => {
                         navigate('../');
+                        loginMenu();
                     }, 1000);
                 }
             })

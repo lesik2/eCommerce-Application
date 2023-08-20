@@ -1,11 +1,6 @@
 /* eslint-disable react/jsx-no-constructed-context-values */
 import React, { createContext, useState } from 'react';
-
-interface IModalContext {
-    modalStatus: boolean;
-    openModal: () => void;
-    closeModal: () => void;
-}
+import { IModalContext } from '../data/interfaces';
 
 export const ModalContext = createContext<IModalContext>({
     modalStatus: false,
@@ -14,7 +9,7 @@ export const ModalContext = createContext<IModalContext>({
 });
 
 export function ModalState({ children }: { children: React.ReactNode }) {
-    const [modalStatus, setModal] = useState(true);
+    const [modalStatus, setModal] = useState(false);
 
     const openModal = () => setModal(true);
 
