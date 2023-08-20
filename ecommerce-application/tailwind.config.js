@@ -20,6 +20,8 @@ export default {
             bgStart: '#FDE828',
             bgMid: '#F0C448',
             bgEnd: '#EFC14B',
+            menuBtnColor: '#EFC14B',
+            menuBtnColorHover: '#AB820A',
             bntActive: '#509046',
             btnHover: '#6C6C6C',
         },

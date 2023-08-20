@@ -1,6 +1,30 @@
 import { NavLink, Outlet } from 'react-router-dom';
+import { Button } from '@material-tailwind/react';
 import { NavLinks } from '../data/data';
 import List from './ui/List';
+
+const FixedMenu = {
+    menu: {
+        title: 'MENU',
+        id: 'link-fixed-menu',
+        url: '/menu',
+    },
+    burger: {
+        title: '-',
+        id: 'link-fixed-burger',
+        url: '/',
+    },
+    cart: {
+        title: 'CART',
+        id: 'link-fixed-cart',
+        url: '/cart',
+    },
+    buttonStyle: 'w-[100px] h-[28px] text-lg rounded-2xl',
+    burgerStyle: 'w-[36px] h-[28px] rounded-md',
+    activeStyle: 'rounded-2xl bg-bntActive hover:none',
+    inactiveStyle: 'rounded-2xl bg-menuBtnColor hover:bg-menuBtnColorHover',
+    burgerSpanStyle: 'block h-0.5 w-5 m-auto bg-white',
+};
 
 export default function NavBar() {
     return (
@@ -23,6 +47,40 @@ export default function NavBar() {
                 </ul>
             </nav>
             <Outlet />
+            <nav className="fixed bottom-0 font-serif w-full h-[50px] flex justify-around items-center bg-bgMenu md:hidden">
+                <NavLink
+                    to={FixedMenu.menu.url}
+                    className={({ isActive }) => (isActive ? `${FixedMenu.activeStyle}` : `${FixedMenu.inactiveStyle}`)}
+                    key={FixedMenu.menu.id}
+                >
+                    <Button variant="filled" className={`${FixedMenu.buttonStyle}`}>
+                        {FixedMenu.menu.title}
+                    </Button>
+                </NavLink>
+
+                <NavLink
+                    to={FixedMenu.burger.url}
+                    className={({ isActive }) => (isActive ? `${FixedMenu.activeStyle}` : `${FixedMenu.inactiveStyle}`)}
+                    key={FixedMenu.burger.id}
+                >
+                    <Button variant="filled" className={`${FixedMenu.burgerStyle}`}>
+                        <div className="space-y-1">
+                            <span className={`${FixedMenu.burgerSpanStyle}`} />
+                            <span className={`${FixedMenu.burgerSpanStyle}`} />
+                            <span className={`${FixedMenu.burgerSpanStyle}`} />
+                        </div>
+                    </Button>
+                </NavLink>
+                <NavLink
+                    to={FixedMenu.cart.url}
+                    className={({ isActive }) => (isActive ? `${FixedMenu.activeStyle}` : `${FixedMenu.inactiveStyle}`)}
+                    key={FixedMenu.cart.id}
+                >
+                    <Button variant="filled" className={`${FixedMenu.buttonStyle}`}>
+                        {FixedMenu.cart.title}
+                    </Button>
+                </NavLink>
+            </nav>
         </>
     );
 }
