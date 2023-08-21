@@ -41,6 +41,7 @@ export interface IFormInput {
     validInputs: IValidInputs;
     setValidInputs: React.Dispatch<React.SetStateAction<IValidInputs>>;
     passwordValue?: string | null;
+    setAlertOpen?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 export interface IAddress {
     street: string;

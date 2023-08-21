@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect, useContext } from 'react';
 import { AlertColor } from '@mui/material/Alert';
 import handleLogin from '../../services/login';
 import FetchResultAlert from '../../components/FetchResultAlert';
@@ -7,6 +7,7 @@ import { loginErrorMappings } from '../../services/errors/errors';
 import CustomizedButton from '../../components/ui/CustomizedButton';
 import { Inputs } from '../../data/data';
 import FormInput from '../Registration/components/formInput';
+import { LoginContext } from '../../context/LoginContext';
 
 function Login() {
     const navigate = useNavigate();
@@ -38,6 +39,12 @@ function Login() {
     const [sev, setSeverity] = useState<AlertColor>('error');
     const [error, setError] = useState('');
 
+    const { loginMenu } = useContext(LoginContext);
+    const [alertOpen, setAlertOpen] = useState(true);
+    const handleAlertToggle = () => {
+        setAlertOpen(!alertOpen);
+    };
+
     const disableButton = useMemo(() => {
         const validValues = [validInputs.email, validInputs.password];
         const Values = [values.email, values.password];
@@ -46,11 +53,11 @@ function Login() {
         return validation || emptyValues;
     }, [validInputs, values]);
 
-    // useEffect(() => {
-    // if (localStorage.getItem('token') && localStorage.getItem('status') === 'loggedIn') {
-    // navigate('../');
-    // }
-    // }, [navigate]);
+    useEffect(() => {
+        if (localStorage.getItem('token') && localStorage.getItem('status') === 'loggedIn') {
+            navigate('../');
+        }
+    }, [navigate]);
 
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
@@ -59,17 +66,20 @@ function Login() {
                 setSuccessMessage(`Successful login. You'll be redirected to the main page`);
                 setSeverity('success');
                 setError('');
+                setAlertOpen(true);
                 setTimeout(() => {
                     navigate('../');
-                }, 500);
+                    loginMenu();
+                }, 1000);
             })
             .catch((e) => {
                 if (e.message === 'invalid_token') {
                     localStorage.removeItem('token');
                 }
-                const message = loginErrorMappings[e.body.errors[0].code] || `${e.message}`;
+                const message = loginErrorMappings[e.body.errors[0].code] || loginErrorMappings[e] || `${e.message}`;
                 setError(message);
                 setSeverity('error');
+                setAlertOpen(true);
             });
         return loginData;
     };
@@ -100,11 +110,26 @@ function Login() {
                                 setValues={setValues}
                                 validInputs={validInputs}
                                 setValidInputs={setValidInputs}
+                                setAlertOpen={setAlertOpen}
                             />
                         ))}
                     </fieldset>
-                    {error && <FetchResultAlert severity={sev} message={error} />}
-                    {successMessage && <FetchResultAlert severity={sev} message={successMessage} />}
+                    {error && (
+                        <FetchResultAlert
+                            severity={sev}
+                            message={error}
+                            isOpen={alertOpen}
+                            onChange={handleAlertToggle}
+                        />
+                    )}
+                    {successMessage && (
+                        <FetchResultAlert
+                            severity={sev}
+                            message={successMessage}
+                            isOpen={alertOpen}
+                            onChange={handleAlertToggle}
+                        />
+                    )}
                     <CustomizedButton
                         type="submit"
                         sx={{ fontSize: 17, marginTop: 5 }}

@@ -1,31 +1,24 @@
-import { useState } from 'react';
 import Alert, { AlertColor } from '@mui/material/Alert';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Collapse from '@mui/material/Collapse';
 
-type FetchResultAlertProps = {
+interface FetchResultAlertProps {
     message: string;
     severity: AlertColor;
-};
+    isOpen: boolean;
+    onChange: () => void;
+}
 
-function FetchResultAlert({ message, severity }: FetchResultAlertProps) {
-    const [open, setOpen] = useState(true);
-
+function FetchResultAlert(props: FetchResultAlertProps) {
+    const { message, severity, isOpen, onChange } = props;
     return (
-        <Collapse in={open}>
+        <Collapse in={isOpen}>
             <Alert
                 severity={severity}
                 className="mt-4"
                 action={
-                    <IconButton
-                        aria-label="close"
-                        color="inherit"
-                        size="small"
-                        onClick={() => {
-                            setOpen(false);
-                        }}
-                    >
+                    <IconButton aria-label="close" color="inherit" size="small" onClick={onChange}>
                         <CloseIcon fontSize="inherit" />
                     </IconButton>
                 }
