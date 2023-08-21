@@ -78,6 +78,7 @@ describe('Testing <FormInput/>', () => {
         });
     });
 });
+
 describe('Testing <AddressInputs/>', () => {
     const testId = 'address-list';
     const values = {

@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { useState, useEffect, useMemo, useContext } from 'react';
+import { useState, useMemo, useEffect, useContext } from 'react';
 import { AlertColor } from '@mui/material/Alert';
 import handleLogin from '../../services/login';
 import FetchResultAlert from '../../components/FetchResultAlert';
@@ -38,7 +38,12 @@ function Login() {
     const [successMessage, setSuccessMessage] = useState('');
     const [sev, setSeverity] = useState<AlertColor>('error');
     const [error, setError] = useState('');
+
     const { loginMenu } = useContext(LoginContext);
+    const [alertOpen, setAlertOpen] = useState(true);
+    const handleAlertToggle = () => {
+        setAlertOpen(!alertOpen);
+    };
 
     const disableButton = useMemo(() => {
         const validValues = [validInputs.email, validInputs.password];
@@ -59,18 +64,20 @@ function Login() {
                 setSuccessMessage(`Successful login. You'll be redirected to the main page`);
                 setSeverity('success');
                 setError('');
+                setAlertOpen(true);
                 setTimeout(() => {
                     navigate('../');
                     loginMenu();
-                }, 500);
+                }, 1000);
             })
             .catch((e) => {
                 if (e.message === 'invalid_token') {
                     localStorage.removeItem('token');
                 }
-                const message = loginErrorMappings[e.body.errors[0].code] || `${e.message}`;
+                const message = loginErrorMappings[e.body.errors[0].code] || loginErrorMappings[e] || `${e.message}`;
                 setError(message);
                 setSeverity('error');
+                setAlertOpen(true);
             });
         return loginData;
     };
@@ -101,11 +108,26 @@ function Login() {
                                 setValues={setValues}
                                 validInputs={validInputs}
                                 setValidInputs={setValidInputs}
+                                setAlertOpen={setAlertOpen}
                             />
                         ))}
                     </fieldset>
-                    {error && <FetchResultAlert severity={sev} message={error} />}
-                    {successMessage && <FetchResultAlert severity={sev} message={successMessage} />}
+                    {error && (
+                        <FetchResultAlert
+                            severity={sev}
+                            message={error}
+                            isOpen={alertOpen}
+                            onChange={handleAlertToggle}
+                        />
+                    )}
+                    {successMessage && (
+                        <FetchResultAlert
+                            severity={sev}
+                            message={successMessage}
+                            isOpen={alertOpen}
+                            onChange={handleAlertToggle}
+                        />
+                    )}
                     <CustomizedButton
                         type="submit"
                         sx={{ fontSize: 17, marginTop: 5 }}

@@ -8,7 +8,7 @@ import { IFormInput } from '../../../data/interfaces';
 import { CountryValidation } from '../../../data/data';
 
 function FormInput(props: IFormInput) {
-    const { input, values, setValues, validInputs, setValidInputs, passwordValue } = props;
+    const { input, values, setValues, validInputs, setValidInputs, passwordValue, setAlertOpen } = props;
     let { pattern, errormessage } = input;
     const [errorText, setErrorText] = useState(errormessage);
 
@@ -45,6 +45,9 @@ function FormInput(props: IFormInput) {
     const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setValues({ ...values, [e.target.name]: e.target.value });
         checkValidInput(e.target.value);
+        if (setAlertOpen) {
+            setAlertOpen(false);
+        }
     };
     return (
         <div className={`${input.name}-input`}>
