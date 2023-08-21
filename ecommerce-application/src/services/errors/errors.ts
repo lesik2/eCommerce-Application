@@ -3,6 +3,8 @@ export const loginErrorMappings: Record<string, string> = {
     InvalidCredentials: 'Invalid username or password. Please check your login information and try again.',
     invalid_token: 'Invalid token. Please reload the page.',
     ConcurrentModification: 'Concurrent modification error. Please try again later.',
+    'Error: Customer account with the given credentials not found.':
+        'Invalid username or password. Please check your login information and try again.',
 };
 
 export const registrationErrorMappings: Record<string, string> = {

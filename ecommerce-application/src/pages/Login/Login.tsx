@@ -54,6 +54,7 @@ function Login() {
 
     const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setValues({ ...values, [e.target.name]: e.target.value });
+        setAlertOpen(false);
     };
     useEffect(() => {
         if (localStorage.getItem('token') && localStorage.getItem('status') === 'loggedIn') {
@@ -78,7 +79,7 @@ function Login() {
                 if (e.message === 'invalid_token') {
                     localStorage.removeItem('token');
                 }
-                const message = loginErrorMappings[e.body.errors[0].code] || `${e.message}`;
+                const message = loginErrorMappings[e.body.errors[0].code] || loginErrorMappings[e] || `${e.message}`;
                 setError(message);
                 setSeverity('error');
                 setAlertOpen(true);
