@@ -47,7 +47,7 @@ function FormInput(props: IFormInput) {
         checkValidInput(e.target.value);
     };
     return (
-        <div>
+        <div className={`${input.name}-input`}>
             {input.name === 'confirmPassword' || input.name === 'password' ? (
                 <ThemeProvider theme={theme}>
                     <PasswordInput

@@ -48,7 +48,7 @@ export const Inputs: IInput[] = [
         id: '5',
         name: 'password',
         label: 'Password',
-        pattern: /^(?=.*[0-9])(?=.*[a-zA-Z])[a-zA-Z0-9!@#$%^&*]{8,20}$/,
+        pattern: /^(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])[a-zA-Z0-9!@#$%^&*]{8,20}$/,
         errormessage: `Minimum 8 characters,1 uppercase letter, 
         1 lowercase letter, and 1 number`,
     },
@@ -85,7 +85,7 @@ export const addressInputs: IInput[] = [
         name: 'street',
         type: 'text',
         label: 'Street',
-        pattern: /^[a-zA-Z]{1,}$/,
+        pattern: /^(?=.*[a-zA-Z])([a-zA-Z0-9!@#$%^&*-]+){1,}$/,
         errormessage: `
       must contain at least one character`,
     },
