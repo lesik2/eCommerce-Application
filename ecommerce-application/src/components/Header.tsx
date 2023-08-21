@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useContext, useEffect } from 'react';
 import Image from './ui/Image';
 import Logo from '../assets/img/logo.svg';
@@ -22,6 +22,8 @@ export default function Header() {
 
     const { loginStatus, loginMenu, logoutMenu } = useContext(LoginContext);
 
+    const navigate = useNavigate();
+
     const checkLoginStatus = () => {
         if (localStorage.getItem('token') && localStorage.getItem('status') === 'loggedIn') {
             loginMenu();
@@ -40,6 +42,7 @@ export default function Header() {
         logoutMenu();
         closeModal();
         logout();
+        navigate('../');
     };
 
     useEffect(() => {
