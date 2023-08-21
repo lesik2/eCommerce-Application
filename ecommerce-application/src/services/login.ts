@@ -1,13 +1,7 @@
 /* eslint-disable consistent-return */
-import {
-    CustomerSignInResult,
-    ApiRoot,
-    createApiBuilderFromCtpClient,
-} from '@commercetools/platform-sdk';
-import {
-    ClientBuilder,
-    PasswordAuthMiddlewareOptions,
-} from '@commercetools/sdk-client-v2';
+import { CustomerSignInResult, ApiRoot, createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
+import { ClientBuilder, PasswordAuthMiddlewareOptions } from '@commercetools/sdk-client-v2';
+// eslint-disable-next-line max-len
 import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/declarations/src/generated/client/by-project-key-request-builder';
 import { httpMiddlewareOptions } from './credentialsFlow';
 import SCOPES from './scopes';
