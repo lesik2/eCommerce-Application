@@ -1,6 +1,6 @@
 import { ThemeProvider } from '@emotion/react';
 import { TextField } from '@mui/material';
-import { useState } from 'react';
+import React from 'react';
 import { IAddress, IInput } from '../../../data/interfaces';
 import { addressInputs } from '../../../data/data';
 import theme from '../../../utils/theme';
@@ -13,12 +13,7 @@ export interface IAddressInputs {
 }
 function AddressInputs(props: IAddressInputs) {
     const { values, setValues, nameOFType } = props;
-    const [clicked, setClicked] = useState(false);
-    const [focused, setFocused] = useState({
-        street: false,
-        city: false,
-        postalCode: false,
-    });
+    const [clicked, setClicked] = React.useState(false);
     const getValue = (input: IInput) => {
         const { name } = input;
         if (name === 'postalCode' || name === 'street' || name === 'city') {
@@ -26,13 +21,7 @@ function AddressInputs(props: IAddressInputs) {
         }
         return '';
     };
-    const getFocusValue = (input: IInput) => {
-        const { name } = input;
-        if (name === 'postalCode' || name === 'street' || name === 'city') {
-            return focused[name];
-        }
-        return false;
-    };
+
     const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setValues({ ...values, [e.target.name]: e.target.value });
     };
@@ -40,9 +29,13 @@ function AddressInputs(props: IAddressInputs) {
         setClicked((prev) => !prev);
     };
     const checkValidation = (input: IInput) => {
+        const value = getValue(input);
+        if (value === '') {
+            return false;
+        }
         const { pattern } = input;
         if (pattern) {
-            return !pattern.test(getValue(input));
+            return !pattern.test(value);
         }
         return true;
     };
@@ -59,19 +52,17 @@ function AddressInputs(props: IAddressInputs) {
                 </button>
             </div>
 
-            <div className={clicked ? 'address-inputs clicked' : 'address-inputs'}>
+            <div data-testid="address-list" className={clicked ? 'address-inputs clicked' : 'address-inputs'}>
                 {addressInputs.map((input) => (
                     <ThemeProvider key={input.id} theme={theme}>
                         <TextField
-                            onFocus={() => setFocused({ ...focused, [input.name]: false })}
-                            onBlur={() => setFocused({ ...focused, [input.name]: true })}
                             variant="standard"
                             {...input}
                             autoComplete="off"
                             value={getValue(input)}
                             onChange={onChange}
-                            error={checkValidation(input) && getFocusValue(input)}
-                            helperText={checkValidation(input) && getFocusValue(input) ? input.errormessage : ''}
+                            error={checkValidation(input)}
+                            helperText={checkValidation(input) ? input.errormessage : ''}
                         />
                     </ThemeProvider>
                 ))}

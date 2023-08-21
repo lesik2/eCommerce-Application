@@ -48,7 +48,7 @@ export const Inputs: IInput[] = [
         id: '5',
         name: 'password',
         label: 'Password',
-        pattern: /^(?=.*[0-9])(?=.*[a-zA-Z])[a-zA-Z0-9!@#$%^&*]{8,20}$/,
+        pattern: /^(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])[a-zA-Z0-9!@#$%^&*]{8,20}$/,
         errormessage: `Minimum 8 characters,1 uppercase letter, 
         1 lowercase letter, and 1 number`,
     },
@@ -59,15 +59,25 @@ export const Inputs: IInput[] = [
         errormessage: `Passwords don't match!`,
     },
 ];
+export const CountryValidation = {
+    DE: {
+        errorMessage: `Enter valid postal code for Germany(5 digits)`,
+        pattern: /^\d{5}$/,
+    },
+    PT: {
+        errorMessage: `Enter valid postal code for Portugal(4 digits)`,
+        pattern: /^\d{4}([-]\d{3})$/,
+    },
+};
 export const addressInputs: IInput[] = [
     {
         id: '1',
         name: 'city',
         type: 'text',
         label: 'City',
-        pattern: /^[a-zA-Z][^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{1,}$/,
+        pattern: /^[a-zA-Z][^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{0,}$/,
         errormessage: `
-        must contain one character
+        must contain at least one character
         no special characters,numbers`,
     },
     {
@@ -75,7 +85,7 @@ export const addressInputs: IInput[] = [
         name: 'street',
         type: 'text',
         label: 'Street',
-        pattern: /^[a-zA-Z]{1,}$/,
+        pattern: /^(?=.*[a-zA-Z])([a-zA-Z0-9!@#$%^&*-]+){1,}$/,
         errormessage: `
       must contain at least one character`,
     },
@@ -84,8 +94,8 @@ export const addressInputs: IInput[] = [
         name: 'postalCode',
         type: 'text',
         label: 'Postal code',
-        pattern: /^[A-Z0-9 _]*[A-Z0-9][A-Z0-9 _]*$/,
-        errormessage: `Enter valid postal code`,
+        pattern: /^\d{4,5}$/,
+        errormessage: `Enter valid postal code for country`,
     },
 ];
 // registration

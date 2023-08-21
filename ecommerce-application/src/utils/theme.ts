@@ -36,7 +36,7 @@ const theme = createTheme({
                     color: '#000000',
                     fontSize: 16,
                     marginTop: 0,
-                    width: 300,
+                    width: 355,
                 },
             },
         },

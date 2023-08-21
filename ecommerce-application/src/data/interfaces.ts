@@ -10,6 +10,18 @@ export interface IInput {
     errormessage?: string;
     validdate?: number;
 }
+export interface IValuesInputs {
+    firstname: string;
+    lastname: string;
+    birthday: string;
+    email: string;
+    password: string;
+    confirmPassword: string;
+    country: string;
+    street: string;
+    city: string;
+    postalCode: string;
+}
 export interface IValidInputs {
     firstname: boolean;
     lastname: boolean;
@@ -23,8 +35,8 @@ export interface IValidInputs {
     country: boolean;
 }
 export interface IFormInput {
-    value: string;
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    values: IValuesInputs;
+    setValues: React.Dispatch<React.SetStateAction<IValuesInputs>>;
     input: IInput;
     validInputs: IValidInputs;
     setValidInputs: React.Dispatch<React.SetStateAction<IValidInputs>>;

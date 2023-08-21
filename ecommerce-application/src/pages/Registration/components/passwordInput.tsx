@@ -13,27 +13,22 @@ export interface IPasswordInput {
     name: InputTypes;
     errormessage: string | undefined;
     validInputs: IValidInputs;
-    checkValidInput: () => void;
-    setFocused: React.Dispatch<React.SetStateAction<boolean>>;
-    focused: boolean;
 }
 function PasswordInput(props: IPasswordInput) {
-    const { onChange, label, value, name, errormessage, setFocused, focused, validInputs, checkValidInput } = props;
+    const { onChange, label, value, name, errormessage, validInputs } = props;
     const [showPassword, setShowPassword] = useState(false);
     const handleClickShowPassword = () => setShowPassword((show) => !show);
     const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
     };
     return (
-        <div>
+        <div style={{ height: '40px' }}>
             <FormControl variant="standard">
-                <InputLabel error={!validInputs[name] && focused} htmlFor="standard-adornment-password" required>
+                <InputLabel error={!validInputs[name]} htmlFor="standard-adornment-password" required>
                     {label}
                 </InputLabel>
                 <Input
-                    onFocus={() => setFocused(false)}
-                    onBlur={checkValidInput}
-                    error={!validInputs[name] && focused}
+                    error={!validInputs[name]}
                     name={name}
                     value={value}
                     onChange={onChange}
@@ -53,7 +48,7 @@ function PasswordInput(props: IPasswordInput) {
                     }
                 />
             </FormControl>
-            {!validInputs[name] && focused ? <FormHelperText error>{errormessage}</FormHelperText> : null}
+            {!validInputs[name] ? <FormHelperText error>{errormessage}</FormHelperText> : null}
         </div>
     );
 }

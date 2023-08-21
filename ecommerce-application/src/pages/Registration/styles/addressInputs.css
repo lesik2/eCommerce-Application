@@ -23,13 +23,13 @@
   height: 0;
   gap: 30px;
   transition: visibility 0.1s, height 0.1s;
+  flex-wrap: wrap;
 }
 .address-inputs>div.MuiFormControl-root{
   width: 250px;
 }
-
 .address-inputs>div .MuiInputBase-root{
-  width: 200px;
+  width: 250px;
 }
 .address-header{
   display: flex;
@@ -53,4 +53,20 @@
 .address-inputs.clicked{
   visibility: visible;
   height: 100%;
+}
+@media (max-width:828px) {
+  .address-inputs>div.MuiFormControl-root{
+    width: 245px;
+  }
+}
+@media (max-width:540px) {
+  .address-inputs>div.MuiFormControl-root{
+    width: 350px;
+  }
+  .address-inputs>div .MuiInputBase-root{
+    width: 350px;
+  }
+  .address-inputs{
+    gap: 15px;
+  }
 }
