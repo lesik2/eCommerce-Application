@@ -9,8 +9,6 @@ describe('login function', () => {
     });
 
     test('with invalid email or password login function should return falsy result', async () => {
-        expect(
-            login('johndoe123@example.co', 'secret123')
-        ).resolves.toBeFalsy();
+        expect(login('johndoe123@example.co', 'secret123')).resolves.toBeFalsy();
     });
 });

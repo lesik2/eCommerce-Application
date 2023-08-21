@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { useState, useMemo } from 'react';
+import { useState, useEffect, useMemo, useContext } from 'react';
 import { AlertColor } from '@mui/material/Alert';
 import handleLogin from '../../services/login';
 import FetchResultAlert from '../../components/FetchResultAlert';
@@ -7,6 +7,7 @@ import { loginErrorMappings } from '../../services/errors/errors';
 import CustomizedButton from '../../components/ui/CustomizedButton';
 import { Inputs } from '../../data/data';
 import FormInput from '../Registration/components/formInput';
+import { LoginContext } from '../../context/LoginContext';
 
 function Login() {
     const navigate = useNavigate();
@@ -37,6 +38,7 @@ function Login() {
     const [successMessage, setSuccessMessage] = useState('');
     const [sev, setSeverity] = useState<AlertColor>('error');
     const [error, setError] = useState('');
+    const { loginMenu } = useContext(LoginContext);
 
     const disableButton = useMemo(() => {
         const validValues = [validInputs.email, validInputs.password];
@@ -49,11 +51,11 @@ function Login() {
     const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setValues({ ...values, [e.target.name]: e.target.value });
     };
-    // useEffect(() => {
-    // if (localStorage.getItem('token') && localStorage.getItem('status') === 'loggedIn') {
-    // navigate('../');
-    // }
-    // }, [navigate]);
+    useEffect(() => {
+        if (localStorage.getItem('token') && localStorage.getItem('status') === 'loggedIn') {
+            navigate('../');
+        }
+    }, [navigate]);
 
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
@@ -64,6 +66,7 @@ function Login() {
                 setError('');
                 setTimeout(() => {
                     navigate('../');
+                    loginMenu();
                 }, 500);
             })
             .catch((e) => {

@@ -13,6 +13,9 @@ import Beverages from './pages/Beverages/Beverages';
 import Cart from './pages/Cart/Cart';
 import About from './pages/About/About';
 import ErrorPage from './pages/Error/Error';
+import Main from './pages/Main/Main';
+import { ModalState } from './context/ModalContext';
+import { LoginState } from './context/LoginContext';
 
 const router = createBrowserRouter([
     {
@@ -24,6 +27,10 @@ const router = createBrowserRouter([
                 path: '/',
                 element: <NavBar />,
                 children: [
+                    {
+                        path: '/',
+                        element: <Main />,
+                    },
                     {
                         path: 'menu',
                         element: <Menu />,
@@ -64,6 +71,10 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
-        <RouterProvider router={router} />
+        <ModalState>
+            <LoginState>
+                <RouterProvider router={router} />
+            </LoginState>
+        </ModalState>
     </React.StrictMode>
 );
