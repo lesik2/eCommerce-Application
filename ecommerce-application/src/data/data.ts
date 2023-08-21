@@ -66,7 +66,7 @@ export const CountryValidation = {
     },
     PT: {
         errorMessage: `Enter valid postal code for Portugal(4 digits)`,
-        pattern: /^\d{4}([-]\d{3})?$/,
+        pattern: /^\d{4}([-]\d{3})$/,
     },
 };
 export const addressInputs: IInput[] = [

@@ -1,6 +1,6 @@
 import { ThemeProvider } from '@emotion/react';
 import { TextField } from '@mui/material';
-import { useState } from 'react';
+import React from 'react';
 import { IAddress, IInput } from '../../../data/interfaces';
 import { addressInputs } from '../../../data/data';
 import theme from '../../../utils/theme';
@@ -13,7 +13,7 @@ export interface IAddressInputs {
 }
 function AddressInputs(props: IAddressInputs) {
     const { values, setValues, nameOFType } = props;
-    const [clicked, setClicked] = useState(false);
+    const [clicked, setClicked] = React.useState(false);
     const getValue = (input: IInput) => {
         const { name } = input;
         if (name === 'postalCode' || name === 'street' || name === 'city') {
@@ -52,7 +52,7 @@ function AddressInputs(props: IAddressInputs) {
                 </button>
             </div>
 
-            <div className={clicked ? 'address-inputs clicked' : 'address-inputs'}>
+            <div data-testid="address-list" className={clicked ? 'address-inputs clicked' : 'address-inputs'}>
                 {addressInputs.map((input) => (
                     <ThemeProvider key={input.id} theme={theme}>
                         <TextField
