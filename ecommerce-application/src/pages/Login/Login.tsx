@@ -37,7 +37,11 @@ function Login() {
     const [successMessage, setSuccessMessage] = useState('');
     const [sev, setSeverity] = useState<AlertColor>('error');
     const [error, setError] = useState('');
-
+    useEffect(() => {
+        if (localStorage.getItem('token') && localStorage.getItem('status') === 'loggedIn') {
+            navigate('../');
+        }
+    }, [navigate]);
     const disableButton = useMemo(() => {
         const validValues = [validInputs.email, validInputs.password];
         const Values = [values.email, values.password];
@@ -45,11 +49,6 @@ function Login() {
         const emptyValues = Values.includes('');
         return validation || emptyValues;
     }, [validInputs, values]);
-    useEffect(() => {
-        if (localStorage.getItem('token') && localStorage.getItem('status') === 'loggedIn') {
-            navigate('../');
-        }
-    }, [navigate]);
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
         const loginData = await handleLogin(values.email, values.password)
