@@ -61,7 +61,6 @@ function Login() {
                 setError('');
                 setTimeout(() => {
                     navigate('../');
-                    loginMenu();
                 }, 500);
             })
             .catch((e) => {
