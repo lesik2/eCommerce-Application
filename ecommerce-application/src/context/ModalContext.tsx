@@ -3,17 +3,31 @@ import React, { createContext, useState } from 'react';
 import { IModalContext } from '../data/interfaces';
 
 export const ModalContext = createContext<IModalContext>({
-    modalStatus: false,
-    openModal: () => {},
-    closeModal: () => {},
+    userMenuStatus: false,
+    openUserMenu: () => {},
+    closeUserMenu: () => {},
+    navMenuStatus: false,
+    openNavMenu: () => {},
+    closeNavMenu: () => {},
 });
 
 export function ModalState({ children }: { children: React.ReactNode }) {
-    const [modalStatus, setModal] = useState(false);
+    const [userMenuStatus, setUserMenu] = useState(false);
+    const [navMenuStatus, setNavMenu] = useState(false);
 
-    const openModal = () => setModal(true);
+    const openUserMenu = () => setUserMenu(true);
 
-    const closeModal = () => setModal(false);
+    const closeUserMenu = () => setUserMenu(false);
 
-    return <ModalContext.Provider value={{ modalStatus, openModal, closeModal }}>{children}</ModalContext.Provider>;
+    const openNavMenu = () => setNavMenu(true);
+
+    const closeNavMenu = () => setNavMenu(false);
+
+    return (
+        <ModalContext.Provider
+            value={{ userMenuStatus, openUserMenu, closeUserMenu, navMenuStatus, openNavMenu, closeNavMenu }}
+        >
+            {children}
+        </ModalContext.Provider>
+    );
 }

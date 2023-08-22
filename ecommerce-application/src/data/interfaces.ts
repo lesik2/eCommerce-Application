@@ -56,7 +56,10 @@ export interface ILoginContext {
 }
 
 export interface IModalContext {
-    modalStatus: boolean;
-    openModal: () => void;
-    closeModal: () => void;
+    userMenuStatus: boolean;
+    openUserMenu: () => void;
+    closeUserMenu: () => void;
+    navMenuStatus: boolean;
+    openNavMenu: () => void;
+    closeNavMenu: () => void;
 }

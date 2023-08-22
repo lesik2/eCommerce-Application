@@ -16,9 +16,7 @@ import logout from '../services/logout';
 const headerBg = 'bg-gradient-menu from-bgStart from-0% via-bgMid via-90% to-bgEnd to-100%';
 
 export default function Header() {
-    // const [openUser, setOpenUser] = useState(false);
-
-    const { modalStatus, openModal, closeModal } = useContext(ModalContext);
+    const { userMenuStatus, openUserMenu, closeUserMenu } = useContext(ModalContext);
 
     const { loginStatus, loginMenu, logoutMenu } = useContext(LoginContext);
 
@@ -30,17 +28,16 @@ export default function Header() {
         }
     };
     const handleUserMenu = () => {
-        // setOpenUser(!openUser);
-        if (modalStatus) {
-            closeModal();
+        if (userMenuStatus) {
+            closeUserMenu();
         } else {
-            openModal();
+            openUserMenu();
         }
     };
 
     const handleLogout = () => {
         logoutMenu();
-        closeModal();
+        closeUserMenu();
         logout();
         navigate('../');
     };
@@ -48,8 +45,6 @@ export default function Header() {
     useEffect(() => {
         checkLoginStatus();
     });
-
-    // checkLoginStatus();
 
     return (
         <header
@@ -90,8 +85,8 @@ export default function Header() {
                     </div>
                 )}
             </div>
-            {modalStatus && (
-                <Modal onClose={closeModal}>
+            {userMenuStatus && (
+                <Modal onClose={closeUserMenu}>
                     <div className="w-[320px] px-3 py-3 text-center rounded-md bg-white/95 absolute top-[60px] right-0 z-10">
                         <h3 className="mb-5">Hello, Username!</h3>
                         <span onClick={handleLogout}>
