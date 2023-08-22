@@ -91,6 +91,7 @@ function Registration() {
                       city: shippingValues.city,
                       streetName: shippingValues.street,
                       postalCode: shippingValues.postalCode,
+                      additionalAddressInfo: 'shipping',
                   }
                 : null;
         const billingAddress =
@@ -100,13 +101,14 @@ function Registration() {
                       city: billingValues.city,
                       streetName: billingValues.street,
                       postalCode: billingValues.postalCode,
+                      additionalAddressInfo: 'billing',
                   }
                 : null;
         if (shippingAddress) addresses.push(shippingAddress);
         if (billingAddress) addresses.push(billingAddress);
         await registerUser(values.email, values.password, values.firstname, values.lastname, addresses, DSA, DBA)
             .then((res) => {
-                if (res.statusCode === 201) {
+                if (res && res.statusCode === 201) {
                     setSuccessMessage(`You've successfully registered. You'll be redirected to the main page`);
                     setSeverity('success');
                     setError('');

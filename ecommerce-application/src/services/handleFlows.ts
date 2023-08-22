@@ -19,6 +19,20 @@ export default function handleFlows(): ByProjectKeyRequestBuilder {
         const requestBuilder = createApiBuilderFromCtpClient(client).withProjectKey({
             projectKey: import.meta.env.VITE_PROJECT_KEY,
         });
+        requestBuilder
+            .me()
+            .get()
+            .execute()
+            // eslint-disable-next-line consistent-return
+            .catch((e) => {
+                if (e.message === 'invalid_token') {
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('status');
+                    return getApiRoot().withProjectKey({
+                        projectKey: import.meta.env.VITE_PROJECT_KEY,
+                    });
+                }
+            });
         return requestBuilder;
     }
     return getApiRoot().withProjectKey({
