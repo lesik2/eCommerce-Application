@@ -65,7 +65,7 @@ export const CountryValidation = {
         pattern: /^\d{5}$/,
     },
     PT: {
-        errorMessage: `Enter valid postal code for Portugal(4 digits)`,
+        errorMessage: `Enter valid postal code for Portugal(e.g. 1000-002)`,
         pattern: /^\d{4}([-]\d{3})$/,
     },
 };
