@@ -12,4 +12,4 @@ export type InputTypes =
 
 export type ButtonSize = 'small' | 'medium' | 'large';
 
-export type IconButtonTypes = 'cart' | 'login' | 'logout' | 'logged';
+export type IconButtonTypes = 'cart' | 'login' | 'logout' | 'logged' | 'close';
