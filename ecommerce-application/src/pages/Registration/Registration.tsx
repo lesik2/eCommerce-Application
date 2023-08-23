@@ -1,4 +1,4 @@
-import { useContext, useMemo, useState } from 'react';
+import { useContext, useMemo, useState, useEffect } from 'react';
 import Checkbox from '@mui/material/Checkbox';
 import { AlertColor } from '@mui/material/Alert';
 import { FormControlLabel, ThemeProvider } from '@mui/material';
@@ -51,6 +51,11 @@ function Registration() {
         country: true,
         postalCode: true,
     });
+    useEffect(() => {
+        if (localStorage.getItem('token') && localStorage.getItem('status') === 'loggedIn') {
+            navigate('../');
+        }
+    }, [navigate]);
     const [defaultShippingAddress, setDefaultShippingAddress] = useState(false);
     const [defaultBillingAddress, setDefaultBillingAddress] = useState(false);
     const [sameBillingAddress, setSameBillingAddress] = useState(false);
@@ -122,6 +127,10 @@ function Registration() {
             })
             .catch((err) => {
                 const message = registrationErrorMappings[err.message] || `${err.message}`;
+                if (err.message === 'invalid_token') {
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('status');
+                }
                 setError(message);
                 setSeverity('error');
                 setAlertOpen(true);

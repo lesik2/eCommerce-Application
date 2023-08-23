@@ -73,6 +73,7 @@ function Login() {
             .catch((e) => {
                 if (e.message === 'invalid_token') {
                     localStorage.removeItem('token');
+                    localStorage.removeItem('status');
                 }
                 const message = loginErrorMappings[e.body.errors[0].code] || loginErrorMappings[e] || `${e.message}`;
                 setError(message);
