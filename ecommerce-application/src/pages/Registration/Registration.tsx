@@ -129,15 +129,14 @@ function Registration() {
             });
     };
     const checkValidationAddress = (valuesAddress: IAddress) => {
-        const arr = Object.values(valuesAddress)
-            .filter((el) => el.length > 0)
-            .map((value, i) => {
-                const { pattern } = addressInputs[i];
-                if (pattern) {
-                    return pattern.test(value);
-                }
-                return false;
-            });
+        const arr = Object.values(valuesAddress).map((value, i) => {
+            if (value === '') return true;
+            const { pattern } = addressInputs[i];
+            if (pattern) {
+                return pattern.test(value);
+            }
+            return true;
+        });
         return arr.includes(false);
     };
     const disableButton = useMemo(() => {
