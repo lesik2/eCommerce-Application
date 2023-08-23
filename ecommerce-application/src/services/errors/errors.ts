@@ -12,4 +12,5 @@ export const registrationErrorMappings: Record<string, string> = {
     'There is already an existing customer with the provided email.':
         'Account with the provided email address already exists. Please log in or use another email address.',
     'Request body does not contain valid JSON.': 'Some data is invalid. Please check and try again',
+    invalid_token: 'Invalid token. Please reload the page.',
 };
