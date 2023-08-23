@@ -14,6 +14,7 @@ import AddressInputs from './components/addressInputs';
 import registerUser from '../../services/registration';
 import { registrationErrorMappings } from '../../services/errors/errors';
 import { LoginContext } from '../../context/LoginContext';
+import { IAddress } from '../../data/interfaces';
 
 function Registration() {
     const navigate = useNavigate();
@@ -30,13 +31,13 @@ function Registration() {
         postalCode: '',
     });
     const [shippingValues, setShippingValues] = useState({
-        street: '',
         city: '',
+        street: '',
         postalCode: '',
     });
     const [billingValues, setBillingValues] = useState({
-        street: '',
         city: '',
+        street: '',
         postalCode: '',
     });
     const [validInputs, setValidInputs] = useState({
@@ -127,13 +128,27 @@ function Registration() {
                 setAlertOpen(true);
             });
     };
+    const checkValidationAddress = (valuesAddress: IAddress) => {
+        const arr = Object.values(valuesAddress)
+            .filter((el) => el.length > 0)
+            .map((value, i) => {
+                const { pattern } = addressInputs[i];
+                if (pattern) {
+                    return pattern.test(value);
+                }
+                return false;
+            });
+        return arr.includes(false);
+    };
     const disableButton = useMemo(() => {
         const validValues = Object.values(validInputs);
         const Values = Object.values(values);
         const validation = validValues.includes(false);
         const emptyValues = Values.includes('');
-        return validation || emptyValues;
-    }, [validInputs, values]);
+        return (
+            validation || emptyValues || checkValidationAddress(shippingValues) || checkValidationAddress(billingValues)
+        );
+    }, [validInputs, values, billingValues, shippingValues]);
     return (
         <div className="register-wrapper">
             <div className="register">
