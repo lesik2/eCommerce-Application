@@ -89,10 +89,7 @@ function Registration() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         const DSA = defaultShippingAddress ? 0 : undefined;
-        let DBA = defaultBillingAddress ? 1 : undefined;
-        if (sameBillingAddress) {
-            DBA = 0;
-        }
+        const DBA = defaultBillingAddress ? 1 : undefined;
         const addresses = [];
         const shippingAddress = {
             country: values.ShippingCountry,
@@ -197,19 +194,6 @@ function Registration() {
                                     }
                                     label="defaultShippingAddress"
                                 />
-                                <FormControlLabel
-                                    sx={{ m: 0 }}
-                                    control={
-                                        <Checkbox
-                                            checked={sameBillingAddress}
-                                            onChange={handleChangeSameBilling}
-                                            inputProps={{ 'aria-label': 'controlled' }}
-                                            color="default"
-                                            disabled={disableCheckBox}
-                                        />
-                                    }
-                                    label="Set billing as shipping address"
-                                />
                             </ThemeProvider>
                         </div>
                         <div className="register-form__user">
@@ -235,9 +219,7 @@ function Registration() {
                             ))}
                         </div>
                     </fieldset>
-                    <fieldset
-                        className={sameBillingAddress ? 'register-form__address close' : 'register-form__address'}
-                    >
+                    <fieldset className="register-form__address">
                         <div className="register-form__default">
                             <p className="adrees-title">Billing address*:</p>
                             <ThemeProvider theme={theme}>
@@ -253,10 +235,23 @@ function Registration() {
                                     }
                                     label="defaultBillingAddress"
                                 />
+                                <FormControlLabel
+                                    sx={{ m: 0 }}
+                                    control={
+                                        <Checkbox
+                                            checked={sameBillingAddress}
+                                            onChange={handleChangeSameBilling}
+                                            inputProps={{ 'aria-label': 'controlled' }}
+                                            color="default"
+                                            disabled={disableCheckBox}
+                                        />
+                                    }
+                                    label="Set billing as shipping address"
+                                />
                             </ThemeProvider>
                         </div>
 
-                        <div className="register-form__user">
+                        <div className={sameBillingAddress ? 'register-form__user close' : 'register-form__user'}>
                             <ThemeProvider theme={theme}>
                                 <FormSelect
                                     values={values}
