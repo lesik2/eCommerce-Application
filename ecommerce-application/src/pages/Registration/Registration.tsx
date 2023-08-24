@@ -4,17 +4,15 @@ import { AlertColor } from '@mui/material/Alert';
 import { FormControlLabel, ThemeProvider } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import FormInput from './components/formInput';
-import { Inputs, addressInputs } from '../../data/data';
+import { Inputs, ShippingAddressInputs, BillingAddressInputs } from '../../data/data';
 import './styles/register.css';
 import FormSelect from './components/formSelect';
 import CustomizedButton from '../../components/ui/CustomizedButton';
 import FetchResultAlert from '../../components/FetchResultAlert';
 import theme from '../../utils/theme';
-import AddressInputs from './components/addressInputs';
 import registerUser from '../../services/registration';
 import { registrationErrorMappings } from '../../services/errors/errors';
 import { LoginContext } from '../../context/LoginContext';
-import { IAddress } from '../../data/interfaces';
 
 function Registration() {
     const navigate = useNavigate();
@@ -25,20 +23,14 @@ function Registration() {
         email: '',
         password: '',
         confirmPassword: '',
-        country: '',
-        street: '',
-        city: '',
-        postalCode: '',
-    });
-    const [shippingValues, setShippingValues] = useState({
-        city: '',
-        street: '',
-        postalCode: '',
-    });
-    const [billingValues, setBillingValues] = useState({
-        city: '',
-        street: '',
-        postalCode: '',
+        ShippingCountry: '',
+        ShippingStreet: '',
+        ShippingCity: '',
+        ShippingPostalCode: '',
+        BillingCountry: '',
+        BillingStreet: '',
+        BillingCity: '',
+        BillingPostalCode: '',
     });
     const [validInputs, setValidInputs] = useState({
         firstname: true,
@@ -47,10 +39,14 @@ function Registration() {
         email: true,
         password: true,
         confirmPassword: true,
-        street: true,
-        city: true,
-        country: true,
-        postalCode: true,
+        ShippingCountry: true,
+        ShippingStreet: true,
+        ShippingCity: true,
+        ShippingPostalCode: true,
+        BillingCountry: true,
+        BillingStreet: true,
+        BillingCity: true,
+        BillingPostalCode: true,
     });
     const [defaultShippingAddress, setDefaultShippingAddress] = useState(false);
     const [defaultBillingAddress, setDefaultBillingAddress] = useState(false);
@@ -65,7 +61,23 @@ function Registration() {
     };
 
     const handleChangeSameBilling = (event: React.ChangeEvent<HTMLInputElement>) => {
-        Object.assign(billingValues, shippingValues);
+        if (event.target.checked) {
+            setValues({
+                ...values,
+                BillingCountry: values.ShippingCountry,
+                BillingCity: values.ShippingCity,
+                BillingStreet: values.ShippingStreet,
+                BillingPostalCode: values.ShippingPostalCode,
+            });
+        } else {
+            setValues({
+                ...values,
+                BillingCountry: '',
+                BillingCity: '',
+                BillingStreet: '',
+                BillingPostalCode: '',
+            });
+        }
         setSameBillingAddress(event.target.checked);
     };
     const handleChangeShipping = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -77,36 +89,27 @@ function Registration() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         const DSA = defaultShippingAddress ? 0 : undefined;
-        const DBA = defaultBillingAddress ? 0 : undefined;
-        const baseAddress = {
-            country: values.country,
-            city: values.city,
-            streetName: values.street,
-            postalCode: values.postalCode,
+        let DBA = defaultBillingAddress ? 1 : undefined;
+        if (sameBillingAddress) {
+            DBA = 0;
+        }
+        const addresses = [];
+        const shippingAddress = {
+            country: values.ShippingCountry,
+            city: values.ShippingCity,
+            streetName: values.ShippingStreet,
+            postalCode: values.ShippingPostalCode,
+            additionalAddressInfo: 'shipping',
         };
-        const addresses = [baseAddress];
-        const shippingAddress =
-            Object.values(shippingValues).filter((el) => el.length > 0).length > 0
-                ? {
-                      country: values.country,
-                      city: shippingValues.city,
-                      streetName: shippingValues.street,
-                      postalCode: shippingValues.postalCode,
-                      additionalAddressInfo: 'shipping',
-                  }
-                : null;
-        const billingAddress =
-            Object.values(billingValues).filter((el) => el.length > 0).length > 0
-                ? {
-                      country: values.country,
-                      city: billingValues.city,
-                      streetName: billingValues.street,
-                      postalCode: billingValues.postalCode,
-                      additionalAddressInfo: 'billing',
-                  }
-                : null;
-        if (shippingAddress) addresses.push(shippingAddress);
-        if (billingAddress) addresses.push(billingAddress);
+        const billingAddress = {
+            country: values.BillingCountry,
+            city: values.BillingCity,
+            streetName: values.BillingStreet,
+            postalCode: values.BillingPostalCode,
+            additionalAddressInfo: 'billing',
+        };
+        addresses.push(shippingAddress);
+        addresses.push(billingAddress);
         await registerUser(values.email, values.password, values.firstname, values.lastname, addresses, DSA, DBA)
             .then((res) => {
                 if (res && res.statusCode === 201) {
@@ -128,26 +131,25 @@ function Registration() {
                 setAlertOpen(true);
             });
     };
-    const checkValidationAddress = (valuesAddress: IAddress) => {
-        const arr = Object.values(valuesAddress).map((value, i) => {
-            if (value === '') return true;
-            const { pattern } = addressInputs[i];
-            if (pattern) {
-                return pattern.test(value);
-            }
-            return true;
-        });
-        return arr.includes(false);
-    };
     const disableButton = useMemo(() => {
         const validValues = Object.values(validInputs);
         const Values = Object.values(values);
         const validation = validValues.includes(false);
         const emptyValues = Values.includes('');
-        return (
-            validation || emptyValues || checkValidationAddress(shippingValues) || checkValidationAddress(billingValues)
-        );
-    }, [validInputs, values, billingValues, shippingValues]);
+        return validation || emptyValues;
+    }, [validInputs, values]);
+    const disableCheckBox = useMemo(() => {
+        const validValues = [
+            validInputs.ShippingCity,
+            validInputs.ShippingCountry,
+            validInputs.ShippingPostalCode,
+            validInputs.ShippingStreet,
+        ];
+        const Values = [values.ShippingCity, values.ShippingCountry, values.ShippingPostalCode, values.ShippingStreet];
+        const validation = validValues.includes(false);
+        const emptyValues = Values.includes('');
+        return validation || emptyValues;
+    }, [validInputs, values]);
     return (
         <div className="register-wrapper">
             <div className="register">
@@ -181,7 +183,7 @@ function Registration() {
                     </fieldset>
                     <fieldset className="register-form__address">
                         <div className="register-form__default">
-                            <p className="adrees-title">Address*:</p>
+                            <p className="adrees-title">Shipping address*:</p>
                             <ThemeProvider theme={theme}>
                                 <FormControlLabel
                                     sx={{ m: 0 }}
@@ -199,22 +201,11 @@ function Registration() {
                                     sx={{ m: 0 }}
                                     control={
                                         <Checkbox
-                                            checked={defaultBillingAddress}
-                                            onChange={handleChangeBilling}
-                                            inputProps={{ 'aria-label': 'controlled' }}
-                                            color="default"
-                                        />
-                                    }
-                                    label="defaultBillingAddress"
-                                />
-                                <FormControlLabel
-                                    sx={{ m: 0 }}
-                                    control={
-                                        <Checkbox
                                             checked={sameBillingAddress}
                                             onChange={handleChangeSameBilling}
                                             inputProps={{ 'aria-label': 'controlled' }}
                                             color="default"
+                                            disabled={disableCheckBox}
                                         />
                                     }
                                     label="Set billing as shipping address"
@@ -228,10 +219,11 @@ function Registration() {
                                     setValues={setValues}
                                     validInputs={validInputs}
                                     setValidInputs={setValidInputs}
+                                    name="ShippingCountry"
                                 />
                             </ThemeProvider>
 
-                            {addressInputs.map((input) => (
+                            {ShippingAddressInputs.map((input) => (
                                 <FormInput
                                     key={input.id}
                                     input={input}
@@ -243,19 +235,50 @@ function Registration() {
                             ))}
                         </div>
                     </fieldset>
-                    <fieldset className="address-wrapper">
-                        <AddressInputs
-                            values={shippingValues}
-                            setValues={setShippingValues}
-                            nameOFType="Shipping address"
-                        />
-                        <AddressInputs
-                            values={billingValues}
-                            setValues={setBillingValues}
-                            nameOFType="Billing address"
-                        />
-                    </fieldset>
+                    <fieldset
+                        className={sameBillingAddress ? 'register-form__address close' : 'register-form__address'}
+                    >
+                        <div className="register-form__default">
+                            <p className="adrees-title">Billing address*:</p>
+                            <ThemeProvider theme={theme}>
+                                <FormControlLabel
+                                    sx={{ m: 0 }}
+                                    control={
+                                        <Checkbox
+                                            checked={defaultBillingAddress}
+                                            onChange={handleChangeBilling}
+                                            inputProps={{ 'aria-label': 'controlled' }}
+                                            color="default"
+                                        />
+                                    }
+                                    label="defaultBillingAddress"
+                                />
+                            </ThemeProvider>
+                        </div>
 
+                        <div className="register-form__user">
+                            <ThemeProvider theme={theme}>
+                                <FormSelect
+                                    values={values}
+                                    setValues={setValues}
+                                    validInputs={validInputs}
+                                    setValidInputs={setValidInputs}
+                                    name="BillingCountry"
+                                />
+                            </ThemeProvider>
+
+                            {BillingAddressInputs.map((input) => (
+                                <FormInput
+                                    key={input.id}
+                                    input={input}
+                                    values={values}
+                                    setValues={setValues}
+                                    validInputs={validInputs}
+                                    setValidInputs={setValidInputs}
+                                />
+                            ))}
+                        </div>
+                    </fieldset>
                     {error && (
                         <FetchResultAlert
                             severity={sev}

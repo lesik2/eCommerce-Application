@@ -69,10 +69,10 @@ export const CountryValidation = {
         pattern: /^\d{4}([-]\d{3})$/,
     },
 };
-export const addressInputs: IInput[] = [
+export const ShippingAddressInputs: IInput[] = [
     {
         id: '1',
-        name: 'city',
+        name: 'ShippingCity',
         type: 'text',
         label: 'City',
         pattern: /^[a-zA-Z][^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{0,}$/,
@@ -82,7 +82,7 @@ export const addressInputs: IInput[] = [
     },
     {
         id: '2',
-        name: 'street',
+        name: 'ShippingStreet',
         type: 'text',
         label: 'Street',
         pattern: /^(?=.*[a-zA-Z])([a-zA-Z0-9!@#$%^&*-]+){1,}$/,
@@ -91,7 +91,36 @@ export const addressInputs: IInput[] = [
     },
     {
         id: '3',
-        name: 'postalCode',
+        name: 'ShippingPostalCode',
+        type: 'text',
+        label: 'Postal code',
+        pattern: /^\d{4,5}$/,
+        errormessage: `Enter valid postal code for country`,
+    },
+];
+export const BillingAddressInputs: IInput[] = [
+    {
+        id: '1',
+        name: 'BillingCity',
+        type: 'text',
+        label: 'City',
+        pattern: /^[a-zA-Z][^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{0,}$/,
+        errormessage: `
+      must contain at least one character
+      no special characters,numbers`,
+    },
+    {
+        id: '2',
+        name: 'BillingStreet',
+        type: 'text',
+        label: 'Street',
+        pattern: /^(?=.*[a-zA-Z])([a-zA-Z0-9!@#$%^&*-]+){1,}$/,
+        errormessage: `
+    must contain at least one character`,
+    },
+    {
+        id: '3',
+        name: 'BillingPostalCode',
         type: 'text',
         label: 'Postal code',
         pattern: /^\d{4,5}$/,

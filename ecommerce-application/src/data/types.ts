@@ -5,10 +5,14 @@ export type InputTypes =
     | 'email'
     | 'password'
     | 'confirmPassword'
-    | 'street'
-    | 'city'
-    | 'postalCode'
-    | 'country';
+    | 'ShippingStreet'
+    | 'ShippingCity'
+    | 'ShippingPostalCode'
+    | 'ShippingCountry'
+    | 'BillingStreet'
+    | 'BillingCity'
+    | 'BillingPostalCode'
+    | 'BillingCountry';
 
 export type ButtonSize = 'small' | 'medium' | 'large';
 
