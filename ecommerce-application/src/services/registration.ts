@@ -92,8 +92,9 @@ export default async function handleRegistration(
     defaultBillingAddress?: number
 ) {
     const tokenData = localStorage.getItem('token') || '';
+    const status = localStorage.getItem('status') || '';
     const signinResultsPromise = async () => {
-        if (tokenData) {
+        if (tokenData && status === 'anonim') {
             const requestBuilder = await registrationWithToken(
                 email,
                 password,
@@ -118,16 +119,21 @@ export default async function handleRegistration(
     };
     const signinResults = signinResultsPromise().then((res) => {
         const respAddresses = res.body.customer.addresses;
-        if (addresses.length > 1) {
+        if (typeof defaultShippingAddress !== 'number' || typeof defaultBillingAddress !== 'number') {
             const actions: MyCustomerUpdateAction[] = [];
-            addresses.forEach((el, id) => {
-                if (el.additionalAddressInfo === 'shipping') {
+            addresses.forEach((_, id) => {
+                if (id === 0) {
                     actions.push({
                         action: 'addShippingAddressId',
                         addressId: respAddresses[id].id,
                     });
+                    if (addresses.length === 1)
+                        actions.push({
+                            action: 'addBillingAddressId',
+                            addressId: respAddresses[id].id,
+                        });
                 }
-                if (el.additionalAddressInfo === 'billing') {
+                if (id === 1) {
                     actions.push({
                         action: 'addBillingAddressId',
                         addressId: respAddresses[id].id,

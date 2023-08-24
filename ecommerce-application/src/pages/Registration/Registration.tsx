@@ -93,25 +93,35 @@ function Registration() {
     };
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        const DSA = defaultShippingAddress ? 0 : undefined;
-        const DBA = defaultBillingAddress ? 1 : undefined;
         const addresses = [];
         const shippingAddress = {
             country: values.ShippingCountry,
             city: values.ShippingCity,
             streetName: values.ShippingStreet,
             postalCode: values.ShippingPostalCode,
-            additionalAddressInfo: 'shipping',
         };
         const billingAddress = {
             country: values.BillingCountry,
             city: values.BillingCity,
             streetName: values.BillingStreet,
             postalCode: values.BillingPostalCode,
-            additionalAddressInfo: 'billing',
         };
         addresses.push(shippingAddress);
-        addresses.push(billingAddress);
+        if (!sameBillingAddress) addresses.push(billingAddress);
+
+        const DSA = defaultShippingAddress ? 0 : undefined;
+        let DBA: number | undefined;
+        if (defaultBillingAddress && sameBillingAddress) {
+            console.log('2');
+            DBA = 0;
+        } else if (defaultBillingAddress) {
+            console.log('1');
+            DBA = 1;
+        } else {
+            console.log('0');
+            DBA = undefined;
+        }
+
         await registerUser(values.email, values.password, values.firstname, values.lastname, addresses, DSA, DBA)
             .then((res) => {
                 if (res && res.statusCode === 201) {

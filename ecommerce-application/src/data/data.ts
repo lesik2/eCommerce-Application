@@ -38,7 +38,7 @@ export const Inputs: IInput[] = [
     {
         id: '4',
         name: 'email',
-        type: 'email',
+        type: 'text',
         label: 'Email',
         pattern: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
         errormessage: `A properly formatted email address 
