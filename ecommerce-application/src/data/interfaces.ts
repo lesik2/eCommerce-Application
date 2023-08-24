@@ -17,10 +17,14 @@ export interface IValuesInputs {
     email: string;
     password: string;
     confirmPassword: string;
-    country: string;
-    street: string;
-    city: string;
-    postalCode: string;
+    ShippingCountry: string;
+    ShippingStreet: string;
+    ShippingCity: string;
+    ShippingPostalCode: string;
+    BillingCountry: string;
+    BillingStreet: string;
+    BillingCity: string;
+    BillingPostalCode: string;
 }
 export interface IValidInputs {
     firstname: boolean;
@@ -29,10 +33,14 @@ export interface IValidInputs {
     email: boolean;
     password: boolean;
     confirmPassword: boolean;
-    street: boolean;
-    city: boolean;
-    postalCode: boolean;
-    country: boolean;
+    ShippingCountry: boolean;
+    ShippingStreet: boolean;
+    ShippingCity: boolean;
+    ShippingPostalCode: boolean;
+    BillingCountry: boolean;
+    BillingStreet: boolean;
+    BillingCity: boolean;
+    BillingPostalCode: boolean;
 }
 export interface IFormInput {
     values: IValuesInputs;

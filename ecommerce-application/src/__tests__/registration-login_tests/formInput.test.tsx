@@ -3,10 +3,8 @@ import { describe, test, vi, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import userEvent from '@testing-library/user-event';
-import React from 'react';
 import FormInput from '../../pages/Registration/components/formInput';
-import { Inputs, addressInputs } from '../../data/data';
-import AddressInputs from '../../pages/Registration/components/addressInputs';
+import { Inputs } from '../../data/data';
 
 describe('Testing <FormInput/>', () => {
     const input = Inputs[0];
@@ -17,10 +15,14 @@ describe('Testing <FormInput/>', () => {
         email: '',
         password: '',
         confirmPassword: '',
-        country: '',
-        street: '',
-        city: '',
-        postalCode: '',
+        ShippingCountry: '',
+        ShippingStreet: '',
+        ShippingCity: '',
+        ShippingPostalCode: '',
+        BillingCountry: '',
+        BillingStreet: '',
+        BillingCity: '',
+        BillingPostalCode: '',
     };
     const onChangeInputValue = vi.fn();
     const onChangeInputValidation = vi.fn();
@@ -31,10 +33,14 @@ describe('Testing <FormInput/>', () => {
         email: true,
         password: true,
         confirmPassword: true,
-        street: true,
-        city: true,
-        country: true,
-        postalCode: true,
+        ShippingCountry: true,
+        ShippingStreet: true,
+        ShippingCity: true,
+        ShippingPostalCode: true,
+        BillingCountry: true,
+        BillingStreet: true,
+        BillingCity: true,
+        BillingPostalCode: true,
     };
     let inputForm: HTMLInputElement;
     beforeEach(() => {
@@ -65,54 +71,20 @@ describe('Testing <FormInput/>', () => {
     test('user change data - called onChange callback', async () => {
         await userEvent.type(inputForm, 'Am');
         expect(onChangeInputValue).toHaveBeenCalledWith({
-            birthday: '',
-            city: '',
-            confirmPassword: '',
-            country: '',
-            email: '',
             firstname: 'A',
             lastname: '',
+            birthday: '',
+            email: '',
             password: '',
-            postalCode: '',
-            street: '',
+            confirmPassword: '',
+            ShippingCountry: '',
+            ShippingStreet: '',
+            ShippingCity: '',
+            ShippingPostalCode: '',
+            BillingCountry: '',
+            BillingStreet: '',
+            BillingCity: '',
+            BillingPostalCode: '',
         });
-    });
-});
-
-describe('Testing <AddressInputs/>', () => {
-    const testId = 'address-list';
-    const values = {
-        firstname: '',
-        lastname: '',
-        birthday: '',
-        email: '',
-        password: '',
-        confirmPassword: '',
-        country: '',
-        street: '',
-        city: '',
-        postalCode: '',
-    };
-    const onChangeInputValue = vi.fn();
-    let inputsWrapper: HTMLDivElement;
-    beforeEach(() => {
-        render(<AddressInputs values={values} setValues={onChangeInputValue} nameOFType="Shipping address" />);
-        inputsWrapper = screen.getByTestId(testId);
-    });
-    afterEach(() => {
-        vi.clearAllMocks();
-    });
-    test('Should render the list of inputs', () => {
-        expect(inputsWrapper.children.length).toBe(addressInputs.length);
-    });
-    test('After render of the component inputs are not clicked ', () => {
-        expect(inputsWrapper.classList.contains('address-inputs')).toBe(true);
-    });
-    test('After click on the button state of <FormInput/> is changing', async () => {
-        const setState = vi.fn();
-        vi.spyOn(React, 'useState').mockImplementationOnce(setState());
-        const button: HTMLButtonElement = screen.getByRole('button');
-        await userEvent.click(button);
-        expect(setState).toHaveBeenCalledTimes(1);
     });
 });

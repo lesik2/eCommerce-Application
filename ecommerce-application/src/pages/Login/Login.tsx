@@ -18,10 +18,14 @@ function Login() {
         email: '',
         password: '',
         confirmPassword: '',
-        country: '',
-        street: '',
-        city: '',
-        postalCode: '',
+        ShippingCountry: '',
+        ShippingStreet: '',
+        ShippingCity: '',
+        ShippingPostalCode: '',
+        BillingCountry: '',
+        BillingStreet: '',
+        BillingCity: '',
+        BillingPostalCode: '',
     });
     const [validInputs, setValidInputs] = useState({
         firstname: true,
@@ -30,10 +34,14 @@ function Login() {
         email: true,
         password: true,
         confirmPassword: true,
-        street: true,
-        city: true,
-        country: true,
-        postalCode: true,
+        ShippingCountry: true,
+        ShippingStreet: true,
+        ShippingCity: true,
+        ShippingPostalCode: true,
+        BillingCountry: true,
+        BillingStreet: true,
+        BillingCity: true,
+        BillingPostalCode: true,
     });
     const [successMessage, setSuccessMessage] = useState('');
     const [sev, setSeverity] = useState<AlertColor>('error');

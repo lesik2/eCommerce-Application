@@ -13,18 +13,31 @@ function FormInput(props: IFormInput) {
     const [errorText, setErrorText] = useState(errormessage);
 
     const changePatternForCountry = () => {
-        if (input.name !== 'postalCode') return;
-        if (values.country === 'DE') {
-            errormessage = CountryValidation.DE.errorMessage;
-            pattern = CountryValidation.DE.pattern;
-        }
-        if (values.country === 'PT') {
-            errormessage = CountryValidation.PT.errorMessage;
-            pattern = CountryValidation.PT.pattern;
+        if (input.name === 'ShippingPostalCode') {
+            if (values.ShippingCountry === 'DE') {
+                errormessage = CountryValidation.DE.errorMessage;
+                pattern = CountryValidation.DE.pattern;
+            }
+            if (values.ShippingCountry === 'PT') {
+                errormessage = CountryValidation.PT.errorMessage;
+                pattern = CountryValidation.PT.pattern;
+            }
+        } else if (input.name === 'BillingPostalCode') {
+            if (values.BillingCountry === 'DE') {
+                errormessage = CountryValidation.DE.errorMessage;
+                pattern = CountryValidation.DE.pattern;
+            }
+            if (values.BillingCountry === 'PT') {
+                errormessage = CountryValidation.PT.errorMessage;
+                pattern = CountryValidation.PT.pattern;
+            }
         }
     };
     const checkValidInput = (value: string) => {
-        changePatternForCountry();
+        if (input.name === 'ShippingPostalCode' || input.name === 'BillingPostalCode') {
+            changePatternForCountry();
+        }
+
         if (value === '') {
             setErrorText(`${input.name} should be filled`);
         } else {
