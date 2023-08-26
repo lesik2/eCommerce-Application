@@ -1,75 +1,80 @@
-// import { useEffect, useState } from 'react';
-// import { ProductCard, IProductCardProps } from '../../components/ProductCard';
-// import handleFlows from '../../services/handleFlows';
+import { useEffect, useState } from 'react';
+import { ProductCard, IProductCardProps } from '../../components/ProductCard';
+import handleFlows from '../../services/handleFlows';
 
 // eslint-disable-next-line consistent-return
-// const fetchData = async () => {
-//     try {
-//         const res = await handleFlows()
-//             .products()
-//             .withId({ ID: '4a8b8f7e-e11c-46c4-b07a-62b2bd1e400b' })
-//             .get()
-//             .execute();
-//         return res;
-//     } catch (error) {
-//         console.log(error);
-//     }
-// };
+const fetchData = async () => {
+    try {
+        const res = await handleFlows().productProjections().get().execute();
+        return res;
+    } catch (error) {
+        console.log(error);
+    }
+};
 
 function Menu() {
-    // const [data, setData] = useState<IProductCardProps | undefined>(undefined);
-    // useEffect(() => {
-    //     fetchData()
-    //         .then((res) => {
-    //             if (res) {
-    //                 const mainData = res.body.masterData.current;
-    //                 const productName = mainData.name['en-US'];
-    //                 const prices = mainData.masterVariant.prices?.find((price) => price.country === 'PT');
-    //                 const productPrice = prices
-    //                     ? prices.value.centAmount / 10 ** prices.value.fractionDigits
-    //                     : undefined;
-    //                 const productDiscountPrice = prices?.discounted
-    //                     ? prices.discounted.value.centAmount / 10 ** prices.discounted.value.fractionDigits
-    //                     : undefined;
-    //                 const ingredients = mainData?.description ? mainData.description['en-US'] : undefined;
-    //                 const productPath = mainData.masterVariant.key;
-    //                 const images = mainData.masterVariant.images ? mainData.masterVariant.images : undefined;
-    //                 const picPath = images ? images[0].url : undefined;
-    //                 const { attributes } = mainData.masterVariant;
-    //                 const spicinessAttribute = attributes
-    //                     ? attributes.find((attr) => attr.name === 'spiciness')
-    //                     : undefined;
-    //                 const spiciness = spicinessAttribute ? spicinessAttribute.value : false;
-    //                 setData({
-    //                     productName,
-    //                     productPrice,
-    //                     productDiscountPrice,
-    //                     ingredients,
-    //                     productPath,
-    //                     picPath,
-    //                     spiciness,
-    //                 });
-    //             }
-    //         })
-    //         .catch(console.log);
-    // }, []);
+    const [data, setData] = useState<IProductCardProps[]>([]);
+    useEffect(() => {
+        fetchData()
+            .then((res) => {
+                if (res) {
+                    const mainData = res.body.results.filter((product) => product.published === true);
+                    const processedProducts = mainData.map((publishedProd) => {
+                        const productName = publishedProd.name['en-US'];
+                        const prices = publishedProd.masterVariant.prices?.find((price) => price.country === 'PT');
+                        const productPrice = prices
+                            ? prices.value.centAmount / 10 ** prices.value.fractionDigits
+                            : undefined;
+                        const productDiscountPrice = prices?.discounted
+                            ? prices.discounted.value.centAmount / 10 ** prices.discounted.value.fractionDigits
+                            : undefined;
+                        const ingredients = publishedProd.description ? publishedProd.description['en-US'] : undefined;
+                        const productPath = publishedProd.masterVariant.key;
+                        const images = publishedProd.masterVariant.images
+                            ? publishedProd.masterVariant.images
+                            : undefined;
+                        const picPath = images ? images[0].url : undefined;
+                        const { attributes } = publishedProd.masterVariant;
+                        const spicinessAttribute = attributes
+                            ? attributes.find((attr) => attr.name === 'spiciness')
+                            : undefined;
+                        const spiciness = spicinessAttribute ? spicinessAttribute.value : false;
+                        return {
+                            productName,
+                            productPrice,
+                            productDiscountPrice,
+                            ingredients,
+                            productPath,
+                            picPath,
+                            spiciness,
+                        };
+                    });
+                    setData(processedProducts);
+                }
+            })
+            .catch(console.log);
+    }, []);
 
     return (
         <>
             <h1 className="py-2 text-2xl text-center">Menu page</h1>
-            {/* {data ? (
-                <ProductCard
-                    productName={data.productName}
-                    productPrice={data.productPrice}
-                    productDiscountPrice={data.productDiscountPrice}
-                    spiciness={data.spiciness}
-                    ingredients={data.ingredients}
-                    productPath={data.productPath}
-                    picPath={data.picPath}
-                />
-            ) : (
-                <p>Loading...</p>
-            )} */}
+            <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
+                {data.length > 0 ? (
+                    data.map((product) => (
+                        <ProductCard
+                            productName={product.productName}
+                            productPrice={product.productPrice}
+                            productDiscountPrice={product.productDiscountPrice}
+                            spiciness={product.spiciness}
+                            ingredients={product.ingredients}
+                            productPath={product.productPath}
+                            picPath={product.picPath}
+                        />
+                    ))
+                ) : (
+                    <p>Loading...</p>
+                )}
+            </div>
         </>
     );
 }

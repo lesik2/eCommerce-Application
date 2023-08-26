@@ -31,36 +31,40 @@ export function ProductCard(props: IProductCardProps) {
     return (
         <div className="max-w-[22rem] p-2">
             <div className="group relative flex items-center flex-col">
-                <div className="overflow-hidden text-center h-3/4 w-3/4 transition-transform transform hover:skew-y-[-5deg]">
+                <div className="overflow-hidden text-center h-3/4 w-3/4 transition-transform transform group-hover:opacity-75">
                     <img
-                        className="object-top	mx-auto w-3/4 aspect-w-1 transition-transform hover:skew-y-[-5deg]"
+                        className="object-top	mx-auto w-3/4 aspect-w-1 transition-transform origin-bottom group-hover:scale-105"
                         src={picPath}
                         alt=""
                     />
                 </div>
                 <div className="flex justify-center items-center">
-                    <h3 className="text-2xl tracking-tighter">
+                    <h3 className="text-2xl tracking-tighter whitespace-nowrap overflow-hidden">
                         <a href={productPath}>
                             <span aria-hidden="true" className="absolute inset-0" />
                             {productName}
                         </a>
                     </h3>
-                    <p
-                        className="text-2xl ml-2 font-medium"
-                        style={{ color: '#ff5757', textDecoration: 'line-through' }}
-                    >
-                        {productDiscountPrice}
-                    </p>
+                    {productDiscountPrice !== 0 && (
+                        <p
+                            className="text-2xl ml-2 font-medium"
+                            style={{ color: '#ff5757', textDecoration: 'line-through' }}
+                        >
+                            {productDiscountPrice}
+                        </p>
+                    )}
                     <p className="text-2xl ml-2 font-medium">{productPrice}</p>
                     <p className="text-2xl ml-2 font-medium">€</p>
-                    <Image className={spiciness ? 'hidden' : ''} image={Chili} alt="" />
+                    {spiciness === true && <Image className="" image={Chili} alt={productName} />}
                 </div>
-                <p
-                    className="min-h-[4rem] text-center font-serif mt-1 text-xl leading-4"
-                    style={{ lineHeight: '18px' }}
-                >
-                    {ingredients}
-                </p>
+                {ingredients !== '' && (
+                    <p
+                        className="min-h-[4rem] text-center font-serif mt-1 text-xl leading-4"
+                        style={{ lineHeight: '18px' }}
+                    >
+                        {ingredients}
+                    </p>
+                )}
             </div>
             <div className="flex justify-center items-center">
                 <Link to="./">
@@ -90,8 +94,8 @@ export function ProductCard(props: IProductCardProps) {
 ProductCard.defaultProps = {
     productPrice: 0,
     productDiscountPrice: 0,
-    ingredients: 'error',
-    productPath: 'error',
+    ingredients: '',
+    productPath: '',
     picPath: '../',
     spiciness: false,
 };
