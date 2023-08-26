@@ -112,13 +112,10 @@ function Registration() {
         const DSA = defaultShippingAddress ? 0 : undefined;
         let DBA: number | undefined;
         if (defaultBillingAddress && sameBillingAddress) {
-            console.log('2');
             DBA = 0;
         } else if (defaultBillingAddress) {
-            console.log('1');
             DBA = 1;
         } else {
-            console.log('0');
             DBA = undefined;
         }
 
