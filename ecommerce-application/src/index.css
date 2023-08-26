@@ -1,0 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Poiret+One&family=Russo+One&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

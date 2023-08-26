@@ -1,0 +1,72 @@
+.address-wrapper{
+  display: flex;
+  flex-direction: column;
+  border: none;
+  outline: none;
+  gap: 20px;
+  margin-top: 5px;
+}
+.address{
+  display: flex;
+  flex-direction: column;
+}
+.address-title{
+  font-size: 18px;
+  font-weight: 200;
+  margin: 0;
+  color: #000000;
+}
+.address-inputs{
+  display: flex;
+  align-items: center;
+  visibility: hidden;
+  height: 0;
+  gap: 30px;
+  transition: visibility 0.1s, height 0.1s;
+  flex-wrap: wrap;
+}
+.address-inputs>div.MuiFormControl-root{
+  width: 250px;
+}
+.address-inputs>div .MuiInputBase-root{
+  width: 250px;
+}
+.address-header{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.address-open{
+  font-size: 20px;
+  font-weight: 900;
+  margin: 0;
+  color: #000000;
+  cursor: pointer;
+  transition: transform 0.2s;
+  border: none;
+  outline: none;
+  background-color: transparent;
+}
+.address-open.clicked{
+  transform: rotate(45deg);
+}
+.address-inputs.clicked{
+  visibility: visible;
+  height: 100%;
+}
+@media (max-width:828px) {
+  .address-inputs>div.MuiFormControl-root{
+    width: 245px;
+  }
+}
+@media (max-width:540px) {
+  .address-inputs>div.MuiFormControl-root{
+    width: 350px;
+  }
+  .address-inputs>div .MuiInputBase-root{
+    width: 350px;
+  }
+  .address-inputs{
+    gap: 15px;
+  }
+}

@@ -19,8 +19,10 @@
         "noUnusedLocals": true,
         "noUnusedParameters": true,
         "noFallthroughCasesInSwitch": true,
-        "noImplicitAny": true
+        "noImplicitAny": true,
+        "esModuleInterop": true
+
     },
-    "include": ["vite.config.ts", ".eslintrc.cjs", "src"],
+    "include": ["vite.config.ts", ".eslintrc.cjs", "tailwind.config.js", "postcss.config.js", "src","decs.d.ts"],
     "references": [{ "path": "./tsconfig.node.json" }]
 }
