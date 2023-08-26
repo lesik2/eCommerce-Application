@@ -4,3 +4,7 @@ enum LoginStatus {
 }
 
 export default LoginStatus;
+
+export enum CustomerActions {
+    EMAIL = 'changeEmail',
+}
