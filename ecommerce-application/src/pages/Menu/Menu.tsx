@@ -29,7 +29,7 @@ function Menu() {
                             ? prices.discounted.value.centAmount / 10 ** prices.discounted.value.fractionDigits
                             : undefined;
                         const ingredients = publishedProd.description ? publishedProd.description['en-US'] : undefined;
-                        const productPath = publishedProd.masterVariant.key;
+                        const productPath = publishedProd.key;
                         const images = publishedProd.masterVariant.images
                             ? publishedProd.masterVariant.images
                             : undefined;
