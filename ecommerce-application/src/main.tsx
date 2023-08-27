@@ -16,6 +16,7 @@ import ErrorPage from './pages/Error/Error';
 import Main from './pages/Main/Main';
 import { ModalState } from './context/ModalContext';
 import { LoginState } from './context/LoginContext';
+import Profile from './pages/Profile/Profile';
 
 const router = createBrowserRouter([
     {
@@ -54,6 +55,10 @@ const router = createBrowserRouter([
                     {
                         path: 'about',
                         element: <About />,
+                    },
+                    {
+                        path: 'profile',
+                        element: <Profile />,
                     },
                 ],
             },

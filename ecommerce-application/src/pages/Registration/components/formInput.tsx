@@ -8,7 +8,8 @@ import { IFormInput } from '../../../data/interfaces';
 import { CountryValidation } from '../../../data/data';
 
 function FormInput(props: IFormInput) {
-    const { input, values, setValues, validInputs, setValidInputs, passwordValue, setAlertOpen } = props;
+    const { input, values, setValues, validInputs, setValidInputs, passwordValue, setAlertOpen, required, readOnly } =
+        props;
     let { pattern, errormessage } = input;
     const [errorText, setErrorText] = useState(errormessage);
 
@@ -78,7 +79,12 @@ function FormInput(props: IFormInput) {
             ) : (
                 <ThemeProvider theme={theme}>
                     <TextField
-                        required
+                        className={readOnly ? 'profile' : ''}
+                        InputProps={{
+                            readOnly,
+                            disableUnderline: readOnly,
+                        }}
+                        required={required}
                         variant="standard"
                         {...input}
                         autoComplete="off"

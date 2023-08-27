@@ -20,8 +20,11 @@ const theme = createTheme({
                 root: {
                     // Some CSS
                     color: '#000000',
-                    fontSize: 16,
+                    fontSize: 14,
                     margin: 0,
+                    '&.Mui-focused': {
+                        color: '#000000',
+                    },
                 },
                 asterisk: {
                     color: '#ff0000',

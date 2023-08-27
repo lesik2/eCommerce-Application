@@ -1,0 +1,33 @@
+
+.profile{
+  width: 100%;
+}
+.profile__header{
+  display: flex;
+  padding: 20px 20px 0px 20px;
+  align-items: center;
+  gap: 50px;
+}
+.profile__title{
+  font-size: 35px;
+}
+.personal-data{
+  margin-top: 20px;
+  width: 900px;
+  background-color: #ffffff;
+  padding: 15px 20px 15px 20px;
+  border-radius: 15px;
+  margin-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.personal-data__title{
+  font-size: 25px;
+}
+.personal-data__wrapper{
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  column-gap: 80px;
+  row-gap: 40px;
+}

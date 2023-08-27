@@ -50,11 +50,17 @@ export interface IFormInput {
     setValidInputs: React.Dispatch<React.SetStateAction<IValidInputs>>;
     passwordValue?: string | null;
     setAlertOpen?: React.Dispatch<React.SetStateAction<boolean>>;
+    required?: boolean;
+    readOnly?: boolean;
 }
 export interface IAddress {
-    street: string;
-    city: string;
-    postalCode: string;
+    id?: string | undefined;
+    streetName?: string | undefined;
+    city?: string | undefined;
+    postalCode?: string | undefined;
+    country: string;
+    defaultShippingAddress?: string;
+    defaultBillingAddress?: string;
 }
 
 export interface ILoginContext {
