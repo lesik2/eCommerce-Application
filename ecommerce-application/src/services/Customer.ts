@@ -1,4 +1,4 @@
-import { ClientResponse, Customer, MyCustomerUpdateAction } from '@commercetools/platform-sdk';
+import { ClientResponse, Customer, CustomerChangePassword, MyCustomerUpdateAction } from '@commercetools/platform-sdk';
 import handleFlows from './handleFlows';
 
 export async function getCustomer(id: string): Promise<ClientResponse<Customer>> {
@@ -9,11 +9,37 @@ export async function getCustomer(id: string): Promise<ClientResponse<Customer>>
     return result;
 }
 export async function updateCustomer(version: number, actions: MyCustomerUpdateAction[]) {
-    const result = handleFlows().me().post({
-        body: {
-            version,
-            actions,
-        },
-    });
+    const result = handleFlows()
+        .me()
+        .post({
+            body: {
+                version,
+                actions,
+            },
+        })
+        .execute();
+    return result;
+}
+export async function changePasswordOfCustomer(
+    id: string,
+    version: number,
+    currentPassword: string,
+    newPassword: string
+) {
+    const customerChangePassword: CustomerChangePassword = {
+        id,
+        version,
+        currentPassword,
+        newPassword,
+    };
+    const result = handleFlows()
+        .me()
+        .post({
+            body: {
+                ...customerChangePassword,
+                actions: [],
+            },
+        })
+        .execute();
     return result;
 }
