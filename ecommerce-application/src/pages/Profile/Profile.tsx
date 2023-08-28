@@ -78,22 +78,25 @@ function Profile() {
         setAddresses(newAddress);
         setVesrion(customer.version);
     };
+    const changeStateOfPersonalInfo = (customer: Customer) => {
+        const { firstName, lastName, dateOfBirth, email } = customer;
+        if (firstName && lastName && dateOfBirth) {
+            setValues({
+                ...values,
+                firstname: firstName,
+                lastname: lastName,
+                birthday: dateOfBirth,
+                email,
+            });
+        }
+    };
     useEffect(() => {
         const id = localStorage.getItem('idOFCustomer');
         if (id) {
             getCustomer(id)
                 .then((res) => {
                     changeStateOfAddress(res.body);
-                    const { firstName, lastName, dateOfBirth, email } = res.body;
-                    if (firstName && lastName && dateOfBirth) {
-                        setValues({
-                            ...values,
-                            firstname: firstName,
-                            lastname: lastName,
-                            birthday: dateOfBirth,
-                            email,
-                        });
-                    }
+                    changeStateOfPersonalInfo(res.body);
                 })
                 .catch((e) => {
                     console.log(e);
@@ -145,12 +148,35 @@ function Profile() {
             changeStateOfAddress(res.body);
         });
     };
+    const handleSavePersonalInfo = () => {
+        const actions: MyCustomerUpdateAction[] = [];
+        actions.push({
+            action: CustomerActions.FIRST_NAME,
+            firstName: values.firstname,
+        });
+        actions.push({
+            action: CustomerActions.LAST_NAME,
+            lastName: values.lastname,
+        });
+        actions.push({
+            action: CustomerActions.DATE_OF_BIRTH,
+            dateOfBirth: values.birthday,
+        });
+        actions.push({
+            action: CustomerActions.EMAIL,
+            email: values.email,
+        });
+        updateCustomer(version, actions).then((res) => {
+            changeStateOfPersonalInfo(res.body);
+            setEditMode(false);
+        });
+    };
     return (
         <div className="profile">
             <div className="profile__header">
                 <h1 className="profile__title">Profile</h1>
                 <CustomizedButton
-                    sx={{ '&&': { fontSize: 14, paddingLeft: '7px', paddingRight: '7px' } }}
+                    sx={{ '&&': { fontSize: 14, paddingLeft: '10px', paddingRight: '10px' } }}
                     variant="contained"
                     onClick={handleEditMode}
                 >
@@ -174,6 +200,24 @@ function Profile() {
                             />
                         )
                     )}
+                    {editMode ? (
+                        <CustomizedButton
+                            sx={{
+                                '&&': {
+                                    fontSize: 14,
+                                    paddingLeft: '20px',
+                                    paddingRight: '20px',
+                                    position: 'absolute',
+                                    bottom: '2px',
+                                    right: '10px',
+                                },
+                            }}
+                            variant="contained"
+                            onClick={handleSavePersonalInfo}
+                        >
+                            Save
+                        </CustomizedButton>
+                    ) : null}
                 </div>
             </div>
             <div className="personal-data">
@@ -191,9 +235,6 @@ function Profile() {
                     + Add address
                 </button>
             </div>
-            <CustomizedButton sx={{ '&&': { fontSize: 18, margin: '30px 0px 10px 20px' } }} variant="contained">
-                Save
-            </CustomizedButton>
             {modalVisible && (
                 <Modal onClose={closeModal}>
                     <div onClick={closeModal} className="modal-wrapper">

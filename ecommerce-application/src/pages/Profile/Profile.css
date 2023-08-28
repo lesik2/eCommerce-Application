@@ -6,7 +6,7 @@
   display: flex;
   padding: 20px 20px 0px 20px;
   align-items: center;
-  gap: 50px;
+  gap: 40px;
 }
 .profile__title{
   font-size: 35px;
@@ -30,6 +30,7 @@
   grid-template-columns: repeat(3,1fr);
   column-gap: 80px;
   row-gap: 40px;
+  position: relative;
 }
 .personal-data__add-address{
   align-self:center;
