@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import CreateIconButton from '../../../components/ui/IconButton';
 import Image from '../../../components/ui/Image';
 import { IAddressComponent } from '../../../data/interfaces';
@@ -7,12 +9,18 @@ import './Address.css';
 import { CodeCountry } from '../../../data/enums';
 
 function Address(props: IAddressComponent) {
-    const { address, shipping, billing } = props;
+    const { address, shipping, billing, onDelete } = props;
     const defineCountry = (code: string) => {
         if (code === 'DE' || code === 'PT') {
             return CodeCountry[code];
         }
         return code;
+    };
+    const handleDelete = () => {
+        const { id } = address;
+        if (id) {
+            onDelete(id);
+        }
     };
     return (
         <div className="address-item">
@@ -38,8 +46,12 @@ function Address(props: IAddressComponent) {
             </div>
 
             <div className="address-item__btns">
-                <CreateIconButton type="pen" size="medium" />
-                <CreateIconButton type="delete" size="medium" />
+                <div>
+                    <CreateIconButton type="pen" size="medium" />
+                </div>
+                <div onClick={handleDelete}>
+                    <CreateIconButton type="delete" size="medium" />
+                </div>
             </div>
         </div>
     );

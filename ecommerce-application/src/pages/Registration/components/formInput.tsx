@@ -79,7 +79,6 @@ function FormInput(props: IFormInput) {
             ) : (
                 <ThemeProvider theme={theme}>
                     <TextField
-                        className={readOnly ? 'profile' : ''}
                         InputProps={{
                             readOnly,
                             disableUnderline: readOnly,

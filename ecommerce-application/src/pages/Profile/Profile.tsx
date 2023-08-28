@@ -2,15 +2,21 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable no-param-reassign */
 import { useEffect, useState } from 'react';
-import { getCustomer } from '../../services/Customer';
 import './Profile.css';
+import { ThemeProvider } from '@mui/material';
+import { Customer, MyCustomerUpdateAction } from '@commercetools/platform-sdk';
+import theme from '../../utils/theme';
 import CustomizedButton from '../../components/ui/CustomizedButton';
 import FormInput from '../Registration/components/formInput';
-import { Inputs } from '../../data/data';
 import { IAddress } from '../../data/interfaces';
 import Address from './components/Address';
 import Modal from '../../components/Modal';
 import CreateIconButton from '../../components/ui/IconButton';
+import { BillingAddressInputs, Inputs } from '../../data/data';
+import FormSelect from '../Registration/components/formSelect';
+
+import { getCustomer, updateCustomer } from '../../services/Customer';
+import { CustomerActions } from '../../data/enums';
 
 function Profile() {
     const [values, setValues] = useState({
@@ -51,37 +57,34 @@ function Profile() {
     const [shippingAddresses, setShippingAddresses] = useState(['']);
     const [billingAddresses, setBillingAddresses] = useState(['']);
     const [modalVisible, setModalVisible] = useState(false);
+    const [version, setVesrion] = useState(0);
+    const changeStateOfAddress = (customer: Customer) => {
+        const newAddress: IAddress[] = customer.addresses;
+        const { defaultBillingAddressId, defaultShippingAddressId, shippingAddressIds, billingAddressIds } = customer;
+        newAddress.forEach((address) => {
+            if (address.id === defaultBillingAddressId) {
+                address.defaultBillingAddress = defaultBillingAddressId;
+            }
+            if (address.id === defaultShippingAddressId) {
+                address.defaultShippingAddress = defaultShippingAddressId;
+            }
+        });
+        if (shippingAddressIds) {
+            setShippingAddresses(shippingAddressIds);
+        }
+        if (billingAddressIds) {
+            setBillingAddresses(billingAddressIds);
+        }
+        setAddresses(newAddress);
+        setVesrion(customer.version);
+    };
     useEffect(() => {
         const id = localStorage.getItem('idOFCustomer');
         if (id) {
             getCustomer(id)
                 .then((res) => {
-                    const newAddress: IAddress[] = res.body.addresses;
-                    const {
-                        firstName,
-                        lastName,
-                        dateOfBirth,
-                        email,
-                        defaultBillingAddressId,
-                        defaultShippingAddressId,
-                        shippingAddressIds,
-                        billingAddressIds,
-                    } = res.body;
-                    newAddress.forEach((address) => {
-                        if (address.id === defaultBillingAddressId) {
-                            address.defaultBillingAddress = defaultBillingAddressId;
-                        }
-                        if (address.id === defaultShippingAddressId) {
-                            address.defaultShippingAddress = defaultShippingAddressId;
-                        }
-                    });
-                    if (shippingAddressIds) {
-                        setShippingAddresses(shippingAddressIds);
-                    }
-                    if (billingAddressIds) {
-                        setBillingAddresses(billingAddressIds);
-                    }
-                    setAddresses(newAddress);
+                    changeStateOfAddress(res.body);
+                    const { firstName, lastName, dateOfBirth, email } = res.body;
                     if (firstName && lastName && dateOfBirth) {
                         setValues({
                             ...values,
@@ -113,6 +116,34 @@ function Profile() {
     };
     const openModal = () => {
         setModalVisible(true);
+    };
+    const handleSaveAddress = () => {
+        const newAddress = {
+            country: values.BillingCountry,
+            city: values.BillingCity,
+            streetName: values.BillingStreet,
+            postalCode: values.BillingPostalCode,
+        };
+        const actions: MyCustomerUpdateAction[] = [];
+        actions.push({
+            action: CustomerActions.ADD_ADDRESS,
+            address: newAddress,
+        });
+        updateCustomer(version, actions).then((res) => {
+            changeStateOfAddress(res.body);
+            closeModal();
+            setValues({ ...values, BillingCountry: '', BillingCity: '', BillingStreet: '', BillingPostalCode: '' });
+        });
+    };
+    const handleDeleteAddress = (id: string) => {
+        const actions: MyCustomerUpdateAction[] = [];
+        actions.push({
+            action: CustomerActions.REMOVE_ADDRESS,
+            addressId: id,
+        });
+        updateCustomer(version, actions).then((res) => {
+            changeStateOfAddress(res.body);
+        });
     };
     return (
         <div className="profile">
@@ -153,6 +184,7 @@ function Profile() {
                         address={address}
                         shipping={defineAddress(address, shippingAddresses)}
                         billing={defineAddress(address, billingAddresses)}
+                        onDelete={handleDeleteAddress}
                     />
                 ))}
                 <button className="personal-data__add-address" type="button" onClick={openModal}>
@@ -169,6 +201,33 @@ function Profile() {
                             onClick={(event: React.MouseEvent<HTMLElement>) => event.stopPropagation()}
                             className="modal-context"
                         >
+                            <ThemeProvider theme={theme}>
+                                <FormSelect
+                                    values={values}
+                                    setValues={setValues}
+                                    validInputs={validInputs}
+                                    setValidInputs={setValidInputs}
+                                    name="BillingCountry"
+                                />
+                            </ThemeProvider>
+                            {BillingAddressInputs.map((input) => (
+                                <FormInput
+                                    key={input.id}
+                                    input={input}
+                                    values={values}
+                                    setValues={setValues}
+                                    validInputs={validInputs}
+                                    setValidInputs={setValidInputs}
+                                    required
+                                />
+                            ))}
+                            <CustomizedButton
+                                sx={{ '&&': { fontSize: 18, margin: '10px 0px 0px 30px', width: '100%' } }}
+                                variant="contained"
+                                onClick={handleSaveAddress}
+                            >
+                                Save
+                            </CustomizedButton>
                             <div onClick={closeModal} className="absolute -top-10 -right-10 text-white">
                                 <CreateIconButton type="close" size="large" />
                             </div>

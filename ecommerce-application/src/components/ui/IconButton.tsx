@@ -1,3 +1,4 @@
+/* eslint-disable react/require-default-props */
 import IconButton from '@mui/material/IconButton';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import LogoutIcon from '@mui/icons-material/Logout';
