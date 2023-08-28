@@ -1,6 +1,19 @@
 import { useEffect, useState } from 'react';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { ProductCard, IProductCardProps } from '../../components/ProductCard';
 import handleFlows from '../../services/handleFlows';
+
+const toastProps = {
+    autoClose: 3000,
+    hideProgressBar: true,
+    newestOnTop: false,
+    closeOnClick: true,
+    rtl: false,
+    pauseOnFocusLoss: true,
+    draggable: true,
+    pauseOnHover: true,
+};
 
 // eslint-disable-next-line consistent-return
 const fetchData = async () => {
@@ -8,7 +21,7 @@ const fetchData = async () => {
         const res = await handleFlows().productProjections().get().execute();
         return res;
     } catch (error) {
-        console.log(error);
+        toast.error(error instanceof Error ? error.message : 'unexpected error in fetch product data', toastProps);
     }
 };
 
@@ -52,7 +65,12 @@ function Menu() {
                     setData(processedProducts);
                 }
             })
-            .catch(console.log);
+            .catch((error) => {
+                toast.error(
+                    error instanceof Error ? error.message : 'unexpected error in fetch product data',
+                    toastProps
+                );
+            });
     }, []);
 
     return (
@@ -75,6 +93,7 @@ function Menu() {
                     <p>Loading...</p>
                 )}
             </div>
+            <ToastContainer {...toastProps} position="bottom-center" />
         </>
     );
 }
