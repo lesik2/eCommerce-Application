@@ -82,4 +82,5 @@ export interface IAddressComponent {
     shipping: boolean;
     billing: boolean;
     onDelete: (id: string) => void;
+    onUpdate: (id: string, address: IAddress, shipping: boolean, billing: boolean) => void;
 }

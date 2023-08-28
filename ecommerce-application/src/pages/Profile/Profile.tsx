@@ -3,7 +3,7 @@
 /* eslint-disable no-param-reassign */
 import { useEffect, useState } from 'react';
 import './Profile.css';
-import { ThemeProvider } from '@mui/material';
+import { Checkbox, FormControlLabel, ThemeProvider } from '@mui/material';
 import { Customer, MyCustomerUpdateAction } from '@commercetools/platform-sdk';
 import theme from '../../utils/theme';
 import CustomizedButton from '../../components/ui/CustomizedButton';
@@ -58,6 +58,13 @@ function Profile() {
     const [billingAddresses, setBillingAddresses] = useState(['']);
     const [modalVisible, setModalVisible] = useState(false);
     const [version, setVesrion] = useState(0);
+    const [updateAddressId, setUpdateAddressId] = useState('');
+    const [additionalAddresses, setAdditionalAddresses] = useState({
+        defaultShipping: false,
+        defaultBilling: false,
+        shipping: false,
+        billing: false,
+    });
     const changeStateOfAddress = (customer: Customer) => {
         const newAddress: IAddress[] = customer.addresses;
         const { defaultBillingAddressId, defaultShippingAddressId, shippingAddressIds, billingAddressIds } = customer;
@@ -76,7 +83,6 @@ function Profile() {
             setBillingAddresses(billingAddressIds);
         }
         setAddresses(newAddress);
-        setVesrion(customer.version);
     };
     const changeStateOfPersonalInfo = (customer: Customer) => {
         const { firstName, lastName, dateOfBirth, email } = customer;
@@ -97,6 +103,7 @@ function Profile() {
                 .then((res) => {
                     changeStateOfAddress(res.body);
                     changeStateOfPersonalInfo(res.body);
+                    setVesrion(res.body.version);
                 })
                 .catch((e) => {
                     console.log(e);
@@ -120,6 +127,40 @@ function Profile() {
     const openModal = () => {
         setModalVisible(true);
     };
+    const handleSaveAdditionalAddress = (newVersion: number, newAddresses: IAddress[]) => {
+        const actions: MyCustomerUpdateAction[] = [];
+        const id = updateAddressId || newAddresses[newAddresses.length - 1].id;
+        actions.push({
+            action: additionalAddresses.defaultShipping
+                ? CustomerActions.SET_DEF_SHIPPING_ADDRESS
+                : CustomerActions.REMOVE_SHIPPING_ADDRESS,
+            addressId: id,
+        });
+        actions.push({
+            action: additionalAddresses.defaultBilling
+                ? CustomerActions.SET_DEF_BILLING_ADDRESS
+                : CustomerActions.REMOVE_BILLING_ADDRESS,
+            addressId: id,
+        });
+        if (additionalAddresses.shipping) {
+            actions.push({
+                action: CustomerActions.ADD_SHIPPING_ADDRESS,
+                addressId: id,
+            });
+        }
+        if (additionalAddresses.billing) {
+            actions.push({
+                action: CustomerActions.ADD_BILLING_ADDRESS,
+                addressId: id,
+            });
+        }
+        if (actions.length > 0) {
+            updateCustomer(newVersion, actions).then((res) => {
+                changeStateOfAddress(res.body);
+                setVesrion(res.body.version);
+            });
+        }
+    };
     const handleSaveAddress = () => {
         const newAddress = {
             country: values.BillingCountry,
@@ -128,14 +169,26 @@ function Profile() {
             postalCode: values.BillingPostalCode,
         };
         const actions: MyCustomerUpdateAction[] = [];
-        actions.push({
-            action: CustomerActions.ADD_ADDRESS,
-            address: newAddress,
-        });
+        if (updateAddressId) {
+            actions.push({
+                action: CustomerActions.CHANGE_ADDRESS,
+                addressId: updateAddressId,
+                address: newAddress,
+            });
+        } else {
+            actions.push({
+                action: CustomerActions.ADD_ADDRESS,
+                address: newAddress,
+            });
+        }
         updateCustomer(version, actions).then((res) => {
             changeStateOfAddress(res.body);
+            const newVersion = res.body.version;
+            setVesrion(newVersion);
             closeModal();
             setValues({ ...values, BillingCountry: '', BillingCity: '', BillingStreet: '', BillingPostalCode: '' });
+            setUpdateAddressId('');
+            handleSaveAdditionalAddress(newVersion, res.body.addresses);
         });
     };
     const handleDeleteAddress = (id: string) => {
@@ -146,7 +199,25 @@ function Profile() {
         });
         updateCustomer(version, actions).then((res) => {
             changeStateOfAddress(res.body);
+            setVesrion(res.body.version);
         });
+    };
+    const handleUpdateAddress = (id: string, address: IAddress, shipping: boolean, billing: boolean) => {
+        const { city, postalCode, streetName, country, defaultBillingAddress, defaultShippingAddress } = address;
+        if (city && postalCode && streetName && country) {
+            setValues({
+                ...values,
+                BillingCity: city,
+                BillingCountry: country,
+                BillingPostalCode: postalCode,
+                BillingStreet: streetName,
+            });
+            const defaultShipping = !!defaultShippingAddress;
+            const defaultBilling = !!defaultBillingAddress;
+            setAdditionalAddresses({ defaultShipping, defaultBilling, shipping, billing });
+            openModal();
+            setUpdateAddressId(id);
+        }
     };
     const handleSavePersonalInfo = () => {
         const actions: MyCustomerUpdateAction[] = [];
@@ -168,8 +239,23 @@ function Profile() {
         });
         updateCustomer(version, actions).then((res) => {
             changeStateOfPersonalInfo(res.body);
+            setVesrion(res.body.version);
             setEditMode(false);
         });
+    };
+    const handleChangeAdditionalAddress = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setAdditionalAddresses({ ...additionalAddresses, [event.target.name]: event.target.checked });
+    };
+    const handleOpenModal = () => {
+        openModal();
+        setValues({ ...values, BillingCountry: '', BillingCity: '', BillingStreet: '', BillingPostalCode: '' });
+        setAdditionalAddresses({
+            defaultShipping: false,
+            defaultBilling: false,
+            shipping: false,
+            billing: false,
+        });
+        setUpdateAddressId('');
     };
     return (
         <div className="profile">
@@ -229,9 +315,10 @@ function Profile() {
                         shipping={defineAddress(address, shippingAddresses)}
                         billing={defineAddress(address, billingAddresses)}
                         onDelete={handleDeleteAddress}
+                        onUpdate={handleUpdateAddress}
                     />
                 ))}
-                <button className="personal-data__add-address" type="button" onClick={openModal}>
+                <button className="personal-data__add-address" type="button" onClick={handleOpenModal}>
                     + Add address
                 </button>
             </div>
@@ -242,28 +329,92 @@ function Profile() {
                             onClick={(event: React.MouseEvent<HTMLElement>) => event.stopPropagation()}
                             className="modal-context"
                         >
-                            <ThemeProvider theme={theme}>
-                                <FormSelect
-                                    values={values}
-                                    setValues={setValues}
-                                    validInputs={validInputs}
-                                    setValidInputs={setValidInputs}
-                                    name="BillingCountry"
-                                />
-                            </ThemeProvider>
-                            {BillingAddressInputs.map((input) => (
-                                <FormInput
-                                    key={input.id}
-                                    input={input}
-                                    values={values}
-                                    setValues={setValues}
-                                    validInputs={validInputs}
-                                    setValidInputs={setValidInputs}
-                                    required
-                                />
-                            ))}
+                            <div className="modal-inputs">
+                                <ThemeProvider theme={theme}>
+                                    <FormSelect
+                                        values={values}
+                                        setValues={setValues}
+                                        validInputs={validInputs}
+                                        setValidInputs={setValidInputs}
+                                        name="BillingCountry"
+                                    />
+                                </ThemeProvider>
+                                {BillingAddressInputs.map((input) => (
+                                    <FormInput
+                                        key={input.id}
+                                        input={input}
+                                        values={values}
+                                        setValues={setValues}
+                                        validInputs={validInputs}
+                                        setValidInputs={setValidInputs}
+                                        required
+                                    />
+                                ))}
+                            </div>
+                            <div className="model-checkbox">
+                                <ThemeProvider theme={theme}>
+                                    <FormControlLabel
+                                        sx={{ m: 0 }}
+                                        control={
+                                            <Checkbox
+                                                name="defaultShipping"
+                                                inputProps={{ 'aria-label': 'controlled' }}
+                                                color="default"
+                                                checked={additionalAddresses.defaultShipping}
+                                                onChange={handleChangeAdditionalAddress}
+                                            />
+                                        }
+                                        label="defaultShipping"
+                                    />
+                                </ThemeProvider>
+                                <ThemeProvider theme={theme}>
+                                    <FormControlLabel
+                                        sx={{ m: 0 }}
+                                        control={
+                                            <Checkbox
+                                                name="shipping"
+                                                inputProps={{ 'aria-label': 'controlled' }}
+                                                color="default"
+                                                checked={additionalAddresses.shipping}
+                                                onChange={handleChangeAdditionalAddress}
+                                            />
+                                        }
+                                        label="Shipping"
+                                    />
+                                </ThemeProvider>
+                                <ThemeProvider theme={theme}>
+                                    <FormControlLabel
+                                        sx={{ m: 0 }}
+                                        control={
+                                            <Checkbox
+                                                name="defaultBilling"
+                                                inputProps={{ 'aria-label': 'controlled' }}
+                                                color="default"
+                                                checked={additionalAddresses.defaultBilling}
+                                                onChange={handleChangeAdditionalAddress}
+                                            />
+                                        }
+                                        label="defaultBilling"
+                                    />
+                                </ThemeProvider>
+                                <ThemeProvider theme={theme}>
+                                    <FormControlLabel
+                                        sx={{ m: 0 }}
+                                        control={
+                                            <Checkbox
+                                                name="billing"
+                                                inputProps={{ 'aria-label': 'controlled' }}
+                                                color="default"
+                                                checked={additionalAddresses.billing}
+                                                onChange={handleChangeAdditionalAddress}
+                                            />
+                                        }
+                                        label="Billing"
+                                    />
+                                </ThemeProvider>
+                            </div>
                             <CustomizedButton
-                                sx={{ '&&': { fontSize: 18, margin: '10px 0px 0px 30px', width: '100%' } }}
+                                sx={{ '&&': { fontSize: 18, margin: '15px 0px 0px 0px', width: '100%' } }}
                                 variant="contained"
                                 onClick={handleSaveAddress}
                             >

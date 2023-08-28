@@ -9,7 +9,7 @@ import './Address.css';
 import { CodeCountry } from '../../../data/enums';
 
 function Address(props: IAddressComponent) {
-    const { address, shipping, billing, onDelete } = props;
+    const { address, shipping, billing, onDelete, onUpdate } = props;
     const defineCountry = (code: string) => {
         if (code === 'DE' || code === 'PT') {
             return CodeCountry[code];
@@ -20,6 +20,12 @@ function Address(props: IAddressComponent) {
         const { id } = address;
         if (id) {
             onDelete(id);
+        }
+    };
+    const handleUpdate = () => {
+        const { id } = address;
+        if (id) {
+            onUpdate(id, address, shipping, billing);
         }
     };
     return (
@@ -46,7 +52,7 @@ function Address(props: IAddressComponent) {
             </div>
 
             <div className="address-item__btns">
-                <div>
+                <div onClick={handleUpdate}>
                     <CreateIconButton type="pen" size="medium" />
                 </div>
                 <div onClick={handleDelete}>
