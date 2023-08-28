@@ -77,3 +77,8 @@ export interface IModalContext {
     openNavMenu: () => void;
     closeNavMenu: () => void;
 }
+export interface IAddressComponent {
+    address: IAddress;
+    shipping: boolean;
+    billing: boolean;
+}

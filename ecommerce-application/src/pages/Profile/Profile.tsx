@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable no-param-reassign */
 import { useEffect, useState } from 'react';
 import { getCustomer } from '../../services/Customer';
@@ -6,6 +8,9 @@ import CustomizedButton from '../../components/ui/CustomizedButton';
 import FormInput from '../Registration/components/formInput';
 import { Inputs } from '../../data/data';
 import { IAddress } from '../../data/interfaces';
+import Address from './components/Address';
+import Modal from '../../components/Modal';
+import CreateIconButton from '../../components/ui/IconButton';
 
 function Profile() {
     const [values, setValues] = useState({
@@ -45,6 +50,7 @@ function Profile() {
     const [addresses, setAddresses] = useState(ADDRESSES);
     const [shippingAddresses, setShippingAddresses] = useState(['']);
     const [billingAddresses, setBillingAddresses] = useState(['']);
+    const [modalVisible, setModalVisible] = useState(false);
     useEffect(() => {
         const id = localStorage.getItem('idOFCustomer');
         if (id) {
@@ -94,9 +100,19 @@ function Profile() {
     }, []);
     const handleEditMode = () => {
         setEditMode((prev) => !prev);
-        console.log(addresses);
-        console.log(shippingAddresses);
-        console.log(billingAddresses);
+    };
+    const defineAddress = (address: IAddress, shipBillAddress: string[]) => {
+        const { id } = address;
+        if (id) {
+            return shipBillAddress.includes(id);
+        }
+        return false;
+    };
+    const closeModal = () => {
+        setModalVisible(false);
+    };
+    const openModal = () => {
+        setModalVisible(true);
     };
     return (
         <div className="profile">
@@ -131,7 +147,35 @@ function Profile() {
             </div>
             <div className="personal-data">
                 <h2 className="personal-data__title">Addresses</h2>
+                {addresses.map((address) => (
+                    <Address
+                        key={address.id}
+                        address={address}
+                        shipping={defineAddress(address, shippingAddresses)}
+                        billing={defineAddress(address, billingAddresses)}
+                    />
+                ))}
+                <button className="personal-data__add-address" type="button" onClick={openModal}>
+                    + Add address
+                </button>
             </div>
+            <CustomizedButton sx={{ '&&': { fontSize: 18, margin: '30px 0px 10px 20px' } }} variant="contained">
+                Save
+            </CustomizedButton>
+            {modalVisible && (
+                <Modal onClose={closeModal}>
+                    <div onClick={closeModal} className="modal-wrapper">
+                        <div
+                            onClick={(event: React.MouseEvent<HTMLElement>) => event.stopPropagation()}
+                            className="modal-context"
+                        >
+                            <div onClick={closeModal} className="absolute -top-10 -right-10 text-white">
+                                <CreateIconButton type="close" size="large" />
+                            </div>
+                        </div>
+                    </div>
+                </Modal>
+            )}
         </div>
     );
 }

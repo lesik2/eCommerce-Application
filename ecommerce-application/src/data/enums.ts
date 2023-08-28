@@ -20,3 +20,7 @@ export enum CustomerActions {
     REMOVE_BILLING_ADDRESS = 'removeBillingAddressId',
     DATE_OF_BIRTH = 'setDateOfBirth',
 }
+export enum CodeCountry {
+    'DE' = 'Germany',
+    'PT' = 'Portugal',
+}

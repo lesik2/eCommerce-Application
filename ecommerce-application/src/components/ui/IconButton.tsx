@@ -4,6 +4,8 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import LoginIcon from '@mui/icons-material/Login';
 import PersonIcon from '@mui/icons-material/Person';
 import CloseIcon from '@mui/icons-material/Close';
+import CreateOutlinedIcon from '@mui/icons-material/CreateOutlined';
+import BackspaceIcon from '@mui/icons-material/Backspace';
 import { IconButtonTypes, ButtonSize } from '../../data/types';
 
 type ButtonProps = {
@@ -19,6 +21,8 @@ export default function CreateIconButton({ type, size }: ButtonProps) {
             {type === 'logout' && <LogoutIcon fontSize="inherit" />}
             {type === 'logged' && <PersonIcon fontSize="inherit" />}
             {type === 'close' && <CloseIcon fontSize="inherit" color="inherit" />}
+            {type === 'pen' && <CreateOutlinedIcon fontSize="inherit" color="inherit" />}
+            {type === 'delete' && <BackspaceIcon fontSize="inherit" color="inherit" />}
         </IconButton>
     );
 }
