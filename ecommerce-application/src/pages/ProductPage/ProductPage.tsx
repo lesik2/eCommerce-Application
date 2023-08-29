@@ -15,7 +15,8 @@ const toastProps = {
     pauseOnHover: true,
 };
 // const productPath = 'wok_pork_ried_rice';
-const productPath = 'chicken_broth';
+// const productPath = 'chicken_broth';
+const productPath = 'beef_broth';
 // eslint-disable-next-line consistent-return
 const fetchData = async () => {
     try {
@@ -32,7 +33,7 @@ function ProductPage() {
         productPrice: 0,
         productDiscountPrice: 0,
         ingredients: '',
-        picPath: '',
+        picPaths: [],
         spiciness: false,
     });
     useEffect(() => {
@@ -50,7 +51,7 @@ function ProductPage() {
                         : undefined;
                     const ingredients = mainData.description ? mainData.description['en-US'] : undefined;
                     const images = mainData.masterVariant.images ? mainData.masterVariant.images : undefined;
-                    const picPath = images ? images[0].url : undefined;
+                    const picPaths = images ? images.map((el) => el.url) : [];
                     const { attributes } = mainData.masterVariant;
                     const spicinessAttribute = attributes
                         ? attributes.find((attr) => attr.name === 'spiciness')
@@ -61,7 +62,7 @@ function ProductPage() {
                         productPrice,
                         productDiscountPrice,
                         ingredients,
-                        picPath,
+                        picPaths,
                         spiciness,
                     });
                 }
@@ -82,7 +83,7 @@ function ProductPage() {
                 productDiscountPrice={data.productDiscountPrice}
                 spiciness={data.spiciness}
                 ingredients={data.ingredients}
-                picPath={data.picPath}
+                picPaths={data.picPaths}
             />
             <ToastContainer {...toastProps} position="bottom-center" />
         </>
