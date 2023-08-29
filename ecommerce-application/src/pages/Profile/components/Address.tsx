@@ -5,7 +5,7 @@ import Image from '../../../components/ui/Image';
 import { IAddressComponent } from '../../../data/interfaces';
 import Card from '../../../assets/img/card.svg';
 import Truck from '../../../assets/img/truck.svg';
-import './Address.css';
+import '../styles/Address.css';
 import { CodeCountry } from '../../../data/enums';
 
 function Address(props: IAddressComponent) {

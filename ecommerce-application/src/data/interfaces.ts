@@ -84,3 +84,19 @@ export interface IAddressComponent {
     onDelete: (id: string) => void;
     onUpdate: (id: string, address: IAddress, shipping: boolean, billing: boolean) => void;
 }
+export interface IAdditionalAddress {
+    defaultShipping: boolean;
+    defaultBilling: boolean;
+    shipping: boolean;
+    billing: boolean;
+}
+export interface IModalAddress {
+    values: IValuesInputs;
+    setValues: React.Dispatch<React.SetStateAction<IValuesInputs>>;
+    validInputs: IValidInputs;
+    setValidInputs: React.Dispatch<React.SetStateAction<IValidInputs>>;
+    additionalAddresses: IAdditionalAddress;
+    setAdditionalAddresses: React.Dispatch<React.SetStateAction<IAdditionalAddress>>;
+    closeModal: () => void;
+    handleSaveAddress: () => void;
+}
