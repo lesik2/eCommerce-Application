@@ -1,9 +1,18 @@
 import LoginStatus from './enums';
-import { InputTypes } from './types';
+import { InputTypes, PasswordInputTypes } from './types';
 
 export interface IInput {
     id: string;
     name: InputTypes;
+    type?: string;
+    label?: string;
+    pattern?: RegExp;
+    errormessage?: string;
+    validdate?: number;
+}
+export interface IInputPassword {
+    id: string;
+    name: PasswordInputTypes;
     type?: string;
     label?: string;
     pattern?: RegExp;
@@ -99,4 +108,9 @@ export interface IModalAddress {
     setAdditionalAddresses: React.Dispatch<React.SetStateAction<IAdditionalAddress>>;
     closeModal: () => void;
     handleSaveAddress: () => void;
+}
+export interface IModalPassword {
+    closeModal: () => void;
+    version: number;
+    setVersion: React.Dispatch<React.SetStateAction<number>>;
 }

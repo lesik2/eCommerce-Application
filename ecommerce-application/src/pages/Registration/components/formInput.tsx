@@ -72,7 +72,7 @@ function FormInput(props: IFormInput) {
                         value={values[input.name]}
                         label={input.label}
                         name={input.name}
-                        validInputs={validInputs}
+                        validInput={validInputs[input.name]}
                         errormessage={errorText}
                     />
                 </ThemeProvider>

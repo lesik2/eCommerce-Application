@@ -13,6 +13,7 @@ export type InputTypes =
     | 'BillingCity'
     | 'BillingPostalCode'
     | 'BillingCountry';
+export type PasswordInputTypes = 'currentPassword' | 'newPassword' | 'confirmPassword';
 
 export type ButtonSize = 'small' | 'medium' | 'large';
 

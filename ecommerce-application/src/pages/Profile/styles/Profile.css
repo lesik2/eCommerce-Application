@@ -79,3 +79,7 @@
   grid-template-columns: repeat(2,1fr);
   margin-left: 13px;
 }
+.password-wrapper{
+  display: flex;
+  align-items: center;
+}

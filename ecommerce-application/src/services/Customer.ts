@@ -34,12 +34,26 @@ export async function changePasswordOfCustomer(
     };
     const result = handleFlows()
         .me()
+        .password()
         .post({
             body: {
                 ...customerChangePassword,
-                actions: [],
             },
         })
         .execute();
+
+    return result;
+}
+export async function resetToken(email: string) {
+    const result = handleFlows()
+        .customers()
+        .passwordToken()
+        .post({
+            body: {
+                email,
+            },
+        })
+        .execute();
+
     return result;
 }

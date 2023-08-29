@@ -4,6 +4,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import './styles/Profile.css';
 import { Customer, MyCustomerUpdateAction } from '@commercetools/platform-sdk';
+import { TextField, ThemeProvider } from '@mui/material';
 import CustomizedButton from '../../components/ui/CustomizedButton';
 import FormInput from '../Registration/components/formInput';
 import { IAddress } from '../../data/interfaces';
@@ -13,6 +14,9 @@ import { Inputs } from '../../data/data';
 import { getCustomer, updateCustomer } from '../../services/Customer';
 import { CustomerActions } from '../../data/enums';
 import ModalAddress from './components/ModalAddress';
+import theme from '../../utils/theme';
+import CreateIconButton from '../../components/ui/IconButton';
+import ModalPassword from './components/ModalPassword';
 
 function Profile() {
     const [values, setValues] = useState({
@@ -52,6 +56,7 @@ function Profile() {
     const [addresses, setAddresses] = useState(ADDRESSES);
     const [shippingAddresses, setShippingAddresses] = useState(['']);
     const [billingAddresses, setBillingAddresses] = useState(['']);
+    const [passwordModalVisible, setPasswordModalVisible] = useState(false);
     const [modalVisible, setModalVisible] = useState(false);
     const [version, setVesrion] = useState(0);
     const [updateAddressId, setUpdateAddressId] = useState('');
@@ -82,8 +87,8 @@ function Profile() {
         setAddresses(newAddress);
     };
     const changeStateOfPersonalInfo = (customer: Customer) => {
-        const { firstName, lastName, dateOfBirth, email } = customer;
-        if (firstName && lastName && dateOfBirth) {
+        const { firstName, lastName, dateOfBirth, email, password } = customer;
+        if (firstName && lastName && dateOfBirth && password) {
             setValues({
                 ...values,
                 firstname: firstName,
@@ -131,6 +136,12 @@ function Profile() {
     };
     const openModal = () => {
         setModalVisible(true);
+    };
+    const closePasswordModal = () => {
+        setPasswordModalVisible(false);
+    };
+    const openPasswordModal = () => {
+        setPasswordModalVisible(true);
     };
     const checkAddress = (address: IAddress, nameOfAddress: string) => {
         if (nameOfAddress === 'defaultShipping') {
@@ -228,7 +239,6 @@ function Profile() {
             const newVersion = res.body.version;
             setVesrion(newVersion);
             closeModal();
-            setValues({ ...values, BillingCountry: '', BillingCity: '', BillingStreet: '', BillingPostalCode: '' });
             setUpdateAddressId('');
             handleSaveAdditionalAddress(
                 newVersion,
@@ -369,6 +379,31 @@ function Profile() {
                     + Add address
                 </button>
             </div>
+            <div className="personal-data mb-14">
+                <h2 className="personal-data__title">Password</h2>
+                <div className="password-wrapper">
+                    <ThemeProvider theme={theme}>
+                        <TextField
+                            sx={{
+                                '&&': {
+                                    width: '100px',
+                                },
+                            }}
+                            label="Password"
+                            InputProps={{
+                                readOnly: true,
+                                disableUnderline: true,
+                            }}
+                            variant="standard"
+                            autoComplete="off"
+                            value="********"
+                        />
+                    </ThemeProvider>
+                    <div onClick={openPasswordModal}>
+                        <CreateIconButton type="pen" size="large" />
+                    </div>
+                </div>
+            </div>
             {modalVisible && (
                 <ModalAddress
                     values={values}
@@ -380,6 +415,9 @@ function Profile() {
                     closeModal={closeModal}
                     handleSaveAddress={handleSaveAddress}
                 />
+            )}
+            {passwordModalVisible && (
+                <ModalPassword closeModal={closePasswordModal} version={version} setVersion={setVesrion} />
             )}
         </div>
     );
