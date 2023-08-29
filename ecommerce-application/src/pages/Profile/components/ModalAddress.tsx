@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import { Checkbox, FormControlLabel, ThemeProvider } from '@mui/material';
+import { useMemo } from 'react';
 import Modal from '../../../components/Modal';
 import theme from '../../../utils/theme';
 import { BillingAddressInputs } from '../../../data/data';
@@ -24,6 +25,18 @@ function ModalAddress(props: IModalAddress) {
     const handleChangeAdditionalAddress = (event: React.ChangeEvent<HTMLInputElement>) => {
         setAdditionalAddresses({ ...additionalAddresses, [event.target.name]: event.target.checked });
     };
+    const disableButton = useMemo(() => {
+        const validValues = [
+            validInputs.BillingCity,
+            validInputs.BillingCountry,
+            validInputs.BillingPostalCode,
+            validInputs.BillingStreet,
+        ];
+        const Values = [values.BillingCity, values.BillingCountry, values.BillingPostalCode, values.BillingStreet];
+        const validation = validValues.includes(false);
+        const emptyValues = Values.includes('');
+        return validation || emptyValues;
+    }, [validInputs, values]);
     return (
         <Modal onClose={closeModal}>
             <div onClick={closeModal} className="modal-wrapper">
@@ -119,6 +132,7 @@ function ModalAddress(props: IModalAddress) {
                         sx={{ '&&': { fontSize: 18, margin: '15px 0px 0px 0px', width: '100%' } }}
                         variant="contained"
                         onClick={handleSaveAddress}
+                        disabled={disableButton}
                     >
                         Save
                     </CustomizedButton>

@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable no-param-reassign */
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import './styles/Profile.css';
 import { Customer, MyCustomerUpdateAction } from '@commercetools/platform-sdk';
 import CustomizedButton from '../../components/ui/CustomizedButton';
@@ -61,6 +61,7 @@ function Profile() {
         shipping: false,
         billing: false,
     });
+    const [disableEditMode, setDisableEditMode] = useState(false);
     const changeStateOfAddress = (customer: Customer) => {
         const newAddress: IAddress[] = customer.addresses;
         const { defaultBillingAddressId, defaultShippingAddressId, shippingAddressIds, billingAddressIds } = customer;
@@ -107,7 +108,15 @@ function Profile() {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+    const disableButton = useMemo(() => {
+        const validValues = [validInputs.firstname, validInputs.lastname, validInputs.email, validInputs.birthday];
+        const Values = [values.firstname, values.lastname, values.birthday, values.email];
+        const validation = validValues.includes(false);
+        const emptyValues = Values.includes('');
+        return validation || emptyValues;
+    }, [validInputs, values]);
     const handleEditMode = () => {
+        setDisableEditMode(true);
         setEditMode((prev) => !prev);
     };
     const defineAddress = (address: IAddress, shipBillAddress: string[]) => {
@@ -279,6 +288,7 @@ function Profile() {
             changeStateOfPersonalInfo(res.body);
             setVesrion(res.body.version);
             setEditMode(false);
+            setDisableEditMode(false);
         });
     };
     const handleOpenModal = () => {
@@ -300,6 +310,7 @@ function Profile() {
                     sx={{ '&&': { fontSize: 14, paddingLeft: '10px', paddingRight: '10px' } }}
                     variant="contained"
                     onClick={handleEditMode}
+                    disabled={disableEditMode}
                 >
                     Edit
                 </CustomizedButton>
@@ -335,6 +346,7 @@ function Profile() {
                             }}
                             variant="contained"
                             onClick={handleSavePersonalInfo}
+                            disabled={disableButton}
                         >
                             Save
                         </CustomizedButton>
