@@ -35,20 +35,24 @@ function Address(props: IAddressComponent) {
                 <p className="address-item__text-add">{`${address.streetName}, ${address.postalCode}`} </p>
             </div>
             <div className="addres-item__icons">
-                {shipping ? (
-                    <div className="flex items-center gap-2">
-                        <p className="address-item__text-add">Shipping</p>
-                        <Image className="addres-item__icon" image={Card} alt="billing address" />
-                    </div>
-                ) : null}
-                {billing ? (
-                    <div className="flex items-center gap-2">
-                        <p className="address-item__text-add">Billing</p>
-                        <Image className="addres-item__icon" image={Truck} alt="shipping address" />
-                    </div>
-                ) : null}
-                {address.defaultShippingAddress ? <p className="address-item__default">default Shipping</p> : null}
-                {address.defaultBillingAddress ? <p className="address-item__default">default Billing</p> : null}
+                <div className="shipping-billing-address">
+                    {shipping ? (
+                        <div className="flex items-center gap-2">
+                            <p className="address-item__text-add address-helper-text">Shipping</p>
+                            <Image className="addres-item__icon" image={Card} alt="billing address" />
+                        </div>
+                    ) : null}
+                    {billing ? (
+                        <div className="flex items-center gap-2">
+                            <p className="address-item__text-add address-helper-text">Billing</p>
+                            <Image className="addres-item__icon" image={Truck} alt="shipping address" />
+                        </div>
+                    ) : null}
+                </div>
+                <div className="default-address">
+                    {address.defaultShippingAddress ? <p className="address-item__default">default Shipping</p> : null}
+                    {address.defaultBillingAddress ? <p className="address-item__default">default Billing</p> : null}
+                </div>
             </div>
 
             <div className="address-item__btns">

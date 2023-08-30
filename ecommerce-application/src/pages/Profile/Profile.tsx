@@ -347,13 +347,11 @@ function Profile() {
                             sx={{
                                 '&&': {
                                     fontSize: 14,
-                                    paddingLeft: '20px',
-                                    paddingRight: '20px',
-                                    position: 'absolute',
-                                    bottom: '2px',
-                                    right: '10px',
+                                    width: '60px',
+                                    height: '30px',
                                 },
                             }}
+                            className="personal-data-btn"
                             variant="contained"
                             onClick={handleSavePersonalInfo}
                             disabled={disableButton}
@@ -379,7 +377,7 @@ function Profile() {
                     + Add address
                 </button>
             </div>
-            <div className="personal-data mb-14">
+            <div className="personal-data">
                 <h2 className="personal-data__title">Password</h2>
                 <div className="password-wrapper">
                     <ThemeProvider theme={theme}>
