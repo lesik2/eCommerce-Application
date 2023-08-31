@@ -1,3 +1,4 @@
+import { AlertColor } from '@mui/material';
 import LoginStatus from './enums';
 import { InputTypes, PasswordInputTypes } from './types';
 
@@ -58,7 +59,7 @@ export interface IFormInput {
     validInputs: IValidInputs;
     setValidInputs: React.Dispatch<React.SetStateAction<IValidInputs>>;
     passwordValue?: string | null;
-    setAlertOpen?: React.Dispatch<React.SetStateAction<boolean>>;
+    setAlertOpen?: () => void;
     required?: boolean;
     readOnly?: boolean;
 }
@@ -108,6 +109,11 @@ export interface IModalAddress {
     setAdditionalAddresses: React.Dispatch<React.SetStateAction<IAdditionalAddress>>;
     closeModal: () => void;
     handleSaveAddress: () => void;
+    successMessage: string;
+    sev: AlertColor;
+    error: string;
+    alertOpen: boolean;
+    setAlertOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 export interface IModalPassword {
     closeModal: () => void;

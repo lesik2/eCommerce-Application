@@ -120,7 +120,7 @@ function Login() {
                                 setValues={setValues}
                                 validInputs={validInputs}
                                 setValidInputs={setValidInputs}
-                                setAlertOpen={setAlertOpen}
+                                setAlertOpen={() => setAlertOpen(false)}
                                 required
                             />
                         ))}

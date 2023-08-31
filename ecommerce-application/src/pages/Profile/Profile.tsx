@@ -1,22 +1,21 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable no-param-reassign */
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import './styles/Profile.css';
 import { Customer, MyCustomerUpdateAction } from '@commercetools/platform-sdk';
-import { TextField, ThemeProvider } from '@mui/material';
+import { AlertColor, TextField, ThemeProvider } from '@mui/material';
 import CustomizedButton from '../../components/ui/CustomizedButton';
-import FormInput from '../Registration/components/formInput';
 import { IAddress } from '../../data/interfaces';
 import Address from './components/Address';
-import { Inputs } from '../../data/data';
-
 import { getCustomer, updateCustomer } from '../../services/Customer';
 import { CustomerActions } from '../../data/enums';
 import ModalAddress from './components/ModalAddress';
 import theme from '../../utils/theme';
 import CreateIconButton from '../../components/ui/IconButton';
 import ModalPassword from './components/ModalPassword';
+import FetchResultAlert from '../../components/FetchResultAlert';
+import PersonalInfo from './components/PersonalInfo';
 
 function Profile() {
     const [values, setValues] = useState({
@@ -51,7 +50,6 @@ function Profile() {
         BillingCity: true,
         BillingPostalCode: true,
     });
-    const [editMode, setEditMode] = useState(false);
     const ADDRESSES: IAddress[] = [];
     const [addresses, setAddresses] = useState(ADDRESSES);
     const [shippingAddresses, setShippingAddresses] = useState(['']);
@@ -67,6 +65,19 @@ function Profile() {
         billing: false,
     });
     const [disableEditMode, setDisableEditMode] = useState(false);
+    const [successMessageAddress, setSuccessMessageAddress] = useState('');
+    const [editMode, setEditMode] = useState(false);
+    const [sevAddress, setSeverityAddress] = useState<AlertColor>('error');
+    const [errorAddress, setErrorAddress] = useState('');
+    const [alertOpenAddress, setAlertOpenAddress] = useState(true);
+
+    const [successMessage, setSuccessMessage] = useState('');
+    const [sev, setSev] = useState<AlertColor>('error');
+    const [error, setError] = useState('');
+    const [alertOpen, setAlertOpen] = useState(true);
+    const handleAlertToggleAddress = () => {
+        setAlertOpenAddress(!alertOpenAddress);
+    };
     const changeStateOfAddress = (customer: Customer) => {
         const newAddress: IAddress[] = customer.addresses;
         const { defaultBillingAddressId, defaultShippingAddressId, shippingAddressIds, billingAddressIds } = customer;
@@ -113,13 +124,6 @@ function Profile() {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    const disableButton = useMemo(() => {
-        const validValues = [validInputs.firstname, validInputs.lastname, validInputs.email, validInputs.birthday];
-        const Values = [values.firstname, values.lastname, values.birthday, values.email];
-        const validation = validValues.includes(false);
-        const emptyValues = Values.includes('');
-        return validation || emptyValues;
-    }, [validInputs, values]);
     const handleEditMode = () => {
         setDisableEditMode(true);
         setEditMode((prev) => !prev);
@@ -207,12 +211,25 @@ function Profile() {
                 addressId: id,
             });
         }
-        if (actions.length > 0) {
-            updateCustomer(newVersion, actions).then((res) => {
+        updateCustomer(newVersion, actions)
+            .then((res) => {
                 changeStateOfAddress(res.body);
                 setVesrion(res.body.version);
+                setSuccessMessage(`You've successfully updated list of addresses.`);
+                setSev('success');
+                setError('');
+                setAlertOpen(true);
+                setTimeout(() => {
+                    closeModal();
+                    setAlertOpen(false);
+                }, 1000);
+            })
+            .catch((err) => {
+                setSuccessMessage('');
+                setSev('error');
+                setError(err.message);
+                setAlertOpen(true);
             });
-        }
     };
     const handleSaveAddress = () => {
         const newAddress = {
@@ -234,19 +251,25 @@ function Profile() {
                 address: newAddress,
             });
         }
-        updateCustomer(version, actions).then((res) => {
-            changeStateOfAddress(res.body);
-            const newVersion = res.body.version;
-            setVesrion(newVersion);
-            closeModal();
-            setUpdateAddressId('');
-            handleSaveAdditionalAddress(
-                newVersion,
-                res.body.addresses,
-                res.body.shippingAddressIds,
-                res.body.billingAddressIds
-            );
-        });
+        updateCustomer(version, actions)
+            .then((res) => {
+                changeStateOfAddress(res.body);
+                const newVersion = res.body.version;
+                setVesrion(newVersion);
+                setUpdateAddressId('');
+                handleSaveAdditionalAddress(
+                    newVersion,
+                    res.body.addresses,
+                    res.body.shippingAddressIds,
+                    res.body.billingAddressIds
+                );
+            })
+            .catch((err) => {
+                setSuccessMessage('');
+                setSev('error');
+                setError(err.message);
+                setAlertOpen(true);
+            });
     };
     const handleDeleteAddress = (id: string) => {
         const actions: MyCustomerUpdateAction[] = [];
@@ -254,10 +277,21 @@ function Profile() {
             action: CustomerActions.REMOVE_ADDRESS,
             addressId: id,
         });
-        updateCustomer(version, actions).then((res) => {
-            changeStateOfAddress(res.body);
-            setVesrion(res.body.version);
-        });
+        updateCustomer(version, actions)
+            .then((res) => {
+                changeStateOfAddress(res.body);
+                setVesrion(res.body.version);
+                setSuccessMessageAddress(`You've successfully deleted address.`);
+                setSeverityAddress('success');
+                setErrorAddress('');
+                setAlertOpenAddress(true);
+            })
+            .catch((err) => {
+                setSuccessMessageAddress('');
+                setSeverityAddress('error');
+                setErrorAddress(err.message);
+                setAlertOpenAddress(true);
+            });
     };
     const handleUpdateAddress = (id: string, address: IAddress, shipping: boolean, billing: boolean) => {
         const { city, postalCode, streetName, country, defaultBillingAddress, defaultShippingAddress } = address;
@@ -275,31 +309,6 @@ function Profile() {
             openModal();
             setUpdateAddressId(id);
         }
-    };
-    const handleSavePersonalInfo = () => {
-        const actions: MyCustomerUpdateAction[] = [];
-        actions.push({
-            action: CustomerActions.FIRST_NAME,
-            firstName: values.firstname,
-        });
-        actions.push({
-            action: CustomerActions.LAST_NAME,
-            lastName: values.lastname,
-        });
-        actions.push({
-            action: CustomerActions.DATE_OF_BIRTH,
-            dateOfBirth: values.birthday,
-        });
-        actions.push({
-            action: CustomerActions.EMAIL,
-            email: values.email,
-        });
-        updateCustomer(version, actions).then((res) => {
-            changeStateOfPersonalInfo(res.body);
-            setVesrion(res.body.version);
-            setEditMode(false);
-            setDisableEditMode(false);
-        });
     };
     const handleOpenModal = () => {
         openModal();
@@ -325,44 +334,36 @@ function Profile() {
                     Edit
                 </CustomizedButton>
             </div>
-
-            <div className="personal-data">
-                <h2 className="personal-data__title">Personal data</h2>
-                <div className="personal-data__wrapper">
-                    {Inputs.filter((input) => input.name !== 'password' && input.name !== 'confirmPassword').map(
-                        (input) => (
-                            <FormInput
-                                key={input.name}
-                                input={input}
-                                values={values}
-                                setValues={setValues}
-                                validInputs={validInputs}
-                                setValidInputs={setValidInputs}
-                                readOnly={!editMode}
-                            />
-                        )
-                    )}
-                    {editMode ? (
-                        <CustomizedButton
-                            sx={{
-                                '&&': {
-                                    fontSize: 14,
-                                    width: '60px',
-                                    height: '30px',
-                                },
-                            }}
-                            className="personal-data-btn"
-                            variant="contained"
-                            onClick={handleSavePersonalInfo}
-                            disabled={disableButton}
-                        >
-                            Save
-                        </CustomizedButton>
-                    ) : null}
-                </div>
-            </div>
+            <PersonalInfo
+                values={values}
+                validInputs={validInputs}
+                setValues={setValues}
+                setValidInputs={setValidInputs}
+                editMode={editMode}
+                version={version}
+                setVersion={setVesrion}
+                changeStateOfPersonalInfo={changeStateOfPersonalInfo}
+                setEditMode={setEditMode}
+                setDisableEditMode={setDisableEditMode}
+            />
             <div className="personal-data">
                 <h2 className="personal-data__title">Addresses</h2>
+                {errorAddress && (
+                    <FetchResultAlert
+                        severity={sevAddress}
+                        message={errorAddress}
+                        isOpen={alertOpenAddress}
+                        onChange={handleAlertToggleAddress}
+                    />
+                )}
+                {successMessageAddress && (
+                    <FetchResultAlert
+                        severity={sevAddress}
+                        message={successMessageAddress}
+                        isOpen={alertOpenAddress}
+                        onChange={handleAlertToggleAddress}
+                    />
+                )}
                 {addresses.map((address) => (
                     <Address
                         key={address.id}
@@ -412,6 +413,11 @@ function Profile() {
                     setAdditionalAddresses={setAdditionalAddresses}
                     closeModal={closeModal}
                     handleSaveAddress={handleSaveAddress}
+                    sev={sev}
+                    successMessage={successMessage}
+                    alertOpen={alertOpen}
+                    error={error}
+                    setAlertOpen={setAlertOpen}
                 />
             )}
             {passwordModalVisible && (

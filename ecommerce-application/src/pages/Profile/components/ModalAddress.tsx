@@ -10,6 +10,7 @@ import CustomizedButton from '../../../components/ui/CustomizedButton';
 import CreateIconButton from '../../../components/ui/IconButton';
 import FormSelect from '../../Registration/components/formSelect';
 import { IModalAddress } from '../../../data/interfaces';
+import FetchResultAlert from '../../../components/FetchResultAlert';
 
 function ModalAddress(props: IModalAddress) {
     const {
@@ -21,6 +22,11 @@ function ModalAddress(props: IModalAddress) {
         setAdditionalAddresses,
         closeModal,
         handleSaveAddress,
+        sev,
+        successMessage,
+        alertOpen,
+        setAlertOpen,
+        error,
     } = props;
     const handleChangeAdditionalAddress = (event: React.ChangeEvent<HTMLInputElement>) => {
         setAdditionalAddresses({ ...additionalAddresses, [event.target.name]: event.target.checked });
@@ -37,6 +43,9 @@ function ModalAddress(props: IModalAddress) {
         const emptyValues = Values.includes('');
         return validation || emptyValues;
     }, [validInputs, values]);
+    const handleAlertToggle = () => {
+        setAlertOpen(!alertOpen);
+    };
     return (
         <Modal onClose={closeModal}>
             <div onClick={closeModal} className="modal-wrapper">
@@ -128,6 +137,22 @@ function ModalAddress(props: IModalAddress) {
                             />
                         </ThemeProvider>
                     </div>
+                    {error && (
+                        <FetchResultAlert
+                            severity={sev}
+                            message={error}
+                            isOpen={alertOpen}
+                            onChange={handleAlertToggle}
+                        />
+                    )}
+                    {successMessage && (
+                        <FetchResultAlert
+                            severity={sev}
+                            message={successMessage}
+                            isOpen={alertOpen}
+                            onChange={handleAlertToggle}
+                        />
+                    )}
                     <CustomizedButton
                         sx={{ '&&': { fontSize: 18, margin: '15px 0px 0px 0px', width: '100%' } }}
                         variant="contained"

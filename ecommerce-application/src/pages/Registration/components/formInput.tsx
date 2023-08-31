@@ -60,7 +60,7 @@ function FormInput(props: IFormInput) {
         setValues({ ...values, [e.target.name]: e.target.value });
         checkValidInput(e.target.value);
         if (setAlertOpen) {
-            setAlertOpen(false);
+            setAlertOpen();
         }
     };
     return (

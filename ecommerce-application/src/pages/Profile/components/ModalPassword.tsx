@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import { ThemeProvider } from '@mui/material';
+import { AlertColor, ThemeProvider } from '@mui/material';
 import { useMemo, useState } from 'react';
 import Modal from '../../../components/Modal';
 import CustomizedButton from '../../../components/ui/CustomizedButton';
@@ -10,6 +10,7 @@ import PasswordInput from '../../Registration/components/passwordInput';
 import theme from '../../../utils/theme';
 import { PasswordInputsData } from '../../../data/data';
 import { changePasswordOfCustomer } from '../../../services/Customer';
+import FetchResultAlert from '../../../components/FetchResultAlert';
 
 function ModalPassword(props: IModalPassword) {
     const { closeModal, version, setVersion } = props;
@@ -29,6 +30,10 @@ function ModalPassword(props: IModalPassword) {
         confirmPassword: PasswordInputsData[2].errormessage,
     };
     const [errorText, setErrorText] = useState(ErrorMessages);
+    const [successMessage, setSuccessMessage] = useState('');
+    const [sev, setSev] = useState<AlertColor>('error');
+    const [error, setError] = useState('');
+    const [alertOpen, setAlertOpen] = useState(true);
     const checkValidInput = (name: string, value: string) => {
         if (value === '') {
             setErrorText({ ...errorText, [name]: `${name} should be filled` });
@@ -49,6 +54,9 @@ function ModalPassword(props: IModalPassword) {
         setValues({ ...values, [e.target.name]: e.target.value });
         checkValidInput(e.target.name, e.target.value);
     };
+    const handleAlertToggle = () => {
+        setAlertOpen(!alertOpen);
+    };
     const disableButton = useMemo(() => {
         const validValues = Object.values(validInputs);
         const Values = Object.values(values);
@@ -59,10 +67,24 @@ function ModalPassword(props: IModalPassword) {
     const handleSaveNewPassword = () => {
         const id = localStorage.getItem('idOFCustomer');
         if (id) {
-            changePasswordOfCustomer(id, version, values.currentPassword, values.newPassword).then((res) => {
-                setVersion(res.body.version);
-                closeModal();
-            });
+            changePasswordOfCustomer(id, version, values.currentPassword, values.newPassword)
+                .then((res) => {
+                    setVersion(res.body.version);
+                    setSuccessMessage(`You've successfully changed your password.`);
+                    setSev('success');
+                    setError('');
+                    setAlertOpen(true);
+                    setTimeout(() => {
+                        closeModal();
+                        setAlertOpen(false);
+                    }, 1000);
+                })
+                .catch((err) => {
+                    setSuccessMessage('');
+                    setSev('error');
+                    setError(err.message);
+                    setAlertOpen(true);
+                });
         }
     };
     return (
@@ -82,11 +104,27 @@ function ModalPassword(props: IModalPassword) {
                                     name={input.name}
                                     validInput={validInputs[input.name]}
                                     errormessage={errorText[input.name]}
+                                    setAlertOpen={() => setAlertOpen(false)}
                                 />
                             </ThemeProvider>
                         ))}
                     </div>
-
+                    {error && (
+                        <FetchResultAlert
+                            severity={sev}
+                            message={error}
+                            isOpen={alertOpen}
+                            onChange={handleAlertToggle}
+                        />
+                    )}
+                    {successMessage && (
+                        <FetchResultAlert
+                            severity={sev}
+                            message={successMessage}
+                            isOpen={alertOpen}
+                            onChange={handleAlertToggle}
+                        />
+                    )}
                     <CustomizedButton
                         sx={{ '&&': { fontSize: 18, margin: '15px 0px 0px 0px', width: '100%' } }}
                         variant="contained"

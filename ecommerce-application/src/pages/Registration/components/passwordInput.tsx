@@ -1,3 +1,4 @@
+/* eslint-disable react/require-default-props */
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { FormControl, IconButton, Input, InputAdornment, InputLabel } from '@mui/material';
 import { useState } from 'react';
@@ -11,9 +12,10 @@ export interface IPasswordInput {
     name: string;
     errormessage: string | undefined;
     validInput: boolean;
+    setAlertOpen?: () => void;
 }
 function PasswordInput(props: IPasswordInput) {
-    const { onChange, label, value, name, errormessage, validInput } = props;
+    const { onChange, label, value, name, errormessage, validInput, setAlertOpen } = props;
     const [showPassword, setShowPassword] = useState(false);
     const handleClickShowPassword = () => setShowPassword((show) => !show);
     const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -30,6 +32,7 @@ function PasswordInput(props: IPasswordInput) {
                     name={name}
                     value={value}
                     onChange={onChange}
+                    onFocus={setAlertOpen}
                     autoComplete="off"
                     id="standard-adornment-password"
                     type={showPassword ? 'text' : 'password'}

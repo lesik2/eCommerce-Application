@@ -44,16 +44,3 @@ export async function changePasswordOfCustomer(
 
     return result;
 }
-export async function resetToken(email: string) {
-    const result = handleFlows()
-        .customers()
-        .passwordToken()
-        .post({
-            body: {
-                email,
-            },
-        })
-        .execute();
-
-    return result;
-}
