@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import { Checkbox, FormControlLabel, ThemeProvider } from '@mui/material';
+import { AlertColor, Checkbox, FormControlLabel, ThemeProvider } from '@mui/material';
 import { useMemo } from 'react';
 import Modal from '../../../components/Modal';
 import theme from '../../../utils/theme';
@@ -9,9 +9,24 @@ import FormInput from '../../Registration/components/formInput';
 import CustomizedButton from '../../../components/ui/CustomizedButton';
 import CreateIconButton from '../../../components/ui/IconButton';
 import FormSelect from '../../Registration/components/formSelect';
-import { IModalAddress } from '../../../data/interfaces';
 import FetchResultAlert from '../../../components/FetchResultAlert';
+import { IAdditionalAddress, IValidInputs, IValuesInputs } from '../../../data/interfaces';
 
+export interface IModalAddress {
+    values: IValuesInputs;
+    setValues: React.Dispatch<React.SetStateAction<IValuesInputs>>;
+    validInputs: IValidInputs;
+    setValidInputs: React.Dispatch<React.SetStateAction<IValidInputs>>;
+    additionalAddresses: IAdditionalAddress;
+    setAdditionalAddresses: React.Dispatch<React.SetStateAction<IAdditionalAddress>>;
+    closeModal: () => void;
+    handleSaveAddress: () => void;
+    successMessage: string;
+    sev: AlertColor;
+    error: string;
+    alertOpen: boolean;
+    setAlertOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
 function ModalAddress(props: IModalAddress) {
     const {
         values,

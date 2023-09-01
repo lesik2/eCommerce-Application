@@ -1,4 +1,3 @@
-import { AlertColor } from '@mui/material';
 import LoginStatus from './enums';
 import { InputTypes, PasswordInputTypes } from './types';
 
@@ -87,36 +86,9 @@ export interface IModalContext {
     openNavMenu: () => void;
     closeNavMenu: () => void;
 }
-export interface IAddressComponent {
-    address: IAddress;
-    shipping: boolean;
-    billing: boolean;
-    onDelete: (id: string) => void;
-    onUpdate: (id: string, address: IAddress, shipping: boolean, billing: boolean) => void;
-}
 export interface IAdditionalAddress {
     defaultShipping: boolean;
     defaultBilling: boolean;
     shipping: boolean;
     billing: boolean;
-}
-export interface IModalAddress {
-    values: IValuesInputs;
-    setValues: React.Dispatch<React.SetStateAction<IValuesInputs>>;
-    validInputs: IValidInputs;
-    setValidInputs: React.Dispatch<React.SetStateAction<IValidInputs>>;
-    additionalAddresses: IAdditionalAddress;
-    setAdditionalAddresses: React.Dispatch<React.SetStateAction<IAdditionalAddress>>;
-    closeModal: () => void;
-    handleSaveAddress: () => void;
-    successMessage: string;
-    sev: AlertColor;
-    error: string;
-    alertOpen: boolean;
-    setAlertOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}
-export interface IModalPassword {
-    closeModal: () => void;
-    version: number;
-    setVersion: React.Dispatch<React.SetStateAction<number>>;
 }

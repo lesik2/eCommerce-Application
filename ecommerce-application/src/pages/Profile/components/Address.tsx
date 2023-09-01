@@ -2,12 +2,19 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import CreateIconButton from '../../../components/ui/IconButton';
 import Image from '../../../components/ui/Image';
-import { IAddressComponent } from '../../../data/interfaces';
 import Card from '../../../assets/img/card.svg';
 import Truck from '../../../assets/img/truck.svg';
 import '../styles/Address.css';
 import { CodeCountry } from '../../../data/enums';
+import { IAddress } from '../../../data/interfaces';
 
+export interface IAddressComponent {
+    address: IAddress;
+    shipping: boolean;
+    billing: boolean;
+    onDelete: (id: string) => void;
+    onUpdate: (id: string, address: IAddress, shipping: boolean, billing: boolean) => void;
+}
 function Address(props: IAddressComponent) {
     const { address, shipping, billing, onDelete, onUpdate } = props;
     const defineCountry = (code: string) => {

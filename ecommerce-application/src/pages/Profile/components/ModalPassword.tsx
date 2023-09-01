@@ -5,7 +5,6 @@ import { useMemo, useState } from 'react';
 import Modal from '../../../components/Modal';
 import CustomizedButton from '../../../components/ui/CustomizedButton';
 import CreateIconButton from '../../../components/ui/IconButton';
-import { IModalPassword } from '../../../data/interfaces';
 import PasswordInput from '../../Registration/components/passwordInput';
 import theme from '../../../utils/theme';
 import { PasswordInputsData } from '../../../data/data';
@@ -13,6 +12,11 @@ import { changePasswordOfCustomer } from '../../../services/Customer';
 import FetchResultAlert from '../../../components/FetchResultAlert';
 import { loginNoToken } from '../../../services/login';
 
+export interface IModalPassword {
+    closeModal: () => void;
+    version: number;
+    setVersion: React.Dispatch<React.SetStateAction<number>>;
+}
 function ModalPassword(props: IModalPassword) {
     const { closeModal, version, setVersion } = props;
     const [values, setValues] = useState({
