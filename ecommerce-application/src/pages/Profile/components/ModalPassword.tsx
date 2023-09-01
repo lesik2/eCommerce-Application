@@ -11,6 +11,7 @@ import theme from '../../../utils/theme';
 import { PasswordInputsData } from '../../../data/data';
 import { changePasswordOfCustomer } from '../../../services/Customer';
 import FetchResultAlert from '../../../components/FetchResultAlert';
+import { loginNoToken } from '../../../services/login';
 
 function ModalPassword(props: IModalPassword) {
     const { closeModal, version, setVersion } = props;
@@ -78,6 +79,11 @@ function ModalPassword(props: IModalPassword) {
                         closeModal();
                         setAlertOpen(false);
                     }, 1000);
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('status');
+                    loginNoToken(res.body.email, values.newPassword).then((result) => {
+                        console.log(result);
+                    });
                 })
                 .catch((err) => {
                     setSuccessMessage('');
