@@ -16,4 +16,6 @@ export type InputTypes =
 
 export type ButtonSize = 'small' | 'medium' | 'large';
 
-export type IconButtonTypes = 'cart' | 'login' | 'logout' | 'logged' | 'close';
+export type IconButtonTypes = 'cart' | 'login' | 'logout' | 'logged' | 'close' | 'filter';
+
+export type SortButtonsTypes = 'name' | 'price';

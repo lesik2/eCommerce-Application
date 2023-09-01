@@ -9,11 +9,15 @@ export const ModalContext = createContext<IModalContext>({
     navMenuStatus: false,
     openNavMenu: () => {},
     closeNavMenu: () => {},
+    filterMenuStatus: false,
+    openFilterMenu: () => {},
+    closeFilterMenu: () => {},
 });
 
 export function ModalState({ children }: { children: React.ReactNode }) {
     const [userMenuStatus, setUserMenu] = useState(false);
     const [navMenuStatus, setNavMenu] = useState(false);
+    const [filterMenuStatus, setFilterMenu] = useState(false);
 
     const openUserMenu = () => setUserMenu(true);
 
@@ -23,9 +27,23 @@ export function ModalState({ children }: { children: React.ReactNode }) {
 
     const closeNavMenu = () => setNavMenu(false);
 
+    const openFilterMenu = () => setFilterMenu(true);
+
+    const closeFilterMenu = () => setFilterMenu(false);
+
     return (
         <ModalContext.Provider
-            value={{ userMenuStatus, openUserMenu, closeUserMenu, navMenuStatus, openNavMenu, closeNavMenu }}
+            value={{
+                userMenuStatus,
+                openUserMenu,
+                closeUserMenu,
+                navMenuStatus,
+                openNavMenu,
+                closeNavMenu,
+                filterMenuStatus,
+                openFilterMenu,
+                closeFilterMenu,
+            }}
         >
             {children}
         </ModalContext.Provider>

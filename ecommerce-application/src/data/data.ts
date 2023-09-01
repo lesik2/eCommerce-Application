@@ -163,3 +163,9 @@ export const NavLinks = [
         url: '/about',
     },
 ];
+
+export const QUERIES = {
+    NO_QUERY: Math.floor(Math.random() * 100000).toString(),
+    MENU_QUERY: Math.floor(Math.random() * 100000).toString(),
+    POKE_QUERY: 'categories.id:subtree("09773f55-97a1-4d2b-bf6d-8c2b4d6493b7")',
+};

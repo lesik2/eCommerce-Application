@@ -70,4 +70,12 @@ export interface IModalContext {
     navMenuStatus: boolean;
     openNavMenu: () => void;
     closeNavMenu: () => void;
+    filterMenuStatus: boolean;
+    openFilterMenu: () => void;
+    closeFilterMenu: () => void;
+}
+
+export interface IProductsContext {
+    productsQuery: string;
+    setProductsQuery: (query: string) => void;
 }
