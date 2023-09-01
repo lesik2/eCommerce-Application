@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
+import { useNavigate, useParams } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
 import { ProductPageLayout, IProductPageLayoutProps } from './components/ProductPageLayout';
 import handleFlows from '../../services/handleFlows';
@@ -14,20 +15,12 @@ const toastProps = {
     draggable: true,
     pauseOnHover: true,
 };
-// const productPath = 'wok_pork_ried_rice';
-// const productPath = 'chicken_broth';
-const productPath = 'beef_broth';
-// eslint-disable-next-line consistent-return
-const fetchData = async () => {
-    try {
-        const res = await handleFlows().productProjections().withKey({ key: productPath }).get().execute();
-        return res;
-    } catch (error) {
-        toast.error(error instanceof Error ? error.message : 'unexpected error in fetch product data', toastProps);
-    }
-};
 
 function ProductPage() {
+    const { key } = useParams();
+    const [pathError, setPathError] = useState(false);
+    const navigate = useNavigate();
+
     const [data, setData] = useState<IProductPageLayoutProps>({
         productName: '',
         productPrice: 0,
@@ -37,6 +30,22 @@ function ProductPage() {
         spiciness: false,
     });
     useEffect(() => {
+        // eslint-disable-next-line consistent-return
+        const fetchData = async () => {
+            try {
+                if (key) {
+                    const res = await handleFlows().productProjections().withKey({ key }).get().execute();
+                    return res;
+                }
+                throw new Error('incorrect path');
+            } catch (error) {
+                if (error instanceof Error) {
+                    setPathError(true);
+                    navigate('/404');
+                }
+                toast.error(error instanceof Error ? error.name : 'unexpected error in fetch product data', toastProps);
+            }
+        };
         fetchData()
             .then((res) => {
                 if (res) {
@@ -56,7 +65,7 @@ function ProductPage() {
                     const spicinessAttribute = attributes
                         ? attributes.find((attr) => attr.name === 'spiciness')
                         : undefined;
-                    const spiciness = spicinessAttribute ? spicinessAttribute.value : false;
+                    const spiciness = spicinessAttribute ? spicinessAttribute.value : undefined;
                     setData({
                         productName,
                         productPrice,
@@ -73,18 +82,20 @@ function ProductPage() {
                     toastProps
                 );
             });
-    }, []);
+    }, [key]);
 
     return (
         <>
-            <ProductPageLayout
-                productName={data.productName}
-                productPrice={data.productPrice}
-                productDiscountPrice={data.productDiscountPrice}
-                spiciness={data.spiciness}
-                ingredients={data.ingredients}
-                picPaths={data.picPaths}
-            />
+            {!pathError && (
+                <ProductPageLayout
+                    productName={data.productName}
+                    productPrice={data.productPrice}
+                    productDiscountPrice={data.productDiscountPrice}
+                    spiciness={data.spiciness}
+                    ingredients={data.ingredients}
+                    picPaths={data.picPaths}
+                />
+            )}
             <ToastContainer {...toastProps} position="bottom-center" />
         </>
     );
