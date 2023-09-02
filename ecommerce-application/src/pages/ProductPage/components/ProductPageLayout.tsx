@@ -1,11 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable max-len */
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { Attribute } from '@commercetools/platform-sdk';
 import CustomizedButton from '../../../components/ui/CustomizedButton';
 import QuantitySelector from '../../../components/ui/QuantitySelector';
 import Spicy from '../../../assets/img/spiciness.svg';
 import ImageSlider from './ImageSlider';
+import PortionButton from './PortionButton';
 
 export interface IProductPageLayoutProps {
     productName?: string;
@@ -13,20 +15,26 @@ export interface IProductPageLayoutProps {
     productDiscountPrice?: number;
     ingredients?: string;
     picPaths?: string[];
-    spiciness?: boolean | undefined;
+    attributes?: Attribute[] | undefined;
+    variants?: IProductPageLayoutProps[] | never[];
 }
-// grid mt-5 auto-rows-min items-start row-auto m-2 gap-3 sm:grid-cols-2 max-sm:grid-rows-4 max-w-[40vw] max-sm:max-w-[90vw]
+
 const gridStyle = {
-    minWidth: '40vw',
     display: 'grid',
-    gridTemplateColumns: 'minmax(100px, 150px) minmax(150px, 500px)',
+    gridTemplateColumns: 'minmax(120px, 1fr) minmax(150px, 400px)',
     gap: '10px',
     margin: '10px',
     placeContent: 'center start',
 };
 
 export function ProductPageLayout(props: IProductPageLayoutProps) {
-    const { productName, productPrice, productDiscountPrice, ingredients, picPaths, spiciness } = props;
+    const { productName, productPrice, productDiscountPrice, ingredients, picPaths, attributes, variants } = props;
+    const spiciness = attributes?.find((attribute) => attribute.name === 'spiciness')?.value;
+    const portion = attributes?.find((attribute) => attribute.name === 'portion')?.value.key;
+    const portionVariants = variants?.length
+        ? variants.map((variant) => variant.attributes?.find((attr) => attr.name === 'portion')?.value.key)
+        : undefined;
+    const portions = portionVariants ? [portion, ...portionVariants] : [portion];
     const [messageOnLimit, setMessageOnLimit] = useState('');
     const handleOrderLimit = (isLimit: boolean) => {
         isLimit
@@ -35,6 +43,25 @@ export function ProductPageLayout(props: IProductPageLayoutProps) {
               )
             : setMessageOnLimit('');
     };
+    const productPrices = variants?.length
+        ? [productPrice, ...variants.map((variant) => variant.productPrice)]
+        : [productPrice];
+    const productDiscountPrices = variants?.length
+        ? [productDiscountPrice, ...variants.map((variant) => variant.productDiscountPrice)]
+        : [productDiscountPrice];
+
+    const [price, setPrice] = useState(productPrice);
+    const [discountPrice, setDiscountPrice] = useState(productDiscountPrice);
+    useEffect(() => {
+        setPrice(productPrice);
+        setDiscountPrice(productDiscountPrice);
+    }, [productPrice, productDiscountPrice]);
+    const [activeButton, setActiveButton] = useState(0);
+    const handleButtonClick = (index: number) => {
+        setActiveButton(index);
+        setPrice(productPrices[index]);
+        setDiscountPrice(productDiscountPrices[index]);
+    };
 
     return (
         <div className="max-w-full">
@@ -42,44 +69,69 @@ export function ProductPageLayout(props: IProductPageLayoutProps) {
                 {productName}
             </h3>
             <div className="bg-white flex items-center max-sm:justify-center max-sm:flex-col justify-start">
-                <div className="text-center transition-transform transform max-w-2xl max-sm:w-[90%] max-sm:mt-4">
+                <div className="basis-2/5 max-sm:w-[90%] max-sm:mt-4">
                     <ImageSlider images={picPaths} productName={productName} />
                 </div>
-                <div style={gridStyle}>
-                    <h4>Ingredients</h4>
-                    {ingredients !== '' && <p className="font-serif text-xl">{ingredients}</p>}
+                <div style={gridStyle} className="flex-2 flex-grow-1">
+                    <h4 className="items-center">Ingredients</h4>
+                    {ingredients !== '' && <p className="font-serif items-center text-xl">{ingredients}</p>}
                     <h4>Price </h4>
                     <div className="flex items-center text-xl flex-wrap">
                         {productDiscountPrice !== 0 && (
                             <span className="mr-3 font-medium" style={{ textDecoration: 'line-through' }}>
-                                {productPrice}
+                                {price} €
                             </span>
                         )}
-                        {!productDiscountPrice && <p className="font-medium">{productPrice} €</p>}
+                        {!productDiscountPrice && <p className="font-medium">{price} €</p>}
                         {productDiscountPrice !== 0 && (
-                            <p className="font-medium text-mainRed whitespace-nowrap">{productDiscountPrice} €</p>
+                            <p className="font-medium text-mainRed whitespace-nowrap">{discountPrice} €</p>
                         )}
                     </div>
-                    <h4>Spiciness </h4>
-                    <div className="max-[550px]:text-center">
-                        {spiciness === true && (
-                            <img
-                                className="w-[35px] mt-1 border border-mainRed p-1 rounded-full max-[550px]:text-center"
-                                src={Spicy}
-                                alt="spicy icon"
-                            />
-                        )}
-                        {spiciness === false && (
-                            <div className="relative mt-1 mb-4">
-                                <img
-                                    className="w-[30px] border border-mainRed p-1 rounded-full"
-                                    src={Spicy}
-                                    alt="spicy icon"
-                                />
-                                <span className="absolute left-3 -top-1 transform rotate-45 h-[35px] border-2 rounded border-mainRed" />
+
+                    {spiciness !== undefined && (
+                        <>
+                            <h4 className="inline-block items-center">Spiciness </h4>
+                            <div className="max-[550px]:text-center">
+                                {spiciness === true && (
+                                    <img
+                                        className="w-[35px] mt-1 border border-mainRed p-1 rounded-full max-[550px]:text-center"
+                                        src={Spicy}
+                                        alt="spicy icon"
+                                    />
+                                )}
+                                {spiciness === false && (
+                                    <div className="relative mt-1 mb-4">
+                                        <img
+                                            className="w-[30px] border border-mainRed p-1 rounded-full"
+                                            src={Spicy}
+                                            alt="spicy icon"
+                                        />
+                                        <span className="absolute left-3 -top-1 transform rotate-45 h-[35px] border-2 rounded border-mainRed" />
+                                    </div>
+                                )}
                             </div>
-                        )}
-                    </div>
+                        </>
+                    )}
+
+                    {portions && (
+                        <>
+                            <h4>Portion </h4>
+                            <div className="flex justify-start gap-2">
+                                {portions?.length &&
+                                    portions.map((name, index) => {
+                                        const key = index;
+                                        return (
+                                            <PortionButton
+                                                name={name}
+                                                active={activeButton === key}
+                                                key={key}
+                                                onClick={() => handleButtonClick(key)}
+                                            />
+                                        );
+                                    })}
+                            </div>
+                        </>
+                    )}
 
                     <QuantitySelector onQuantityReached={handleOrderLimit} />
                     <p className="text-xs text-left max-w-[400px] max-sm:order-last max-sm:col-span-2">
@@ -115,5 +167,6 @@ ProductPageLayout.defaultProps = {
     productDiscountPrice: 0,
     ingredients: 'No ingredient details provided',
     picPaths: [],
-    spiciness: undefined,
+    attributes: undefined,
+    variants: [],
 };

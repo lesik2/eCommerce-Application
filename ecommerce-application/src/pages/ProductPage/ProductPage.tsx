@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import { useNavigate, useParams } from 'react-router-dom';
+import { ProductVariant } from '@commercetools/platform-sdk';
 import 'react-toastify/dist/ReactToastify.css';
 import { ProductPageLayout, IProductPageLayoutProps } from './components/ProductPageLayout';
 import handleFlows from '../../services/handleFlows';
@@ -27,7 +28,8 @@ function ProductPage() {
         productDiscountPrice: 0,
         ingredients: '',
         picPaths: [],
-        spiciness: false,
+        attributes: undefined,
+        variants: undefined,
     });
     useEffect(() => {
         // eslint-disable-next-line consistent-return
@@ -51,29 +53,28 @@ function ProductPage() {
                 if (res) {
                     const mainData = res.body;
                     const productName = mainData.name['en-US'];
-                    const prices = mainData.masterVariant.prices?.find((price) => price.country === 'PT');
-                    const productPrice = prices
-                        ? prices.value.centAmount / 10 ** prices.value.fractionDigits
-                        : undefined;
-                    const productDiscountPrice = prices?.discounted
-                        ? prices.discounted.value.centAmount / 10 ** prices.discounted.value.fractionDigits
-                        : undefined;
                     const ingredients = mainData.description ? mainData.description['en-US'] : undefined;
-                    const images = mainData.masterVariant.images ? mainData.masterVariant.images : undefined;
-                    const picPaths = images ? images.map((el) => el.url) : [];
-                    const { attributes } = mainData.masterVariant;
-                    const spicinessAttribute = attributes
-                        ? attributes.find((attr) => attr.name === 'spiciness')
-                        : undefined;
-                    const spiciness = spicinessAttribute ? spicinessAttribute.value : undefined;
-                    setData({
-                        productName,
-                        productPrice,
-                        productDiscountPrice,
-                        ingredients,
-                        picPaths,
-                        spiciness,
-                    });
+                    const getProductData = (variant: ProductVariant) => {
+                        const prices = variant.prices?.find((price) => price.country === 'PT');
+                        const productPrice = prices
+                            ? prices.value.centAmount / 10 ** prices.value.fractionDigits
+                            : undefined;
+                        const productDiscountPrice = prices?.discounted
+                            ? prices.discounted.value.centAmount / 10 ** prices.discounted.value.fractionDigits
+                            : undefined;
+                        const images = variant.images ? variant.images : undefined;
+                        const picPaths = images ? images.map((el) => el.url) : [];
+                        const { attributes } = variant;
+                        return { productPrice, productDiscountPrice, picPaths, attributes };
+                    };
+                    const masterProductData = { productName, ingredients, ...getProductData(mainData.masterVariant) };
+                    if (!mainData.variants.length) {
+                        setData(masterProductData);
+                    } else {
+                        const variantsProductData = mainData.variants.map((product) => getProductData(product));
+                        const combinedProductData = { variants: variantsProductData, ...masterProductData };
+                        setData(combinedProductData);
+                    }
                 }
             })
             .catch((error) => {
@@ -91,9 +92,10 @@ function ProductPage() {
                     productName={data.productName}
                     productPrice={data.productPrice}
                     productDiscountPrice={data.productDiscountPrice}
-                    spiciness={data.spiciness}
+                    attributes={data.attributes}
                     ingredients={data.ingredients}
                     picPaths={data.picPaths}
+                    variants={data.variants}
                 />
             )}
             <ToastContainer {...toastProps} position="bottom-center" />
