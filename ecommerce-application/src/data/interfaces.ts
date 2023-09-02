@@ -1,5 +1,5 @@
 import LoginStatus from './enums';
-import { InputTypes } from './types';
+import { InputTypes, QueryArgs } from './types';
 
 export interface IInput {
     id: string;
@@ -76,6 +76,6 @@ export interface IModalContext {
 }
 
 export interface IProductsContext {
-    productsQuery: string;
-    setProductsQuery: (query: string) => void;
+    productsQuery: QueryArgs | null;
+    setProductsQuery: (query: QueryArgs | null) => void;
 }

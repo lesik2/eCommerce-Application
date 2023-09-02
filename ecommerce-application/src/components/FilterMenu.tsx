@@ -1,7 +1,9 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import { TextField } from '@mui/material';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+import { ProductsContext } from '../context/ProductsContext';
+import { SortTypes } from '../data/types';
 import CustomizedButton from './ui/CustomizedButton';
 import CreateIconButton from './ui/IconButton';
 import PriceSlider from './ui/PriceSlider';
@@ -14,6 +16,8 @@ type FilterMenuProps = {
 export default function FilterMenu(props: FilterMenuProps) {
     const { onClose } = props;
 
+    const { setProductsQuery } = useContext(ProductsContext);
+
     const minPrice = 333;
     const maxPrice = 4343;
 
@@ -21,9 +25,9 @@ export default function FilterMenu(props: FilterMenuProps) {
 
     const [sliderValue, setSlider] = useState<number[]>([minPrice, maxPrice]);
 
-    const [sortName, setSortName] = useState<string>('nosort');
+    const [sortName, setSortName] = useState<SortTypes>('nosort');
 
-    const [sortPrice, setSortPrice] = useState<string>('nosort');
+    const [sortPrice, setSortPrice] = useState<SortTypes>('nosort');
 
     const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearch(event.target.value);
@@ -34,6 +38,21 @@ export default function FilterMenu(props: FilterMenuProps) {
         setSortName('nosort');
         setSortPrice('nosort');
         setSearch('');
+    };
+
+    const onFilter = () => {
+        setProductsQuery({
+            filter: [
+                '',
+                minPrice + maxPrice !== sliderValue[0] + sliderValue[1]
+                    ? `variants.price.centAmount:range (${sliderValue[0]} to ${sliderValue[1]})`
+                    : '',
+            ],
+            sort: [
+                sortName !== 'nosort' ? `name.en-US ${sortName}` : '',
+                sortPrice !== 'nosort' ? `price ${sortPrice}` : '',
+            ],
+        });
     };
 
     return (
@@ -67,7 +86,11 @@ export default function FilterMenu(props: FilterMenuProps) {
                 </div>
             </div>
             <div className="flex justify-around">
-                <CustomizedButton sx={{ width: 120, fontSize: 15, marginTop: 4 }} variant="contained">
+                <CustomizedButton
+                    onClick={onFilter}
+                    sx={{ width: 120, fontSize: 15, marginTop: 4 }}
+                    variant="contained"
+                >
                     FILTER
                 </CustomizedButton>
                 <CustomizedButton onClick={onReset} sx={{ width: 120, fontSize: 15, marginTop: 4 }} variant="contained">

@@ -1,20 +1,18 @@
 import React, { createContext, useState } from 'react';
-import { QUERIES } from '../data/data';
 /* eslint-disable react/jsx-no-constructed-context-values */
 import { IProductsContext } from '../data/interfaces';
+import { QueryArgs } from '../data/types';
 
 export const ProductsContext = createContext<IProductsContext>({
-    productsQuery: QUERIES.NO_QUERY,
+    productsQuery: null,
     setProductsQuery: () => {},
 });
 
 export function ProductsState({ children }: { children: React.ReactNode }) {
-    const [productsQuery, setProducts] = useState(QUERIES.NO_QUERY);
+    const [productsQuery, setProducts] = useState<QueryArgs | null>(null);
 
-    const setProductsQuery = (query: string) => {
+    const setProductsQuery = (query: QueryArgs | null) => {
         setProducts(query);
-        console.log('inside');
-        console.log(query);
     };
 
     return <ProductsContext.Provider value={{ productsQuery, setProductsQuery }}>{children}</ProductsContext.Provider>;
