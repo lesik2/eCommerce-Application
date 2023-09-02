@@ -22,7 +22,10 @@ function Products(props: ProductsProps) {
         try {
             let res: ClientResponse;
             if (q.filter === QUERIES.MENU_QUERY.filter) {
-                res = await handleFlows().productProjections().get().execute();
+                res = await handleFlows()
+                    .productProjections()
+                    .get({ queryArgs: { limit: 30 } })
+                    .execute();
             } else {
                 res = await handleFlows()
                     .productProjections()
