@@ -1,11 +1,11 @@
 import { ClientResponse } from '@commercetools/platform-sdk';
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef } from 'react';
 import { ProductsContext } from '../context/ProductsContext';
 import { QUERIES } from '../data/data';
 import { QueryArgs } from '../data/types';
 import handleFlows from '../services/handleFlows';
 import processProducts from '../services/processProducts';
-import { IProductCardProps, ProductCard } from './ProductCard';
+import { ProductCard } from './ProductCard';
 
 interface ProductsProps {
     header: string;
@@ -13,9 +13,8 @@ interface ProductsProps {
 }
 
 function Products(props: ProductsProps) {
-    const { productsQuery, setProductsQuery } = useContext(ProductsContext);
+    const { productsQuery, setProductsQuery, data, setData } = useContext(ProductsContext);
     const { header, query } = props;
-    const [data, setData] = useState<IProductCardProps[]>([]);
     const currentPage = useRef('');
 
     // eslint-disable-next-line consistent-return
@@ -32,6 +31,7 @@ function Products(props: ProductsProps) {
                         queryArgs: {
                             filter: q.filter,
                             sort: q.sort,
+                            'text.en-us': q.search,
                         },
                     })
                     .execute();
@@ -57,7 +57,11 @@ function Products(props: ProductsProps) {
     // &${productsQuery}
     useEffect(() => {
         if (productsQuery !== null) {
-            const req: QueryArgs = { filter: [currentPage.current, ...productsQuery.filter], sort: productsQuery.sort };
+            const req: QueryArgs = {
+                filter: [currentPage.current, ...productsQuery.filter],
+                sort: productsQuery.sort,
+                search: productsQuery.search,
+            };
             fetchData(req)
                 .then((res) => {
                     if (res) {

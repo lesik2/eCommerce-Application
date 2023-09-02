@@ -24,5 +24,6 @@ export type SortTypes = 'nosort' | 'asc' | 'desc';
 
 export type QueryArgs = {
     filter: string | string[];
+    search?: string;
     sort?: string | string[];
 };

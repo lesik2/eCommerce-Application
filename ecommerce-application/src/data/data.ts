@@ -165,7 +165,7 @@ export const NavLinks = [
 ];
 
 export const QUERIES = {
-    MENU_QUERY: { filter: Math.floor(Math.random() * 100000).toString() },
+    MENU_QUERY: { filter: '' },
     POKE_QUERY: { filter: 'categories.id:subtree("09773f55-97a1-4d2b-bf6d-8c2b4d6493b7")' },
     SOUP_QUERY: { filter: 'categories.id:subtree("c9858d51-af4c-4836-b003-e4eda2ac5853")' },
     BEVERAGES_QUERY: { filter: 'categories.id:subtree("a70bf52f-f970-4d88-8d47-9498fac1638d")' },

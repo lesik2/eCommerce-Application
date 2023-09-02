@@ -1,3 +1,4 @@
+import { IProductCardProps } from '../components/ProductCard';
 import LoginStatus from './enums';
 import { InputTypes, QueryArgs } from './types';
 
@@ -78,4 +79,6 @@ export interface IModalContext {
 export interface IProductsContext {
     productsQuery: QueryArgs | null;
     setProductsQuery: (query: QueryArgs | null) => void;
+    data: IProductCardProps[];
+    setData: (data: IProductCardProps[]) => void;
 }
