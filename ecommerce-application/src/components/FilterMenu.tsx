@@ -1,7 +1,8 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import { TextField } from '@mui/material';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
+import { ModalContext } from '../context/ModalContext';
 import { ProductsContext } from '../context/ProductsContext';
 import { SortTypes } from '../data/types';
 import CustomizedButton from './ui/CustomizedButton';
@@ -16,14 +17,18 @@ type FilterMenuProps = {
 export default function FilterMenu(props: FilterMenuProps) {
     const { onClose } = props;
 
-    const { setProductsQuery } = useContext(ProductsContext);
+    const { setProductsQuery, data } = useContext(ProductsContext);
 
-    const minPrice = 333;
-    const maxPrice = 4343;
+    const { openFilterMenu, closeFilterMenu } = useContext(ModalContext);
+
+    let pricesArray = data.map((item) => item.productPrice as number);
+
+    const minPrice = useRef(Math.min(...pricesArray));
+    const maxPrice = useRef(Math.max(...pricesArray));
 
     const [searchValue, setSearch] = useState('');
 
-    const [sliderValue, setSlider] = useState<number[]>([minPrice, maxPrice]);
+    const [sliderValue, setSlider] = useState<number[]>([minPrice.current, maxPrice.current]);
 
     const [sortName, setSortName] = useState<SortTypes>('nosort');
 
@@ -34,7 +39,7 @@ export default function FilterMenu(props: FilterMenuProps) {
     };
 
     const onReset = () => {
-        setSlider([minPrice, maxPrice]);
+        setSlider([minPrice.current, maxPrice.current]);
         setSortName('nosort');
         setSortPrice('nosort');
         setSearch('');
@@ -44,16 +49,24 @@ export default function FilterMenu(props: FilterMenuProps) {
         setProductsQuery({
             filter: [
                 '',
-                minPrice + maxPrice !== sliderValue[0] + sliderValue[1]
-                    ? `variants.price.centAmount:range (${sliderValue[0]} to ${sliderValue[1]})`
+                minPrice.current + maxPrice.current !== sliderValue[0] + sliderValue[1]
+                    ? `variants.price.centAmount:range (${sliderValue[0] * 100} to ${sliderValue[1] * 100})`
                     : '',
             ],
+            search: searchValue,
             sort: [
                 sortName !== 'nosort' ? `name.en-US ${sortName}` : '',
                 sortPrice !== 'nosort' ? `price ${sortPrice}` : '',
             ],
         });
+        closeFilterMenu();
     };
+
+    useEffect(() => {
+        pricesArray = data.map((item) => item.productPrice as number);
+        minPrice.current = Math.min(...pricesArray);
+        maxPrice.current = Math.max(...pricesArray);
+    }, [openFilterMenu]);
 
     return (
         <aside className="absolute top-0 left-0 w-96 h-full py-10 px-5 bg-white/95">
@@ -74,7 +87,12 @@ export default function FilterMenu(props: FilterMenuProps) {
                 <div className="w-full px-4">
                     <h2 className="text-center text-2xl">Filter</h2>
                     <h3 className="text-left mb-8">Price:</h3>
-                    <PriceSlider state={sliderValue} setState={setSlider} min={minPrice} max={maxPrice} />
+                    <PriceSlider
+                        state={sliderValue}
+                        setState={setSlider}
+                        min={minPrice.current}
+                        max={maxPrice.current}
+                    />
                 </div>
 
                 <div className="w-full flex flex-col items-center px-4">

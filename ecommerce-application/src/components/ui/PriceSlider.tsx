@@ -14,7 +14,7 @@ export default function PriceSlider(props: PriceSliderProps) {
         setState(newValue as number[]);
     };
 
-    const calculateValue = (value: number) => Math.floor((value / max) * max);
+    const calculateValue = (value: number) => +((value / max) * max).toFixed(1);
 
     return (
         <Slider
@@ -22,6 +22,7 @@ export default function PriceSlider(props: PriceSliderProps) {
             onChange={handleSliderChange}
             valueLabelDisplay="on"
             scale={calculateValue}
+            step={0.1}
             min={min}
             max={max}
         />
