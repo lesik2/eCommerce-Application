@@ -1,27 +1,28 @@
 import { ClientResponse } from '@commercetools/platform-sdk';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { ProductsContext } from '../context/ProductsContext';
 import { QUERIES } from '../data/data';
+import { QueryArgs } from '../data/types';
 import handleFlows from '../services/handleFlows';
 import processProducts from '../services/processProducts';
 import { IProductCardProps, ProductCard } from './ProductCard';
 
 interface ProductsProps {
     header: string;
-    query: string;
+    query: QueryArgs;
 }
 
 function Products(props: ProductsProps) {
     const { productsQuery, setProductsQuery } = useContext(ProductsContext);
     const { header, query } = props;
-
     const [data, setData] = useState<IProductCardProps[]>([]);
+    const currentPage = useRef('');
 
     // eslint-disable-next-line consistent-return
-    const fetchData = async () => {
+    const fetchData = async (q: QueryArgs) => {
         try {
             let res: ClientResponse;
-            if (productsQuery === QUERIES.MENU_QUERY) {
+            if (q.filter === QUERIES.MENU_QUERY.filter) {
                 res = await handleFlows().productProjections().get().execute();
             } else {
                 res = await handleFlows()
@@ -29,7 +30,8 @@ function Products(props: ProductsProps) {
                     .search()
                     .get({
                         queryArgs: {
-                            filter: productsQuery,
+                            filter: q.filter,
+                            sort: q.sort,
                         },
                     })
                     .execute();
@@ -42,15 +44,21 @@ function Products(props: ProductsProps) {
     };
 
     useEffect(() => {
-        console.log('render');
-        console.log(query);
-        setProductsQuery(query);
+        fetchData(query)
+            .then((res) => {
+                if (res) {
+                    const processedProducts = processProducts(res);
+                    setData(processedProducts);
+                }
+            })
+            .catch(console.log);
+        currentPage.current = query.filter as string;
     }, []);
-
+    // &${productsQuery}
     useEffect(() => {
-        console.log(productsQuery);
-        if (productsQuery !== QUERIES.NO_QUERY) {
-            fetchData()
+        if (productsQuery !== null) {
+            const req: QueryArgs = { filter: [currentPage.current, ...productsQuery.filter], sort: productsQuery.sort };
+            fetchData(req)
                 .then((res) => {
                     if (res) {
                         const processedProducts = processProducts(res);
@@ -59,6 +67,9 @@ function Products(props: ProductsProps) {
                 })
                 .catch(console.log);
         }
+        return () => {
+            setProductsQuery(null);
+        };
     }, [productsQuery]);
     return (
         <>
@@ -78,7 +89,7 @@ function Products(props: ProductsProps) {
                         />
                     ))
                 ) : (
-                    <p>Loading...</p>
+                    <p className="text-center text-bgMenu animate-pulse text-2xl">Loading...</p>
                 )}
             </div>
         </>
