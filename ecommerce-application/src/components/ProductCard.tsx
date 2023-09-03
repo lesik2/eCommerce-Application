@@ -26,7 +26,7 @@ export function ProductCard(props: IProductCardProps) {
     };
 
     return (
-        <div className="max-w-[23rem] p-2">
+        <div className="max-w-[24rem] p-2 place-self-center">
             <div className="group relative flex items-center flex-col">
                 <div className="overflow-hidden text-center h-3/4 w-3/4 transition-transform transform group-hover:opacity-75">
                     <img
@@ -43,11 +43,6 @@ export function ProductCard(props: IProductCardProps) {
                         </a>
                     </h3>
                     {productDiscountPrice !== 0 && (
-                        <p className="text-2xl ml-2 font-medium" style={{ textDecoration: 'line-through' }}>
-                            {productPrice}
-                        </p>
-                    )}
-                    {productDiscountPrice !== 0 && (
                         <>
                             <p className="text-2xl ml-2 font-medium" style={{ textDecoration: 'line-through' }}>
                                 {productPrice}
@@ -57,8 +52,10 @@ export function ProductCard(props: IProductCardProps) {
                             </p>
                         </>
                     )}
-                    {!productDiscountPrice && <p className="text-2xl ml-2 font-medium">{productPrice} €</p>}
-                    {spiciness === true && <Image className="" image={Chili} alt="chili" />}
+                    {!productDiscountPrice && (
+                        <p className="text-2xl ml-2 font-medium whitespace-nowrap">{productPrice} €</p>
+                    )}
+                    {spiciness === true && <Image className="w-10" image={Chili} alt="chili" />}
                 </div>
                 {ingredients !== '' && (
                     <p

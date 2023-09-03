@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import { ClientResponse } from '@commercetools/platform-sdk';
 import { useContext, useEffect, useRef } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
@@ -92,7 +93,7 @@ function Products(props: ProductsProps) {
     return (
         <>
             <h1 className="mt-4 text-2xl text-center">{header}</h1>
-            <div className="mt-2 px-5 grid grid-cols-1 justify-items-center gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
+            <div className="mt-2 px-5 grid grid-cols-1 justify-around gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
                 {data.length > 0 ? (
                     data.map((product) => (
                         <ProductCard
