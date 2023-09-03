@@ -31,6 +31,12 @@ function Products(props: ProductsProps) {
     const currentPage = useRef('');
     const errorMessage = useRef('');
 
+    const errorHandler = (e: unknown) => {
+        const err = e as Error;
+        errorMessage.current = err.message;
+        setLoadState(LoadStates.error);
+    };
+
     // eslint-disable-next-line consistent-return
     const fetchData = async (q: QueryArgs) => {
         try {
@@ -57,10 +63,7 @@ function Products(props: ProductsProps) {
 
             return res;
         } catch (error) {
-            // console.log(error);
-            const err = error as Error;
-            errorMessage.current = err.message;
-            setLoadState(LoadStates.error);
+            errorHandler(error);
         }
     };
 
@@ -101,7 +104,7 @@ function Products(props: ProductsProps) {
                     responseHandler(res);
                 }
             })
-            .catch(console.log);
+            .catch(errorHandler);
         currentPage.current = query.filter as string;
     }, []);
     // &${productsQuery}
@@ -123,7 +126,7 @@ function Products(props: ProductsProps) {
                         responseHandler(res);
                     }
                 })
-                .catch(console.log);
+                .catch(errorHandler);
         }
         return () => {
             setProductsQuery(null);
