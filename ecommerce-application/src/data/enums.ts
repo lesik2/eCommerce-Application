@@ -7,4 +7,5 @@ export enum LoadStates {
     'loading',
     'success',
     'notfound',
+    'error',
 }

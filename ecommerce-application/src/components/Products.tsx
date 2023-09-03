@@ -29,6 +29,7 @@ function Products(props: ProductsProps) {
     // const [searchButtonState, setSearchButton] = useState(true);
 
     const currentPage = useRef('');
+    const errorMessage = useRef('');
 
     // eslint-disable-next-line consistent-return
     const fetchData = async (q: QueryArgs) => {
@@ -56,7 +57,10 @@ function Products(props: ProductsProps) {
 
             return res;
         } catch (error) {
-            console.log(error);
+            // console.log(error);
+            const err = error as Error;
+            errorMessage.current = err.message;
+            setLoadState(LoadStates.error);
         }
     };
 
@@ -168,6 +172,9 @@ function Products(props: ProductsProps) {
 
                 {loadState === LoadStates.notfound && (
                     <p className="text-center text-bgMenu text-2xl">Products not found</p>
+                )}
+                {loadState === LoadStates.error && (
+                    <p className="text-center text-bgMenu text-2xl">{errorMessage.current}</p>
                 )}
             </div>
             {filterMenuStatus && (
