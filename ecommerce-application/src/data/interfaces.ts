@@ -1,5 +1,5 @@
 import { IProductCardProps } from '../components/ProductCard';
-import LoginStatus from './enums';
+import { LoginStatus } from './enums';
 import { InputTypes, QueryArgs } from './types';
 
 export interface IInput {

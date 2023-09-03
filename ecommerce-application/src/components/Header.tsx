@@ -10,7 +10,7 @@ import { HeaderData } from '../data/data';
 import { ModalContext } from '../context/ModalContext';
 import Modal from './Modal';
 import { LoginContext } from '../context/LoginContext';
-import LoginStatus from '../data/enums';
+import { LoginStatus } from '../data/enums';
 import logout from '../services/logout';
 
 const headerBg = 'bg-gradient-menu from-bgStart from-0% via-bgMid via-90% to-bgEnd to-100%';

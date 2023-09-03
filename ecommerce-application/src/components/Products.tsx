@@ -1,7 +1,8 @@
 import { ClientResponse } from '@commercetools/platform-sdk';
-import { useContext, useEffect, useRef } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { ProductsContext } from '../context/ProductsContext';
 import { QUERIES } from '../data/data';
+import { LoadStates } from '../data/enums';
 import { QueryArgs } from '../data/types';
 import handleFlows from '../services/handleFlows';
 import processProducts from '../services/processProducts';
@@ -15,6 +16,7 @@ interface ProductsProps {
 function Products(props: ProductsProps) {
     const { productsQuery, setProductsQuery, data, setData } = useContext(ProductsContext);
     const { header, query } = props;
+    const [loadState, setLoadState] = useState(LoadStates.loading);
     const currentPage = useRef('');
 
     // eslint-disable-next-line consistent-return
@@ -46,12 +48,21 @@ function Products(props: ProductsProps) {
         }
     };
 
+    function responseHandler(res: ClientResponse) {
+        const processedProducts = processProducts(res);
+        if (processedProducts.length === 0) {
+            setLoadState(LoadStates.notfound);
+        } else if (processedProducts.length > 0) {
+            setData(processedProducts);
+            setLoadState(LoadStates.success);
+        }
+    }
+
     useEffect(() => {
         fetchData(query)
             .then((res) => {
                 if (res) {
-                    const processedProducts = processProducts(res);
-                    setData(processedProducts);
+                    responseHandler(res);
                 }
             })
             .catch(console.log);
@@ -59,6 +70,7 @@ function Products(props: ProductsProps) {
     }, []);
     // &${productsQuery}
     useEffect(() => {
+        setLoadState(LoadStates.loading);
         if (productsQuery !== null) {
             const req: QueryArgs = {
                 filter: [currentPage.current, ...productsQuery.filter],
@@ -68,8 +80,7 @@ function Products(props: ProductsProps) {
             fetchData(req)
                 .then((res) => {
                     if (res) {
-                        const processedProducts = processProducts(res);
-                        setData(processedProducts);
+                        responseHandler(res);
                     }
                 })
                 .catch(console.log);
@@ -82,7 +93,27 @@ function Products(props: ProductsProps) {
         <>
             <h1 className="mt-4 text-2xl text-center">{header}</h1>
             <div className="mt-2 px-5 grid grid-cols-1 justify-items-center gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
-                {data.length > 0 ? (
+                {/* {data.length > 0
+                    ? data.map((product) => (
+                          <ProductCard
+                              key={product.productName}
+                              productName={product.productName}
+                              productPrice={product.productPrice}
+                              productDiscountPrice={product.productDiscountPrice}
+                              spiciness={product.spiciness}
+                              ingredients={product.ingredients}
+                              productPath={product.productPath}
+                              picPath={product.picPath}
+                          />
+                      ))
+                    : loadState === LoadStates.loading && (
+                          <p className="text-center text-bgMenu animate-pulse text-2xl">Loading...</p>
+                      )} */}
+                {loadState === LoadStates.loading && (
+                    <p className="text-center text-bgMenu animate-pulse text-2xl">Loading...</p>
+                )}
+
+                {loadState === LoadStates.success &&
                     data.map((product) => (
                         <ProductCard
                             key={product.productName}
@@ -94,9 +125,10 @@ function Products(props: ProductsProps) {
                             productPath={product.productPath}
                             picPath={product.picPath}
                         />
-                    ))
-                ) : (
-                    <p className="text-center text-bgMenu animate-pulse text-2xl">Loading...</p>
+                    ))}
+
+                {loadState === LoadStates.notfound && (
+                    <p className="text-center text-bgMenu text-2xl">Products not found</p>
                 )}
             </div>
         </>
