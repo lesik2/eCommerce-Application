@@ -3,22 +3,19 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { ProductCard, IProductCardProps } from '../../components/ProductCard';
 import handleFlows from '../../services/handleFlows';
-
-const toastProps = {
-    autoClose: 3000,
-    hideProgressBar: true,
-    newestOnTop: false,
-    closeOnClick: true,
-    rtl: false,
-    pauseOnFocusLoss: true,
-    draggable: true,
-    pauseOnHover: true,
-};
+import { toastProps } from '../../data/data';
 
 // eslint-disable-next-line consistent-return
 const fetchData = async () => {
     try {
-        const res = await handleFlows().productProjections().get().execute();
+        const res = await handleFlows()
+            .productProjections()
+            .get({
+                queryArgs: {
+                    limit: 30,
+                },
+            })
+            .execute();
         return res;
     } catch (error) {
         toast.error(error instanceof Error ? error.message : 'unexpected error in fetch product data', toastProps);
@@ -80,6 +77,7 @@ function Menu() {
                 {data.length > 0 ? (
                     data.map((product) => (
                         <ProductCard
+                            key={Math.random()}
                             productName={product.productName}
                             productPrice={product.productPrice}
                             productDiscountPrice={product.productDiscountPrice}

@@ -34,7 +34,8 @@ function QuantitySelector({ onQuantityReached }: QuantitySelectorProps) {
     };
 
     return (
-        <div className="ml-2 bg-white rounded-md font-serif text-2xl flex items-center">
+        // eslint-disable-next-line max-len
+        <div className="ml-2 max-h-[40px] max-w-[105px] bg-white rounded-md font-serif text-xl flex items-center shadow-[0_4px_4px_0px_rgba(0,0,0,0.3)]">
             <IconButton
                 sx={[
                     { '&&': { padding: '0', borderRadius: '6px 0 0 6px', height: '40px', paddingRight: '3px' } },

@@ -8,6 +8,7 @@ import QuantitySelector from '../../../components/ui/QuantitySelector';
 import Spicy from '../../../assets/img/spiciness.svg';
 import ImageSlider from './ImageSlider';
 import PortionButton from './PortionButton';
+import { MessageOnLimit } from '../../../data/data';
 
 export interface IProductPageLayoutProps {
     productName?: string;
@@ -37,11 +38,7 @@ export function ProductPageLayout(props: IProductPageLayoutProps) {
     const portions = portionVariants ? [portion, ...portionVariants] : [portion];
     const [messageOnLimit, setMessageOnLimit] = useState('');
     const handleOrderLimit = (isLimit: boolean) => {
-        isLimit
-            ? setMessageOnLimit(
-                  `Planning a big order? Connect with us directly for special arrangements and personalized assistance. Let's make your meal for a larger group memorable!`
-              )
-            : setMessageOnLimit('');
+        isLimit ? setMessageOnLimit(MessageOnLimit) : setMessageOnLimit('');
     };
     const productPrices = variants?.length
         ? [productPrice, ...variants.map((variant) => variant.productPrice)]
@@ -113,7 +110,7 @@ export function ProductPageLayout(props: IProductPageLayoutProps) {
                         </>
                     )}
 
-                    {portions && (
+                    {portion && (
                         <>
                             <h4>Portion </h4>
                             <div className="flex justify-start gap-2">

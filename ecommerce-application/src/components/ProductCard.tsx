@@ -6,9 +6,10 @@ import CustomizedButton from './ui/CustomizedButton';
 import QuantitySelector from './ui/QuantitySelector';
 import Chili from '../assets/img/chili.svg';
 import Image from './ui/Image';
+import { MessageOnLimit } from '../data/data';
 
 export interface IProductCardProps {
-    productName: string;
+    productName?: string;
     productPrice?: number;
     productDiscountPrice?: number;
     ingredients?: string;
@@ -21,41 +22,43 @@ export function ProductCard(props: IProductCardProps) {
     const { productName, productPrice, productDiscountPrice, ingredients, productPath, picPath, spiciness } = props;
     const [messageOnLimit, setMessageOnLimit] = useState('');
     const handleOrderLimit = (isLimit: boolean) => {
-        isLimit
-            ? setMessageOnLimit(
-                  `Planning a big order? Connect with us directly for special arrangements and personalized assistance. Let's make your meal for a larger group memorable!`
-              )
-            : setMessageOnLimit('');
+        isLimit ? setMessageOnLimit(MessageOnLimit) : setMessageOnLimit('');
     };
 
     return (
-        <div className="max-w-[22rem] p-2">
+        <div className="max-w-[23rem] p-2">
             <div className="group relative flex items-center flex-col">
                 <div className="overflow-hidden text-center h-3/4 w-3/4 transition-transform transform group-hover:opacity-75">
                     <img
-                        className="object-top	mx-auto w-3/4 aspect-w-1 transition-transform origin-bottom group-hover:scale-105"
+                        className="object-top mx-auto w-3/4 aspect-w-1 transition-transform origin-bottom group-hover:scale-105"
                         src={picPath}
-                        alt=""
+                        alt={productName}
                     />
                 </div>
                 <div className="flex justify-center items-center">
-                    <h3 className="text-2xl tracking-tighter whitespace-nowrap overflow-hidden">
-                        <a href={productPath}>
+                    <h3 className="text-2xl tracking-tighter whitespace-nowrap">
+                        <a href={`product/${productPath}`}>
                             <span aria-hidden="true" className="absolute inset-0" />
                             {productName}
                         </a>
                     </h3>
                     {productDiscountPrice !== 0 && (
-                        <p
-                            className="text-2xl ml-2 font-medium"
-                            style={{ color: '#ff5757', textDecoration: 'line-through' }}
-                        >
-                            {productDiscountPrice}
+                        <p className="text-2xl ml-2 font-medium" style={{ textDecoration: 'line-through' }}>
+                            {productPrice}
                         </p>
                     )}
-                    <p className="text-2xl ml-2 font-medium">{productPrice}</p>
-                    <p className="text-2xl ml-2 font-medium">€</p>
-                    {spiciness === true && <Image className="" image={Chili} alt={productName} />}
+                    {productDiscountPrice !== 0 && (
+                        <>
+                            <p className="text-2xl ml-2 font-medium" style={{ textDecoration: 'line-through' }}>
+                                {productPrice}
+                            </p>
+                            <p className="text-2xl ml-2 font-medium text-mainRed whitespace-nowrap">
+                                {productDiscountPrice} €
+                            </p>
+                        </>
+                    )}
+                    {!productDiscountPrice && <p className="text-2xl ml-2 font-medium">{productPrice} €</p>}
+                    {spiciness === true && <Image className="" image={Chili} alt="chili" />}
                 </div>
                 {ingredients !== '' && (
                     <p
@@ -66,7 +69,7 @@ export function ProductCard(props: IProductCardProps) {
                     </p>
                 )}
             </div>
-            <div className="flex justify-center items-center">
+            <div className={`flex justify-center items-center ${ingredients ? 'mt-[0px]' : 'md:mt-[68px] mt-[10px]'}`}>
                 <Link to="./">
                     <CustomizedButton
                         sx={{
@@ -92,6 +95,7 @@ export function ProductCard(props: IProductCardProps) {
 }
 
 ProductCard.defaultProps = {
+    productName: '',
     productPrice: 0,
     productDiscountPrice: 0,
     ingredients: '',
