@@ -1,5 +1,8 @@
+import Products from '../../components/Products';
+import { QUERIES } from '../../data/data';
+
 function Soup() {
-    return <h1 className="py-2 text-2xl text-center">Soup page</h1>;
+    return <Products header="Soup" query={QUERIES.SOUP_QUERY} />;
 }
 
 export default Soup;

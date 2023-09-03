@@ -1,5 +1,8 @@
+import Products from '../../components/Products';
+import { QUERIES } from '../../data/data';
+
 function Beverages() {
-    return <h1 className="py-2 text-2xl text-center">Beverages page</h1>;
+    return <Products header="Beverages" query={QUERIES.BEVERAGES_QUERY} />;
 }
 
 export default Beverages;

@@ -1,5 +1,6 @@
+import { IProductCardProps } from '../components/ProductCard';
 import LoginStatus from './enums';
-import { InputTypes } from './types';
+import { InputTypes, QueryArgs } from './types';
 
 export interface IInput {
     id: string;
@@ -70,4 +71,14 @@ export interface IModalContext {
     navMenuStatus: boolean;
     openNavMenu: () => void;
     closeNavMenu: () => void;
+    filterMenuStatus: boolean;
+    openFilterMenu: () => void;
+    closeFilterMenu: () => void;
+}
+
+export interface IProductsContext {
+    productsQuery: QueryArgs | null;
+    setProductsQuery: (query: QueryArgs | null) => void;
+    data: IProductCardProps[];
+    setData: (data: IProductCardProps[]) => void;
 }

@@ -6,7 +6,6 @@ import CustomizedButton from './ui/CustomizedButton';
 import QuantitySelector from './ui/QuantitySelector';
 import Chili from '../assets/img/chili.svg';
 import Image from './ui/Image';
-import { MessageOnLimit } from '../data/data';
 
 export interface IProductCardProps {
     productName?: string;
@@ -17,6 +16,7 @@ export interface IProductCardProps {
     picPath?: string;
     spiciness?: boolean;
 }
+export const MessageOnLimit = `Planning a big order? Connect with us directly for special arrangements and personalized assistance. Let's make your meal for a larger group memorable!`;
 
 export function ProductCard(props: IProductCardProps) {
     const { productName, productPrice, productDiscountPrice, ingredients, productPath, picPath, spiciness } = props;

@@ -8,6 +8,7 @@ import List from './ui/List';
 import { ModalContext } from '../context/ModalContext';
 import Modal from './Modal';
 import CreateIconButton from './ui/IconButton';
+import FilterrMenu from './FilterMenu';
 
 const FixedMenu = {
     menu: {
@@ -33,7 +34,8 @@ const FixedMenu = {
 };
 
 export default function NavBar() {
-    const { navMenuStatus, openNavMenu, closeNavMenu } = useContext(ModalContext);
+    const { navMenuStatus, openNavMenu, closeNavMenu, filterMenuStatus, openFilterMenu, closeFilterMenu } =
+        useContext(ModalContext);
 
     const handleToggle = () => {
         if (navMenuStatus) {
@@ -45,7 +47,10 @@ export default function NavBar() {
 
     return (
         <>
-            <nav className="hidden h-[70px] px-[10px] py-[10px] items-center bg-bgMenu md:flex">
+            <nav className="relative hidden h-[70px] px-[10px] py-[10px] items-center bg-bgMenu md:flex">
+                <div onClick={openFilterMenu} className="absolute top-2 left-3 text-white">
+                    <CreateIconButton type="filter" size="large" hoverColor="#6C6C6C" />
+                </div>
                 <ul className="w-full mx-[60px] font-serif text-xl text-white flex justify-items-start gap-[3%] lg:text-2xl lg:gap-[5%]">
                     {NavLinks.map((navlink) => (
                         <NavLink
@@ -113,6 +118,11 @@ export default function NavBar() {
                             <CreateIconButton type="close" size="large" />
                         </div>
                     </nav>
+                </Modal>
+            )}
+            {filterMenuStatus && (
+                <Modal onClose={closeFilterMenu}>
+                    <FilterrMenu onClose={closeFilterMenu} />
                 </Modal>
             )}
         </>
