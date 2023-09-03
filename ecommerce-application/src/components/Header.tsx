@@ -87,7 +87,7 @@ export default function Header() {
             </div>
             {userMenuStatus && (
                 <Modal onClose={closeUserMenu}>
-                    <div className="w-[320px] px-3 py-3 text-center rounded-md bg-white/95 absolute top-[60px] right-0 z-10">
+                    <div className="w-[320px] px-3 py-3 text-center rounded-md bg-white/95 absolute top-[60px] right-0 z-20">
                         <h3 className="mb-5">Hello, Username!</h3>
                         <span onClick={handleLogout}>
                             <CreateIconButton type="logout" size="large" />

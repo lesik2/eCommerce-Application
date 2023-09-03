@@ -8,7 +8,6 @@ import List from './ui/List';
 import { ModalContext } from '../context/ModalContext';
 import Modal from './Modal';
 import CreateIconButton from './ui/IconButton';
-import FilterrMenu from './FilterMenu';
 
 const FixedMenu = {
     menu: {
@@ -34,8 +33,7 @@ const FixedMenu = {
 };
 
 export default function NavBar() {
-    const { navMenuStatus, openNavMenu, closeNavMenu, filterMenuStatus, openFilterMenu, closeFilterMenu } =
-        useContext(ModalContext);
+    const { navMenuStatus, openNavMenu, closeNavMenu } = useContext(ModalContext);
 
     const handleToggle = () => {
         if (navMenuStatus) {
@@ -48,9 +46,6 @@ export default function NavBar() {
     return (
         <>
             <nav className="relative hidden h-[70px] px-[10px] py-[10px] items-center bg-bgMenu md:flex">
-                <div onClick={openFilterMenu} className="absolute top-2 left-3 text-white">
-                    <CreateIconButton type="filter" size="large" hoverColor="#6C6C6C" />
-                </div>
                 <ul className="w-full mx-[60px] font-serif text-xl text-white flex justify-items-start gap-[3%] lg:text-2xl lg:gap-[5%]">
                     {NavLinks.map((navlink) => (
                         <NavLink
@@ -97,7 +92,7 @@ export default function NavBar() {
             </nav>
             {navMenuStatus && (
                 <Modal onClose={closeNavMenu}>
-                    <nav className="fixed top-0 left-0 items-center w-[320px] h-full px-[10px] py-20 bg-bgMenu/75">
+                    <nav className="fixed top-0 left-0 items-center w-[320px] h-full px-[10px] py-20 bg-bgMenu/75 z-20">
                         <ul className="w-full font-serif text-2xl text-white flex flex-col items-center gap-3">
                             {NavLinks.map((navlink) => (
                                 <NavLink
@@ -118,11 +113,6 @@ export default function NavBar() {
                             <CreateIconButton type="close" size="large" />
                         </div>
                     </nav>
-                </Modal>
-            )}
-            {filterMenuStatus && (
-                <Modal onClose={closeFilterMenu}>
-                    <FilterrMenu onClose={closeFilterMenu} />
                 </Modal>
             )}
         </>

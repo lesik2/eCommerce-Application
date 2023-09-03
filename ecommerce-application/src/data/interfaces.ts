@@ -81,4 +81,5 @@ export interface IProductsContext {
     setProductsQuery: (query: QueryArgs | null) => void;
     data: IProductCardProps[];
     setData: (data: IProductCardProps[]) => void;
+    currentSearch: React.MutableRefObject<string>;
 }

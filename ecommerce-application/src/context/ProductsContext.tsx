@@ -1,4 +1,4 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useRef, useState } from 'react';
 import { IProductCardProps } from '../components/ProductCard';
 /* eslint-disable react/jsx-no-constructed-context-values */
 import { IProductsContext } from '../data/interfaces';
@@ -9,18 +9,21 @@ export const ProductsContext = createContext<IProductsContext>({
     setProductsQuery: () => {},
     data: [],
     setData: () => {},
+    currentSearch: { current: '' },
 });
 
 export function ProductsState({ children }: { children: React.ReactNode }) {
     const [productsQuery, setProducts] = useState<QueryArgs | null>(null);
     const [data, setData] = useState<IProductCardProps[]>([]);
 
+    const currentSearch = useRef<string>('');
+
     const setProductsQuery = (query: QueryArgs | null) => {
         setProducts(query);
     };
 
     return (
-        <ProductsContext.Provider value={{ productsQuery, setProductsQuery, data, setData }}>
+        <ProductsContext.Provider value={{ productsQuery, setProductsQuery, data, setData, currentSearch }}>
             {children}
         </ProductsContext.Provider>
     );
