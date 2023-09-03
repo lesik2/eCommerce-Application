@@ -10,7 +10,7 @@ import theme from '../../../utils/theme';
 import { PasswordInputsData } from '../../../data/data';
 import { changePasswordOfCustomer } from '../../../services/Customer';
 import FetchResultAlert from '../../../components/FetchResultAlert';
-import { loginNoToken } from '../../../services/login';
+import handleLogin from '../../../services/login';
 
 export interface IModalPassword {
     closeModal: () => void;
@@ -50,9 +50,12 @@ function ModalPassword(props: IModalPassword) {
         if (passwordInput.pattern) {
             const result = passwordInput.pattern.test(value);
             setValidInputs({ ...validInputs, [name]: result });
+            if (passwordInput.name === 'newPassword') {
+                setValidInputs({ ...validInputs, confirmPassword: values.confirmPassword === value });
+            }
         } else {
             const result = values.newPassword === value;
-            setValidInputs({ ...validInputs, [name]: result });
+            setValidInputs({ ...validInputs, confirmPassword: result });
         }
     };
     const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -85,9 +88,7 @@ function ModalPassword(props: IModalPassword) {
                     }, 1000);
                     localStorage.removeItem('token');
                     localStorage.removeItem('status');
-                    loginNoToken(res.body.email, values.newPassword).then((result) => {
-                        console.log(result);
-                    });
+                    handleLogin(res.body.email, values.newPassword);
                 })
                 .catch((err) => {
                     setSuccessMessage('');

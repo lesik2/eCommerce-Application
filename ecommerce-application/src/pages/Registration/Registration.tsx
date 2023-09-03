@@ -13,6 +13,7 @@ import theme from '../../utils/theme';
 import registerUser from '../../services/registration';
 import { registrationErrorMappings } from '../../services/errors/errors';
 import { LoginContext } from '../../context/LoginContext';
+import handleLogin from '../../services/login';
 
 function Registration() {
     const navigate = useNavigate();
@@ -144,6 +145,9 @@ function Registration() {
                         loginMenu();
                     }, 1000);
                 }
+                localStorage.removeItem('token');
+                localStorage.removeItem('status');
+                handleLogin(values.email, values.password);
             })
             .catch((err) => {
                 const message = registrationErrorMappings[err.message] || `${err.message}`;

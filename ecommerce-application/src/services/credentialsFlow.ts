@@ -10,7 +10,7 @@ export const authMiddlewareOptions: AuthMiddlewareOptions = {
     },
     scopes: [
         // eslint-disable-next-line max-len
-        'view_published_products:ecommerce-app_2023 view_categories:ecommerce-app_2023 manage_my_profile:ecommerce-app_2023',
+        'view_published_products:ecommerce-app_2023 view_categories:ecommerce-app_2023',
     ],
     fetch,
 };
