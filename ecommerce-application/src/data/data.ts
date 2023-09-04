@@ -209,3 +209,19 @@ export const PRODUCT_PAGES: Record<string, IProductsPage> = {
         query: { filter: 'categories.id:subtree("a70bf52f-f970-4d88-8d47-9498fac1638d")', search: 'soda' },
     },
 };
+
+export const toastProps = {
+    autoClose: 3000,
+    hideProgressBar: true,
+    newestOnTop: false,
+    closeOnClick: true,
+    rtl: false,
+    pauseOnFocusLoss: true,
+    draggable: true,
+    pauseOnHover: true,
+};
+
+// product page
+
+// eslint-disable-next-line max-len
+export const MessageOnLimit = `Planning a big order? Connect with us directly for special arrangements and personalized assistance. Let's make your meal for a larger group memorable!`;
