@@ -1,9 +1,8 @@
-enum LoginStatus {
+export enum LoginStatus {
     'loggedIn',
     'anonim',
 }
 
-export default LoginStatus;
 
 export enum CustomerActions {
     EMAIL = 'changeEmail',
@@ -23,4 +22,9 @@ export enum CustomerActions {
 export enum CodeCountry {
     'DE' = 'Germany',
     'PT' = 'Portugal',
+export enum LoadStates {
+    'loading',
+    'success',
+    'notfound',
+    'error',
 }

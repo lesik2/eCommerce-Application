@@ -1,5 +1,10 @@
+import Products from '../../components/Products';
+import { PRODUCT_PAGES } from '../../data/data';
+
 function Menu() {
-    return <h1 className="py-2 text-2xl text-center">Menu page</h1>;
+    return (
+        <Products header={PRODUCT_PAGES.Menu.header} link={PRODUCT_PAGES.Menu.link} query={PRODUCT_PAGES.Menu.query} />
+    );
 }
 
 export default Menu;

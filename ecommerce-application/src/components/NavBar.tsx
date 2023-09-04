@@ -35,6 +35,8 @@ const FixedMenu = {
 export default function NavBar() {
     const { navMenuStatus, openNavMenu, closeNavMenu } = useContext(ModalContext);
 
+    // const [beveragesMenu, setBeverages] = useState(false);
+
     const handleToggle = () => {
         if (navMenuStatus) {
             closeNavMenu();
@@ -43,21 +45,38 @@ export default function NavBar() {
         }
     };
 
+    // const onMenuClick = (e: React.FormEvent) => {
+    //     console.log(e.target);
+    //     setBeverages(!beveragesMenu);
+    // };
+
     return (
         <>
-            <nav className="hidden h-[70px] px-[10px] py-[10px] items-center bg-bgMenu md:flex">
+            <nav className="relative hidden h-[70px] px-[10px] py-[10px] items-center bg-bgMenu md:flex">
                 <ul className="w-full mx-[60px] font-serif text-xl text-white flex justify-items-start gap-[3%] lg:text-2xl lg:gap-[5%]">
                     {NavLinks.map((navlink) => (
                         <NavLink
                             to={navlink.url}
                             className={({ isActive }) =>
                                 isActive
-                                    ? 'px-[15px] py-[5px] rounded-3xl hover:none cursor-auto bg-bntActive last:ml-auto'
-                                    : 'px-[15px] py-[5px] rounded-3xl hover:bg-btnHover cursor-pointer last:ml-auto'
+                                    ? 'flex gap-1 px-[15px] py-[5px] rounded-3xl hover:none cursor-auto bg-bntActive last:ml-auto'
+                                    : 'flex gap-1 px-[15px] py-[5px] rounded-3xl hover:bg-btnHover cursor-pointer last:ml-auto'
                             }
                             key={navlink.id}
                         >
                             <List className="">{navlink.name}</List>
+                            {/* 
+                                <CreateIconButton type="arrow" size="small" onClick={onMenuClick} />
+                                {navlink.menu !== undefined && (
+                                    
+                                ) &&
+                                beveragesMenu && (
+                                    <ul>
+                                        <List className="">{navlink.name}</List>
+                                        <List className="">{navlink.name}</List>
+                                        <List className="">{navlink.name}</List>
+                                    </ul>
+                                )} */}
                         </NavLink>
                     ))}
                 </ul>
@@ -92,7 +111,7 @@ export default function NavBar() {
             </nav>
             {navMenuStatus && (
                 <Modal onClose={closeNavMenu}>
-                    <nav className="fixed top-0 left-0 items-center w-[320px] h-full px-[10px] py-20 bg-bgMenu/75">
+                    <nav className="fixed top-0 left-0 items-center w-[320px] h-full px-[10px] py-20 bg-bgMenu/75 z-20">
                         <ul className="w-full font-serif text-2xl text-white flex flex-col items-center gap-3">
                             {NavLinks.map((navlink) => (
                                 <NavLink

@@ -21,6 +21,7 @@ export default {
             bgStart: '#FDE828',
             bgMid: '#F0C448',
             bgEnd: '#EFC14B',
+            menuTextActive: '#509046',
             menuBtnColor: '#EFC14B',
             menuBtnColorHover: '#AB820A',
             bntActive: '#509046',

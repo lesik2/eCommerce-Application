@@ -17,4 +17,26 @@ export type PasswordInputTypes = 'currentPassword' | 'newPassword' | 'confirmPas
 
 export type ButtonSize = 'small' | 'medium' | 'large';
 
-export type IconButtonTypes = 'cart' | 'login' | 'logout' | 'logged' | 'close' | 'pen' | 'delete';
+
+export type IconButtonTypes =
+    | 'cart'
+    | 'login'
+    | 'logout'
+    | 'logged'
+    | 'close'
+    | 'filter'
+    | 'pending'
+    | 'search'
+    | 'arrow'
+    | 'pen'
+    | 'delete';
+
+export type SortButtonsTypes = 'name' | 'price' | 'spicy';
+
+export type SortTypes = 'nosort' | 'asc' | 'desc' | 'spicy' | 'notspicy';
+
+export type QueryArgs = {
+    filter?: string | string[];
+    search?: string;
+    sort?: string | string[];
+};

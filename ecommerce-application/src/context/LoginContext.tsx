@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-no-constructed-context-values */
 import { createContext, useState } from 'react';
-import LoginStatus from '../data/enums';
+import { LoginStatus } from '../data/enums';
 import { ILoginContext } from '../data/interfaces';
 
 export const LoginContext = createContext<ILoginContext>({

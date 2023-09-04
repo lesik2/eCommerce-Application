@@ -1,5 +1,8 @@
 import LoginStatus from './enums';
 import { InputTypes, PasswordInputTypes } from './types';
+import { IProductCardProps } from '../components/ProductCard';
+import { LoginStatus } from './enums';
+import { InputTypes, QueryArgs } from './types';
 
 export interface IInput {
     id: string;
@@ -85,6 +88,23 @@ export interface IModalContext {
     navMenuStatus: boolean;
     openNavMenu: () => void;
     closeNavMenu: () => void;
+    filterMenuStatus: boolean;
+    openFilterMenu: () => void;
+    closeFilterMenu: () => void;
+}
+
+export interface IProductsContext {
+    productsQuery: QueryArgs | null;
+    setProductsQuery: (query: QueryArgs | null) => void;
+    data: IProductCardProps[];
+    setData: (data: IProductCardProps[]) => void;
+    currentSearch: React.MutableRefObject<string>;
+}
+
+export interface IProductsPage {
+    header: string;
+    link: string[];
+    query: QueryArgs;
 }
 export interface IAdditionalAddress {
     defaultShipping: boolean;
