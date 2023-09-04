@@ -16,4 +16,23 @@ export type InputTypes =
 
 export type ButtonSize = 'small' | 'medium' | 'large';
 
-export type IconButtonTypes = 'cart' | 'login' | 'logout' | 'logged' | 'close';
+export type IconButtonTypes =
+    | 'cart'
+    | 'login'
+    | 'logout'
+    | 'logged'
+    | 'close'
+    | 'filter'
+    | 'pending'
+    | 'search'
+    | 'arrow';
+
+export type SortButtonsTypes = 'name' | 'price' | 'spicy';
+
+export type SortTypes = 'nosort' | 'asc' | 'desc' | 'spicy' | 'notspicy';
+
+export type QueryArgs = {
+    filter?: string | string[];
+    search?: string;
+    sort?: string | string[];
+};

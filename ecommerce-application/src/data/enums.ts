@@ -1,6 +1,11 @@
-enum LoginStatus {
+export enum LoginStatus {
     'loggedIn',
     'anonim',
 }
 
-export default LoginStatus;
+export enum LoadStates {
+    'loading',
+    'success',
+    'notfound',
+    'error',
+}

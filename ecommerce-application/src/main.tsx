@@ -14,8 +14,10 @@ import Cart from './pages/Cart/Cart';
 import About from './pages/About/About';
 import ErrorPage from './pages/Error/Error';
 import Main from './pages/Main/Main';
+import { ProductsState } from './context/ProductsContext';
 import { ModalState } from './context/ModalContext';
 import { LoginState } from './context/LoginContext';
+import { PRODUCT_PAGES } from './data/data';
 
 const router = createBrowserRouter([
     {
@@ -45,7 +47,19 @@ const router = createBrowserRouter([
                     },
                     {
                         path: 'beverages',
-                        element: <Beverages />,
+                        element: <Beverages {...PRODUCT_PAGES.Beverages} />,
+                    },
+                    {
+                        path: 'beverages/juices',
+                        element: <Beverages {...PRODUCT_PAGES.Juices} />,
+                    },
+                    {
+                        path: 'beverages/energetics',
+                        element: <Beverages {...PRODUCT_PAGES.Energetic} />,
+                    },
+                    {
+                        path: 'beverages/soda',
+                        element: <Beverages {...PRODUCT_PAGES.Soda} />,
                     },
                     {
                         path: 'cart',
@@ -73,7 +87,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
         <ModalState>
             <LoginState>
-                <RouterProvider router={router} />
+                <ProductsState>
+                    <RouterProvider router={router} />
+                </ProductsState>
             </LoginState>
         </ModalState>
     </React.StrictMode>
