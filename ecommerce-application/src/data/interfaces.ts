@@ -83,3 +83,10 @@ export interface IProductsContext {
     setData: (data: IProductCardProps[]) => void;
     currentSearch: React.MutableRefObject<string>;
 }
+
+export interface IProductsPage {
+    header: string;
+    link: string[];
+    query: QueryArgs;
+    key?: string;
+}

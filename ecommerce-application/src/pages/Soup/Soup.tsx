@@ -1,8 +1,10 @@
 import Products from '../../components/Products';
-import { QUERIES } from '../../data/data';
+import { PRODUCT_PAGES } from '../../data/data';
 
 function Soup() {
-    return <Products header="Soup" query={QUERIES.SOUP_QUERY} />;
+    return (
+        <Products header={PRODUCT_PAGES.Soup.header} link={PRODUCT_PAGES.Soup.link} query={PRODUCT_PAGES.Soup.query} />
+    );
 }
 
 export default Soup;

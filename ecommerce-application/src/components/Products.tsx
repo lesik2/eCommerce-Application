@@ -6,6 +6,7 @@ import { ModalContext } from '../context/ModalContext';
 import { ProductsContext } from '../context/ProductsContext';
 import { QUERIES } from '../data/data';
 import { LoadStates } from '../data/enums';
+import { IProductsPage } from '../data/interfaces';
 import { QueryArgs } from '../data/types';
 import handleFlows from '../services/handleFlows';
 import processProducts from '../services/processProducts';
@@ -14,13 +15,8 @@ import Modal from './Modal';
 import { ProductCard } from './ProductCard';
 import CreateIconButton from './ui/IconButton';
 
-interface ProductsProps {
-    header: string;
-    query: QueryArgs;
-}
-
-function Products(props: ProductsProps) {
-    const { header, query } = props;
+function Products(props: IProductsPage) {
+    const { header, link, query } = props;
 
     const { productsQuery, setProductsQuery, data, setData, currentSearch } = useContext(ProductsContext);
     const { filterMenuStatus, openFilterMenu, closeFilterMenu } = useContext(ModalContext);
@@ -29,13 +25,8 @@ function Products(props: ProductsProps) {
     const [searchValue, setSearch] = useState('');
     // const [searchButtonState, setSearchButton] = useState(true);
 
-    const currentPage = useRef('');
+    const currentPage = useRef<QueryArgs>({});
     const errorMessage = useRef('');
-    const bcMenu = ['Menu'];
-    if (header !== 'Menu') bcMenu.push(header);
-    // const bcMenu = useRef<string[]>([]);
-    // bcMenu.current = [];
-    // bcMenu.current.push('Menu', 'Beverages', 'test', 'test2');
 
     const errorHandler = (e: unknown) => {
         const err = e as Error;
@@ -111,18 +102,21 @@ function Products(props: ProductsProps) {
                 }
             })
             .catch(errorHandler);
-        currentPage.current = query.filter as string;
+        currentPage.current.filter = query.filter;
+        if (query.search !== undefined) {
+            currentSearch.current = query.search;
+        }
     }, []);
     // &${productsQuery}
     useEffect(() => {
         setLoadState(LoadStates.loading);
-        if (productsQuery !== null) {
+        if (productsQuery !== null && currentPage.current.filter !== undefined && productsQuery.filter !== undefined) {
             if (productsQuery.search !== undefined) {
                 currentSearch.current =
                     productsQuery.search !== currentSearch.current ? productsQuery.search : currentSearch.current;
             }
             const req: QueryArgs = {
-                filter: [currentPage.current, ...productsQuery.filter],
+                filter: [currentPage.current.filter as string, ...productsQuery.filter],
                 sort: productsQuery.sort,
                 search: currentSearch.current,
             };
@@ -161,21 +155,21 @@ function Products(props: ProductsProps) {
                     </Box>
                 </title>
                 <nav className="px-4 lg:px-7 text-xl text-bgMenu">
-                    {bcMenu.map((link, index, array) => (
+                    {link.map((l, index, array) => (
                         <>
                             {index < array.length - 1 && (
                                 <>
                                     <Link
                                         className="underline hover:text-black cursor-pointer"
-                                        to={`../${link.toLowerCase()}`}
+                                        to={`../${l.toLowerCase()}`}
                                     >
-                                        {link}
+                                        {l}
                                     </Link>
                                     <span> / </span>
                                 </>
                             )}
 
-                            {index === array.length - 1 && <span className="">{link}</span>}
+                            {index === array.length - 1 && <span className="">{l}</span>}
                         </>
                     ))}
                 </nav>

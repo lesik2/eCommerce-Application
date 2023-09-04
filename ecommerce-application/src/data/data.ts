@@ -1,4 +1,4 @@
-import { IInput } from './interfaces';
+import { IInput, IProductsPage } from './interfaces';
 // registration
 const oneYearMilliseconds = 31557600000;
 const validYear = 13;
@@ -169,4 +169,45 @@ export const QUERIES = {
     POKE_QUERY: { filter: 'categories.id:subtree("09773f55-97a1-4d2b-bf6d-8c2b4d6493b7")' },
     SOUP_QUERY: { filter: 'categories.id:subtree("c9858d51-af4c-4836-b003-e4eda2ac5853")' },
     BEVERAGES_QUERY: { filter: 'categories.id:subtree("a70bf52f-f970-4d88-8d47-9498fac1638d")' },
+};
+
+export const PRODUCT_PAGES: Record<string, IProductsPage> = {
+    Menu: {
+        header: 'Menu',
+        link: ['Menu'],
+        query: { filter: '' },
+    },
+    Poke: {
+        header: 'Poke',
+        link: ['Menu', 'Poke'],
+        query: { filter: 'categories.id:subtree("09773f55-97a1-4d2b-bf6d-8c2b4d6493b7")' },
+    },
+    Soup: {
+        header: 'Soup',
+        link: ['Menu', 'Soup'],
+        query: { filter: 'categories.id:subtree("c9858d51-af4c-4836-b003-e4eda2ac5853")' },
+    },
+    Beverages: {
+        header: 'Beverages',
+        link: ['Menu', 'Beverages'],
+        query: { filter: 'categories.id:subtree("a70bf52f-f970-4d88-8d47-9498fac1638d")' },
+        key: 'bev',
+    },
+    Juices: {
+        header: 'Juices',
+        link: ['Menu', 'Beverages', 'Juices'],
+        query: { filter: 'categories.id:subtree("a70bf52f-f970-4d88-8d47-9498fac1638d")', search: 'juice' },
+        key: 'jui',
+    },
+    Energetic: {
+        header: 'Energetic',
+        link: ['Menu', 'Beverages', 'Energetic'],
+        query: { filter: 'categories.id:subtree("a70bf52f-f970-4d88-8d47-9498fac1638d")', search: 'burn' },
+    },
+    Soda: {
+        header: 'Soda',
+        link: ['Menu', 'Beverages', 'Soda'],
+        query: { filter: 'categories.id:subtree("a70bf52f-f970-4d88-8d47-9498fac1638d")', search: 'soda' },
+        key: 'soda',
+    },
 };

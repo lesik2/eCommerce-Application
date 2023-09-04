@@ -1,8 +1,10 @@
 import Products from '../../components/Products';
-import { QUERIES } from '../../data/data';
+import { PRODUCT_PAGES } from '../../data/data';
 
 function Menu() {
-    return <Products header="Menu" query={QUERIES.MENU_QUERY} />;
+    return (
+        <Products header={PRODUCT_PAGES.Menu.header} link={PRODUCT_PAGES.Menu.link} query={PRODUCT_PAGES.Menu.query} />
+    );
 }
 
 export default Menu;

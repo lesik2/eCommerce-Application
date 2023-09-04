@@ -23,7 +23,7 @@ export type SortButtonsTypes = 'name' | 'price' | 'spicy';
 export type SortTypes = 'nosort' | 'asc' | 'desc' | 'spicy' | 'notspicy';
 
 export type QueryArgs = {
-    filter: string | string[];
+    filter?: string | string[];
     search?: string;
     sort?: string | string[];
 };

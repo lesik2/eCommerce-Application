@@ -1,8 +1,10 @@
 import Products from '../../components/Products';
-import { QUERIES } from '../../data/data';
+import { IProductsPage } from '../../data/interfaces';
 
-function Beverages() {
-    return <Products header="Beverages" query={QUERIES.BEVERAGES_QUERY} />;
+function Beverages(pageBev: IProductsPage) {
+    const { header, link, query, key } = pageBev;
+    return <Products header={header} link={link} query={query} key={key} />;
+    // return <Products {...pageBev} />;
 }
 
 export default Beverages;
