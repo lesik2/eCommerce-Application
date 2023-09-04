@@ -31,10 +31,13 @@ export default function FilterMenu(props: FilterMenuProps) {
 
     const [sortPrice, setSortPrice] = useState<SortTypes>('nosort');
 
+    const [spiciness, setSpiciness] = useState<SortTypes>('nosort');
+
     const onReset = () => {
         setSlider([minPrice.current, maxPrice.current]);
         setSortName('nosort');
         setSortPrice('nosort');
+        setSpiciness('nosort');
         currentSearch.current = '';
     };
 
@@ -45,6 +48,8 @@ export default function FilterMenu(props: FilterMenuProps) {
                 minPrice.current + maxPrice.current !== sliderValue[0] + sliderValue[1]
                     ? `variants.price.centAmount:range (${sliderValue[0] * 100} to ${sliderValue[1] * 100})`
                     : '',
+                spiciness === 'spicy' ? 'variants.attributes.spiciness:true' : '',
+                spiciness === 'notspicy' ? 'variants.attributes.spiciness:missing' : '',
             ],
             sort: [
                 sortName !== 'nosort' ? `name.en-US ${sortName}` : '',
@@ -63,15 +68,17 @@ export default function FilterMenu(props: FilterMenuProps) {
     return (
         <aside className="absolute top-0 right-0 w-96 h-full py-10 px-5 bg-white/95 z-20">
             <div className="flex flex-col gap-6 items-center">
-                <div className="w-full px-4">
-                    <h2 className="text-center text-2xl">Filter</h2>
-                    <h3 className="text-left mb-8">Price:</h3>
+                <div className="w-full flex flex-col items-center px-4">
+                    <h2 className="text-2xl">Filter</h2>
+                    <h3 className="self-start mb-8">Price:</h3>
                     <PriceSlider
                         state={sliderValue}
                         setState={setSlider}
                         min={minPrice.current}
                         max={maxPrice.current}
                     />
+                    <h3 className="self-start my-2">Spicy:</h3>
+                    <SortButtons type="spicy" state={spiciness} setState={setSpiciness} />
                 </div>
 
                 <div className="w-full flex flex-col items-center px-4">

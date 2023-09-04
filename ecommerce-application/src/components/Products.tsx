@@ -134,31 +134,42 @@ function Products(props: ProductsProps) {
     }, [productsQuery]);
     return (
         <>
-            <header className="flex justify-around">
-                <h1 className="mt-4 mx-10 text-3xl text-center">{header}</h1>
-                <Box sx={{ display: 'flex', gap: '5px', alignItems: 'flex-end', marginTop: '5px' }}>
-                    <form onSubmit={onSearchButton}>
-                        <TextField
-                            id="standard-basic"
-                            sx={{ mb: 1 }}
-                            placeholder="Enter search request"
-                            variant="standard"
-                            autoComplete="off"
-                            value={searchValue}
-                            onChange={onSearchInput}
-                        />
-                        <CreateIconButton type="search" size="large" onClick={onSearchButton} />
-                    </form>
+            <header>
+                <title className="flex justify-between px-2 lg:px-5">
+                    <h1 className="mt-4 text-3xl text-center">{header}</h1>
+                    <Box sx={{ display: 'flex', gap: '5px', alignItems: 'flex-end', marginTop: '5px' }}>
+                        <form className="flex" onSubmit={onSearchButton}>
+                            <TextField
+                                id="standard-basic"
+                                sx={{ mb: 1 }}
+                                placeholder="Enter search request"
+                                variant="standard"
+                                autoComplete="off"
+                                value={searchValue}
+                                onChange={onSearchInput}
+                            />
+                            <CreateIconButton type="search" size="large" onClick={onSearchButton} />
+                        </form>
 
-                    <CreateIconButton type="filter" size="large" onClick={openFilterMenu} />
-                </Box>
+                        <CreateIconButton type="filter" size="large" onClick={openFilterMenu} />
+                    </Box>
+                </title>
+                <nav>
+                    <h2 className=" px-4 lg:px-7 text-xl text-bgMenu">
+                        <span className="underline hover:text-black cursor-pointer">Menu</span> &gt; Beverages
+                    </h2>
+                </nav>
             </header>
-
-            <div className="mt-2 px-5 grid grid-cols-1 justify-items-center gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
-                {loadState === LoadStates.loading && (
-                    <p className="text-center text-bgMenu animate-pulse text-2xl">Loading...</p>
-                )}
-
+            {loadState === LoadStates.loading && (
+                <p className="mt-3 text-center text-bgMenu animate-pulse text-2xl">Loading...</p>
+            )}
+            {loadState === LoadStates.notfound && (
+                <p className="mt-3 text-center text-bgMenu text-2xl">Products not found</p>
+            )}
+            {loadState === LoadStates.error && (
+                <p className="mt-3 text-center text-bgMenu text-2xl">{errorMessage.current}</p>
+            )}
+            <body className="mt-1 px-5 grid grid-cols-1 justify-items-center gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
                 {loadState === LoadStates.success &&
                     data.map((product) => (
                         <ProductCard
@@ -172,14 +183,7 @@ function Products(props: ProductsProps) {
                             picPath={product.picPath}
                         />
                     ))}
-
-                {loadState === LoadStates.notfound && (
-                    <p className="text-center text-bgMenu text-2xl">Products not found</p>
-                )}
-                {loadState === LoadStates.error && (
-                    <p className="text-center text-bgMenu text-2xl">{errorMessage.current}</p>
-                )}
-            </div>
+            </body>
             {filterMenuStatus && (
                 <Modal onClose={closeFilterMenu}>
                     <FilterMenu onClose={closeFilterMenu} />
