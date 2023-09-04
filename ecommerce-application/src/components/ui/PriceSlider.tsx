@@ -10,7 +10,7 @@ type PriceSliderProps = {
 export default function PriceSlider(props: PriceSliderProps) {
     const { state, setState, min, max } = props;
 
-    const handleSliderChange = (event: Event, newValue: number | number[]) => {
+    const handleSliderChange = (_event: Event, newValue: number | number[]) => {
         setState(newValue as number[]);
     };
 

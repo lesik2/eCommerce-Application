@@ -1,6 +1,4 @@
-
-import { IInput, IInputPassword } from './interfaces';
-import { IInput, IProductsPage } from './interfaces';
+import { IInput, IProductsPage, IInputPassword } from './interfaces';
 // registration
 const oneYearMilliseconds = 31557600000;
 const validYear = 13;

@@ -1,8 +1,6 @@
-import LoginStatus from './enums';
-import { InputTypes, PasswordInputTypes } from './types';
+import { InputTypes, PasswordInputTypes, QueryArgs } from './types';
 import { IProductCardProps } from '../components/ProductCard';
 import { LoginStatus } from './enums';
-import { InputTypes, QueryArgs } from './types';
 
 export interface IInput {
     id: string;
