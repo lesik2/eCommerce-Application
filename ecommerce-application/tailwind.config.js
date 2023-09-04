@@ -26,6 +26,7 @@ export default {
             menuBtnColorHover: '#AB820A',
             bntActive: '#509046',
             btnHover: '#6C6C6C',
+            mainRed: '#FF5757',
         },
         extend: {
             backgroundImage: {

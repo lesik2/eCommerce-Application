@@ -59,7 +59,7 @@ export default function NavBar() {
                             to={navlink.url}
                             className={({ isActive }) =>
                                 isActive
-                                    ? 'flex gap-1 px-[15px] py-[5px] rounded-3xl hover:none cursor-auto bg-bntActive last:ml-auto'
+                                    ? 'flex gap-1 px-[15px] py-[5px] rounded-3xl hover:bg-bntActive/80  cursor-pointer bg-bntActive last:ml-auto'
                                     : 'flex gap-1 px-[15px] py-[5px] rounded-3xl hover:bg-btnHover cursor-pointer last:ml-auto'
                             }
                             key={navlink.id}

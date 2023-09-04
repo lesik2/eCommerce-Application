@@ -18,6 +18,7 @@ import { ProductsState } from './context/ProductsContext';
 import { ModalState } from './context/ModalContext';
 import { LoginState } from './context/LoginContext';
 import { PRODUCT_PAGES } from './data/data';
+import ProductPage from './pages/ProductPage/ProductPage';
 
 const router = createBrowserRouter([
     {
@@ -38,12 +39,24 @@ const router = createBrowserRouter([
                         element: <Menu />,
                     },
                     {
+                        path: 'menu/:key',
+                        element: <ProductPage />,
+                    },
+                    {
                         path: 'soup',
                         element: <Soup />,
                     },
                     {
+                        path: 'soup/:key',
+                        element: <ProductPage />,
+                    },
+                    {
                         path: 'poke',
                         element: <Poke />,
+                    },
+                    {
+                        path: 'poke/:key',
+                        element: <ProductPage />,
                     },
                     {
                         path: 'beverages',
@@ -60,6 +73,10 @@ const router = createBrowserRouter([
                     {
                         path: 'beverages/soda',
                         element: <Beverages {...PRODUCT_PAGES.Soda} />,
+                    },
+                    {
+                        path: 'beverages/:key',
+                        element: <ProductPage />,
                     },
                     {
                         path: 'cart',

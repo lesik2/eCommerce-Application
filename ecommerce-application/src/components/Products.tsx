@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import { ClientResponse } from '@commercetools/platform-sdk';
 import { Box, TextField } from '@mui/material';
 import { useContext, useEffect, useRef, useState } from 'react';
