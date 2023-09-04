@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable max-len */
-import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { Attribute } from '@commercetools/platform-sdk';
 import CustomizedButton from '../../../components/ui/CustomizedButton';
@@ -135,22 +134,20 @@ export function ProductPageLayout(props: IProductPageLayoutProps) {
                         {messageOnLimit}
                     </p>
                     <div className="flex items-center">
-                        <Link to="./">
-                            <CustomizedButton
-                                sx={{
-                                    '&&': {
-                                        fontSize: 20,
-                                        paddingLeft: '20px',
-                                        paddingRight: '20px',
-                                        fontFamily: 'Poiret One, ui-sans-serif',
-                                    },
-                                }}
-                                variant="contained"
-                                className="font-serif"
-                            >
-                                + SELECT
-                            </CustomizedButton>
-                        </Link>
+                        <CustomizedButton
+                            sx={{
+                                '&&': {
+                                    fontSize: 20,
+                                    paddingLeft: '20px',
+                                    paddingRight: '20px',
+                                    fontFamily: 'Poiret One, ui-sans-serif',
+                                },
+                            }}
+                            variant="contained"
+                            className="font-serif"
+                        >
+                            + SELECT
+                        </CustomizedButton>
                     </div>
                 </div>
             </div>

@@ -38,16 +38,32 @@ const router = createBrowserRouter([
                         element: <Menu />,
                     },
                     {
+                        path: 'menu/:key',
+                        element: <ProductPage />,
+                    },
+                    {
                         path: 'soup',
                         element: <Soup />,
+                    },
+                    {
+                        path: 'soup/:key',
+                        element: <ProductPage />,
                     },
                     {
                         path: 'poke',
                         element: <Poke />,
                     },
                     {
+                        path: 'poke/:key',
+                        element: <ProductPage />,
+                    },
+                    {
                         path: 'beverages',
                         element: <Beverages />,
+                    },
+                    {
+                        path: 'beverages/:key',
+                        element: <ProductPage />,
                     },
                     {
                         path: 'cart',
@@ -56,10 +72,6 @@ const router = createBrowserRouter([
                     {
                         path: 'about',
                         element: <About />,
-                    },
-                    {
-                        path: 'product/:key',
-                        element: <ProductPage />,
                     },
                 ],
             },

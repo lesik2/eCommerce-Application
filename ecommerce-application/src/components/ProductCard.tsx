@@ -1,18 +1,18 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable max-len */
-import { Link } from 'react-router-dom';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import CustomizedButton from './ui/CustomizedButton';
 import QuantitySelector from './ui/QuantitySelector';
 import Chili from '../assets/img/chili.svg';
 import Image from './ui/Image';
 
 export interface IProductCardProps {
-    productName?: string;
-    productPrice?: number;
+    productName: string;
+    productPrice: number;
+    productPath: string;
     productDiscountPrice?: number;
     ingredients?: string;
-    productPath?: string;
     picPath?: string;
     spiciness?: boolean;
 }
@@ -37,10 +37,10 @@ export function ProductCard(props: IProductCardProps) {
                 </div>
                 <div className="flex justify-center items-center">
                     <h3 className="text-2xl tracking-tighter whitespace-nowrap">
-                        <a href={`product/${productPath}`}>
+                        <Link to={productPath}>
                             <span aria-hidden="true" className="absolute inset-0" />
                             {productName}
-                        </a>
+                        </Link>
                     </h3>
                     {productDiscountPrice !== 0 && (
                         <>
@@ -67,23 +67,21 @@ export function ProductCard(props: IProductCardProps) {
                 )}
             </div>
             <div className={`flex justify-center items-center ${ingredients ? 'mt-[0px]' : 'md:mt-[68px] mt-[10px]'}`}>
-                <Link to="./">
-                    <CustomizedButton
-                        sx={{
-                            '&&': {
-                                fontSize: 20,
-                                paddingLeft: '20px',
-                                paddingRight: '20px',
-                                marginRight: 2,
-                                fontFamily: 'Poiret One, ui-sans-serif',
-                            },
-                        }}
-                        variant="contained"
-                        className="font-serif"
-                    >
-                        + SELECT
-                    </CustomizedButton>
-                </Link>
+                <CustomizedButton
+                    sx={{
+                        '&&': {
+                            fontSize: 20,
+                            paddingLeft: '20px',
+                            paddingRight: '20px',
+                            marginRight: 2,
+                            fontFamily: 'Poiret One, ui-sans-serif',
+                        },
+                    }}
+                    variant="contained"
+                    className="font-serif"
+                >
+                    + SELECT
+                </CustomizedButton>
                 <QuantitySelector onQuantityReached={handleOrderLimit} />
             </div>
             <p className="text-xs pt-4 text-center">{messageOnLimit}</p>
@@ -92,11 +90,8 @@ export function ProductCard(props: IProductCardProps) {
 }
 
 ProductCard.defaultProps = {
-    productName: '',
-    productPrice: 0,
     productDiscountPrice: 0,
     ingredients: '',
-    productPath: '',
     picPath: '../',
     spiciness: false,
 };
