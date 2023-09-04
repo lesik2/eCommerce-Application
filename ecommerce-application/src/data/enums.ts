@@ -3,7 +3,6 @@ export enum LoginStatus {
     'anonim',
 }
 
-
 export enum CustomerActions {
     EMAIL = 'changeEmail',
     FIRST_NAME = 'setFirstName',
@@ -22,6 +21,7 @@ export enum CustomerActions {
 export enum CodeCountry {
     'DE' = 'Germany',
     'PT' = 'Portugal',
+}
 export enum LoadStates {
     'loading',
     'success',
