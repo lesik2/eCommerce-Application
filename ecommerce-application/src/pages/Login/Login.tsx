@@ -68,7 +68,10 @@ function Login() {
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
         const loginData = await handleLogin(values.email, values.password)
-            .then(() => {
+            .then((res) => {
+                if (res) {
+                    localStorage.setItem('idOFCustomer', res.clientData.customer.id);
+                }
                 setSuccessMessage(`Successful login. You'll be redirected to the main page`);
                 setSeverity('success');
                 setError('');
@@ -117,7 +120,8 @@ function Login() {
                                 setValues={setValues}
                                 validInputs={validInputs}
                                 setValidInputs={setValidInputs}
-                                setAlertOpen={setAlertOpen}
+                                setAlertOpen={() => setAlertOpen(false)}
+                                required
                             />
                         ))}
                     </fieldset>

@@ -1,9 +1,12 @@
+/* eslint-disable react/require-default-props */
 import IconButton from '@mui/material/IconButton';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import LogoutIcon from '@mui/icons-material/Logout';
 import LoginIcon from '@mui/icons-material/Login';
 import PersonIcon from '@mui/icons-material/Person';
 import CloseIcon from '@mui/icons-material/Close';
+import CreateOutlinedIcon from '@mui/icons-material/CreateOutlined';
+import BackspaceIcon from '@mui/icons-material/Backspace';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import SearchIcon from '@mui/icons-material/Search';
@@ -36,6 +39,8 @@ export default function CreateIconButton({ type, size, hoverColor, onClick, disa
             {type === 'logout' && <LogoutIcon fontSize="inherit" />}
             {type === 'logged' && <PersonIcon fontSize="inherit" />}
             {type === 'close' && <CloseIcon fontSize="inherit" color="inherit" />}
+            {type === 'pen' && <CreateOutlinedIcon fontSize="inherit" color="inherit" />}
+            {type === 'delete' && <BackspaceIcon fontSize="inherit" color="inherit" />}
             {type === 'filter' && <FilterListIcon fontSize="inherit" color="inherit" />}
             {type === 'search' && <SearchIcon fontSize="inherit" color="inherit" />}
             {type === 'arrow' && <KeyboardArrowDownIcon fontSize="inherit" color="inherit" />}

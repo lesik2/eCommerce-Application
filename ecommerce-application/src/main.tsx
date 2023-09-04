@@ -17,6 +17,7 @@ import Main from './pages/Main/Main';
 import { ProductsState } from './context/ProductsContext';
 import { ModalState } from './context/ModalContext';
 import { LoginState } from './context/LoginContext';
+import Profile from './pages/Profile/Profile';
 import { PRODUCT_PAGES } from './data/data';
 import ProductPage from './pages/ProductPage/ProductPage';
 
@@ -85,6 +86,10 @@ const router = createBrowserRouter([
                     {
                         path: 'about',
                         element: <About />,
+                    },
+                    {
+                        path: 'profile',
+                        element: <Profile />,
                     },
                 ],
             },

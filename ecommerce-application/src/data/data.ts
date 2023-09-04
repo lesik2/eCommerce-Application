@@ -1,3 +1,5 @@
+
+import { IInput, IInputPassword } from './interfaces';
 import { IInput, IProductsPage } from './interfaces';
 // registration
 const oneYearMilliseconds = 31557600000;
@@ -54,6 +56,30 @@ export const Inputs: IInput[] = [
     },
     {
         id: '6',
+        name: 'confirmPassword',
+        label: 'Confirm password',
+        errormessage: `Passwords don't match!`,
+    },
+];
+export const PasswordInputsData: IInputPassword[] = [
+    {
+        id: '1',
+        name: 'currentPassword',
+        label: 'Current password',
+        pattern: /^(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])[a-zA-Z0-9!@#$%^&*]{8,20}$/,
+        errormessage: `Minimum 8 characters,1 uppercase letter, 
+    1 lowercase letter, and 1 number`,
+    },
+    {
+        id: '2',
+        name: 'newPassword',
+        label: 'New password',
+        pattern: /^(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])[a-zA-Z0-9!@#$%^&*]{8,20}$/,
+        errormessage: `Minimum 8 characters,1 uppercase letter, 
+  1 lowercase letter, and 1 number`,
+    },
+    {
+        id: '3',
         name: 'confirmPassword',
         label: 'Confirm password',
         errormessage: `Passwords don't match!`,

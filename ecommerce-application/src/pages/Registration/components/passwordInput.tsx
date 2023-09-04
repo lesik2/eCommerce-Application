@@ -1,21 +1,21 @@
+/* eslint-disable react/require-default-props */
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { FormControl, IconButton, Input, InputAdornment, InputLabel } from '@mui/material';
 import { useState } from 'react';
 import '../styles/formInput.css';
 import FormHelperText from '@mui/material/FormHelperText';
-import { InputTypes } from '../../../data/types';
-import { IValidInputs } from '../../../data/interfaces';
 
 export interface IPasswordInput {
     value: string;
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     label: string | undefined;
-    name: InputTypes;
+    name: string;
     errormessage: string | undefined;
-    validInputs: IValidInputs;
+    validInput: boolean;
+    setAlertOpen?: () => void;
 }
 function PasswordInput(props: IPasswordInput) {
-    const { onChange, label, value, name, errormessage, validInputs } = props;
+    const { onChange, label, value, name, errormessage, validInput, setAlertOpen } = props;
     const [showPassword, setShowPassword] = useState(false);
     const handleClickShowPassword = () => setShowPassword((show) => !show);
     const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -24,14 +24,15 @@ function PasswordInput(props: IPasswordInput) {
     return (
         <div style={{ height: '40px' }}>
             <FormControl variant="standard">
-                <InputLabel error={!validInputs[name]} htmlFor="standard-adornment-password" required>
+                <InputLabel error={!validInput} htmlFor="standard-adornment-password" required>
                     {label}
                 </InputLabel>
                 <Input
-                    error={!validInputs[name]}
+                    error={!validInput}
                     name={name}
                     value={value}
                     onChange={onChange}
+                    onFocus={setAlertOpen}
                     autoComplete="off"
                     id="standard-adornment-password"
                     type={showPassword ? 'text' : 'password'}
@@ -48,7 +49,7 @@ function PasswordInput(props: IPasswordInput) {
                     }
                 />
             </FormControl>
-            {!validInputs[name] ? <FormHelperText error>{errormessage}</FormHelperText> : null}
+            {!validInput ? <FormHelperText error>{errormessage}</FormHelperText> : null}
         </div>
     );
 }
