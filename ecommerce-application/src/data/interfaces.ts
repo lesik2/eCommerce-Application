@@ -88,5 +88,4 @@ export interface IProductsPage {
     header: string;
     link: string[];
     query: QueryArgs;
-    key?: string;
 }

@@ -156,6 +156,7 @@ export const NavLinks = [
         id: 'link4',
         name: 'BEVERAGES',
         url: '/beverages',
+        menu: ['Juices', 'Energetics', 'Soda'],
     },
     {
         id: 'link5',
@@ -191,13 +192,11 @@ export const PRODUCT_PAGES: Record<string, IProductsPage> = {
         header: 'Beverages',
         link: ['Menu', 'Beverages'],
         query: { filter: 'categories.id:subtree("a70bf52f-f970-4d88-8d47-9498fac1638d")' },
-        key: 'bev',
     },
     Juices: {
         header: 'Juices',
         link: ['Menu', 'Beverages', 'Juices'],
         query: { filter: 'categories.id:subtree("a70bf52f-f970-4d88-8d47-9498fac1638d")', search: 'juice' },
-        key: 'jui',
     },
     Energetic: {
         header: 'Energetic',
@@ -208,6 +207,5 @@ export const PRODUCT_PAGES: Record<string, IProductsPage> = {
         header: 'Soda',
         link: ['Menu', 'Beverages', 'Soda'],
         query: { filter: 'categories.id:subtree("a70bf52f-f970-4d88-8d47-9498fac1638d")', search: 'soda' },
-        key: 'soda',
     },
 };

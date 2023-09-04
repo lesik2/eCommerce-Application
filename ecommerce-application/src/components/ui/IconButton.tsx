@@ -4,6 +4,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import LoginIcon from '@mui/icons-material/Login';
 import PersonIcon from '@mui/icons-material/Person';
 import CloseIcon from '@mui/icons-material/Close';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import SearchIcon from '@mui/icons-material/Search';
 import { IconButtonTypes, ButtonSize } from '../../data/types';
@@ -37,6 +38,7 @@ export default function CreateIconButton({ type, size, hoverColor, onClick, disa
             {type === 'close' && <CloseIcon fontSize="inherit" color="inherit" />}
             {type === 'filter' && <FilterListIcon fontSize="inherit" color="inherit" />}
             {type === 'search' && <SearchIcon fontSize="inherit" color="inherit" />}
+            {type === 'arrow' && <KeyboardArrowDownIcon fontSize="inherit" color="inherit" />}
         </IconButton>
     );
 }

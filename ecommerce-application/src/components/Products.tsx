@@ -156,7 +156,7 @@ function Products(props: IProductsPage) {
                 </title>
                 <nav className="px-4 lg:px-7 text-xl text-bgMenu">
                     {link.map((l, index, array) => (
-                        <>
+                        <span key={l}>
                             {index < array.length - 1 && (
                                 <>
                                     <Link
@@ -170,7 +170,7 @@ function Products(props: IProductsPage) {
                             )}
 
                             {index === array.length - 1 && <span className="">{l}</span>}
-                        </>
+                        </span>
                     ))}
                 </nav>
             </header>
@@ -183,7 +183,7 @@ function Products(props: IProductsPage) {
             {loadState === LoadStates.error && (
                 <p className="mt-3 text-center text-bgMenu text-2xl">{errorMessage.current}</p>
             )}
-            <body className="mt-1 px-5 grid grid-cols-1 justify-items-center gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
+            <div className="mt-1 px-5 grid grid-cols-1 justify-items-center gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
                 {loadState === LoadStates.success &&
                     data.map((product) => (
                         <ProductCard
@@ -197,7 +197,7 @@ function Products(props: IProductsPage) {
                             picPath={product.picPath}
                         />
                     ))}
-            </body>
+            </div>
             {filterMenuStatus && (
                 <Modal onClose={closeFilterMenu}>
                     <FilterMenu onClose={closeFilterMenu} />

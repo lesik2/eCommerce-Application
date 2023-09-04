@@ -35,6 +35,8 @@ const FixedMenu = {
 export default function NavBar() {
     const { navMenuStatus, openNavMenu, closeNavMenu } = useContext(ModalContext);
 
+    // const [beveragesMenu, setBeverages] = useState(false);
+
     const handleToggle = () => {
         if (navMenuStatus) {
             closeNavMenu();
@@ -42,6 +44,11 @@ export default function NavBar() {
             openNavMenu();
         }
     };
+
+    // const onMenuClick = (e: React.FormEvent) => {
+    //     console.log(e.target);
+    //     setBeverages(!beveragesMenu);
+    // };
 
     return (
         <>
@@ -52,12 +59,24 @@ export default function NavBar() {
                             to={navlink.url}
                             className={({ isActive }) =>
                                 isActive
-                                    ? 'px-[15px] py-[5px] rounded-3xl hover:none cursor-auto bg-bntActive last:ml-auto'
-                                    : 'px-[15px] py-[5px] rounded-3xl hover:bg-btnHover cursor-pointer last:ml-auto'
+                                    ? 'flex gap-1 px-[15px] py-[5px] rounded-3xl hover:none cursor-auto bg-bntActive last:ml-auto'
+                                    : 'flex gap-1 px-[15px] py-[5px] rounded-3xl hover:bg-btnHover cursor-pointer last:ml-auto'
                             }
                             key={navlink.id}
                         >
                             <List className="">{navlink.name}</List>
+                            {/* 
+                                <CreateIconButton type="arrow" size="small" onClick={onMenuClick} />
+                                {navlink.menu !== undefined && (
+                                    
+                                ) &&
+                                beveragesMenu && (
+                                    <ul>
+                                        <List className="">{navlink.name}</List>
+                                        <List className="">{navlink.name}</List>
+                                        <List className="">{navlink.name}</List>
+                                    </ul>
+                                )} */}
                         </NavLink>
                     ))}
                 </ul>
