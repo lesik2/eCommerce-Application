@@ -1,6 +1,7 @@
 import { ClientResponse } from '@commercetools/platform-sdk';
 import { Box, TextField } from '@mui/material';
 import { useContext, useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { ModalContext } from '../context/ModalContext';
 import { ProductsContext } from '../context/ProductsContext';
 import { QUERIES } from '../data/data';
@@ -30,6 +31,11 @@ function Products(props: ProductsProps) {
 
     const currentPage = useRef('');
     const errorMessage = useRef('');
+    const bcMenu = ['Menu'];
+    if (header !== 'Menu') bcMenu.push(header);
+    // const bcMenu = useRef<string[]>([]);
+    // bcMenu.current = [];
+    // bcMenu.current.push('Menu', 'Beverages', 'test', 'test2');
 
     const errorHandler = (e: unknown) => {
         const err = e as Error;
@@ -154,10 +160,24 @@ function Products(props: ProductsProps) {
                         <CreateIconButton type="filter" size="large" onClick={openFilterMenu} />
                     </Box>
                 </title>
-                <nav>
-                    <h2 className=" px-4 lg:px-7 text-xl text-bgMenu">
-                        <span className="underline hover:text-black cursor-pointer">Menu</span> &gt; Beverages
-                    </h2>
+                <nav className="px-4 lg:px-7 text-xl text-bgMenu">
+                    {bcMenu.map((link, index, array) => (
+                        <>
+                            {index < array.length - 1 && (
+                                <>
+                                    <Link
+                                        className="underline hover:text-black cursor-pointer"
+                                        to={`../${link.toLowerCase()}`}
+                                    >
+                                        {link}
+                                    </Link>
+                                    <span> / </span>
+                                </>
+                            )}
+
+                            {index === array.length - 1 && <span className="">{link}</span>}
+                        </>
+                    ))}
                 </nav>
             </header>
             {loadState === LoadStates.loading && (
