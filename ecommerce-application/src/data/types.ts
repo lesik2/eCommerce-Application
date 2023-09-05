@@ -13,8 +13,10 @@ export type InputTypes =
     | 'BillingCity'
     | 'BillingPostalCode'
     | 'BillingCountry';
+export type PasswordInputTypes = 'currentPassword' | 'newPassword' | 'confirmPassword';
 
 export type ButtonSize = 'small' | 'medium' | 'large';
+
 
 export type IconButtonTypes =
     | 'cart'
@@ -25,7 +27,9 @@ export type IconButtonTypes =
     | 'filter'
     | 'pending'
     | 'search'
-    | 'arrow';
+    | 'arrow'
+    | 'pen'
+    | 'delete';
 
 export type SortButtonsTypes = 'name' | 'price' | 'spicy';
 

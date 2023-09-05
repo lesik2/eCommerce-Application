@@ -13,6 +13,7 @@ import theme from '../../utils/theme';
 import registerUser from '../../services/registration';
 import { registrationErrorMappings } from '../../services/errors/errors';
 import { LoginContext } from '../../context/LoginContext';
+import handleLogin from '../../services/login';
 
 function Registration() {
     const navigate = useNavigate();
@@ -119,9 +120,21 @@ function Registration() {
             DBA = undefined;
         }
 
-        await registerUser(values.email, values.password, values.firstname, values.lastname, addresses, DSA, DBA)
+        await registerUser(
+            values.email,
+            values.password,
+            values.firstname,
+            values.lastname,
+            addresses,
+            values.birthday,
+            DSA,
+            DBA
+        )
             .then((res) => {
                 if (res && res.statusCode === 201) {
+                    if (res) {
+                        localStorage.setItem('idOFCustomer', res.body.customer.id);
+                    }
                     setSuccessMessage(`You've successfully registered. You'll be redirected to the main page`);
                     setSeverity('success');
                     setError('');
@@ -132,6 +145,9 @@ function Registration() {
                         loginMenu();
                     }, 1000);
                 }
+                localStorage.removeItem('token');
+                localStorage.removeItem('status');
+                handleLogin(values.email, values.password);
             })
             .catch((err) => {
                 const message = registrationErrorMappings[err.message] || `${err.message}`;
@@ -191,6 +207,7 @@ function Registration() {
                                 validInputs={validInputs}
                                 setValidInputs={setValidInputs}
                                 passwordValue={input.name === 'confirmPassword' ? values.password : ''}
+                                required
                             />
                         ))}
                     </fieldset>
@@ -231,6 +248,7 @@ function Registration() {
                                     setValues={setValues}
                                     validInputs={validInputs}
                                     setValidInputs={setValidInputs}
+                                    required
                                 />
                             ))}
                         </div>
@@ -286,6 +304,7 @@ function Registration() {
                                     setValues={setValues}
                                     validInputs={validInputs}
                                     setValidInputs={setValidInputs}
+                                    required
                                 />
                             ))}
                         </div>

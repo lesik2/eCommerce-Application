@@ -8,7 +8,8 @@ import { IFormInput } from '../../../data/interfaces';
 import { CountryValidation } from '../../../data/data';
 
 function FormInput(props: IFormInput) {
-    const { input, values, setValues, validInputs, setValidInputs, passwordValue, setAlertOpen } = props;
+    const { input, values, setValues, validInputs, setValidInputs, passwordValue, setAlertOpen, required, readOnly } =
+        props;
     let { pattern, errormessage } = input;
     const [errorText, setErrorText] = useState(errormessage);
 
@@ -59,7 +60,7 @@ function FormInput(props: IFormInput) {
         setValues({ ...values, [e.target.name]: e.target.value });
         checkValidInput(e.target.value);
         if (setAlertOpen) {
-            setAlertOpen(false);
+            setAlertOpen();
         }
     };
     return (
@@ -71,14 +72,18 @@ function FormInput(props: IFormInput) {
                         value={values[input.name]}
                         label={input.label}
                         name={input.name}
-                        validInputs={validInputs}
+                        validInput={validInputs[input.name]}
                         errormessage={errorText}
                     />
                 </ThemeProvider>
             ) : (
                 <ThemeProvider theme={theme}>
                     <TextField
-                        required
+                        InputProps={{
+                            readOnly,
+                            disableUnderline: readOnly,
+                        }}
+                        required={required}
                         variant="standard"
                         {...input}
                         autoComplete="off"

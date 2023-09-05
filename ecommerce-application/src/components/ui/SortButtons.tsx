@@ -19,7 +19,7 @@ type SortButtonsProps = {
 export default function SortButtons(props: SortButtonsProps) {
     const { state, setState, type } = props;
 
-    const handleSort = (event: React.MouseEvent<HTMLElement>, newSort: SortTypes) => {
+    const handleSort = (_event: React.MouseEvent<HTMLElement>, newSort: SortTypes) => {
         setState(newSort);
     };
 

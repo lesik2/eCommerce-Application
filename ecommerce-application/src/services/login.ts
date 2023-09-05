@@ -53,7 +53,7 @@ async function loginWithToken(
     return { clientData, reqestBuilder };
 }
 
-async function loginNoToken(
+export async function loginNoToken(
     username: string,
     password: string
 ): Promise<

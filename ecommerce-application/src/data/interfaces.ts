@@ -1,10 +1,19 @@
+import { InputTypes, PasswordInputTypes, QueryArgs } from './types';
 import { IProductCardProps } from '../components/ProductCard';
 import { LoginStatus } from './enums';
-import { InputTypes, QueryArgs } from './types';
 
 export interface IInput {
     id: string;
     name: InputTypes;
+    type?: string;
+    label?: string;
+    pattern?: RegExp;
+    errormessage?: string;
+    validdate?: number;
+}
+export interface IInputPassword {
+    id: string;
+    name: PasswordInputTypes;
     type?: string;
     label?: string;
     pattern?: RegExp;
@@ -50,12 +59,18 @@ export interface IFormInput {
     validInputs: IValidInputs;
     setValidInputs: React.Dispatch<React.SetStateAction<IValidInputs>>;
     passwordValue?: string | null;
-    setAlertOpen?: React.Dispatch<React.SetStateAction<boolean>>;
+    setAlertOpen?: () => void;
+    required?: boolean;
+    readOnly?: boolean;
 }
 export interface IAddress {
-    street: string;
-    city: string;
-    postalCode: string;
+    id?: string | undefined;
+    streetName?: string | undefined;
+    city?: string | undefined;
+    postalCode?: string | undefined;
+    country: string;
+    defaultShippingAddress?: string;
+    defaultBillingAddress?: string;
 }
 
 export interface ILoginContext {
@@ -88,4 +103,10 @@ export interface IProductsPage {
     header: string;
     link: string[];
     query: QueryArgs;
+}
+export interface IAdditionalAddress {
+    defaultShipping: boolean;
+    defaultBilling: boolean;
+    shipping: boolean;
+    billing: boolean;
 }

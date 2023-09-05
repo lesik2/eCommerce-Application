@@ -1,10 +1,12 @@
+/* eslint-disable max-len */
 import { ClientResponse } from '@commercetools/platform-sdk';
 import { Box, TextField } from '@mui/material';
 import { useContext, useEffect, useRef, useState } from 'react';
+import { toast, ToastContainer } from 'react-toastify';
 import { Link } from 'react-router-dom';
 import { ModalContext } from '../context/ModalContext';
 import { ProductsContext } from '../context/ProductsContext';
-import { QUERIES } from '../data/data';
+import { QUERIES, toastProps } from '../data/data';
 import { LoadStates } from '../data/enums';
 import { IProductsPage } from '../data/interfaces';
 import { QueryArgs } from '../data/types';
@@ -27,12 +29,6 @@ function Products(props: IProductsPage) {
 
     const currentPage = useRef<QueryArgs>({});
     const errorMessage = useRef('');
-
-    const errorHandler = (e: unknown) => {
-        const err = e as Error;
-        errorMessage.current = err.message;
-        setLoadState(LoadStates.error);
-    };
 
     // eslint-disable-next-line consistent-return
     const fetchData = async (q: QueryArgs) => {
@@ -60,7 +56,7 @@ function Products(props: IProductsPage) {
 
             return res;
         } catch (error) {
-            errorHandler(error);
+            toast.error(error instanceof Error ? error.message : 'unexpected error in fetch product data', toastProps);
         }
     };
 
@@ -101,7 +97,12 @@ function Products(props: IProductsPage) {
                     responseHandler(res);
                 }
             })
-            .catch(errorHandler);
+            .catch((error) => {
+                toast.error(
+                    error instanceof Error ? error.message : 'unexpected error in fetch product data',
+                    toastProps
+                );
+            });
         currentPage.current.filter = query.filter;
         if (query.search !== undefined) {
             currentSearch.current = query.search;
@@ -126,7 +127,12 @@ function Products(props: IProductsPage) {
                         responseHandler(res);
                     }
                 })
-                .catch(errorHandler);
+                .catch((error) => {
+                    toast.error(
+                        error instanceof Error ? error.message : 'unexpected error in fetch product data',
+                        toastProps
+                    );
+                });
         }
         return () => {
             setProductsQuery(null);
@@ -203,6 +209,7 @@ function Products(props: IProductsPage) {
                     <FilterMenu onClose={closeFilterMenu} />
                 </Modal>
             )}
+            <ToastContainer {...toastProps} position="bottom-center" />
         </>
     );
 }
