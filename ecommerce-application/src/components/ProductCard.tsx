@@ -26,7 +26,7 @@ export function ProductCard(props: IProductCardProps) {
     };
 
     return (
-        <div className="max-w-[24rem] p-2 place-self-center last:mb-20">
+        <div className="max-w-[24rem] p-2 place-self-center last:mb-20 sm:last:mb-0">
             <div className="group relative flex items-center flex-col">
                 <div className="overflow-hidden text-center h-3/4 w-3/4 transition-transform transform group-hover:opacity-75">
                     <img
