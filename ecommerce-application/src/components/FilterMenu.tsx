@@ -16,7 +16,7 @@ type FilterMenuProps = {
 export default function FilterMenu(props: FilterMenuProps) {
     const { onClose } = props;
 
-    const { setProductsQuery, data, currentSearch } = useContext(ProductsContext);
+    const { setProductsQuery, data, currentSearch, filterState } = useContext(ProductsContext);
 
     const { openFilterMenu, closeFilterMenu } = useContext(ModalContext);
 
@@ -27,11 +27,11 @@ export default function FilterMenu(props: FilterMenuProps) {
 
     const [sliderValue, setSlider] = useState<number[]>([minPrice.current, maxPrice.current]);
 
-    const [sortName, setSortName] = useState<SortTypes>('nosort');
+    const [sortName, setSortName] = useState<SortTypes>(filterState.current.sortByName);
 
-    const [sortPrice, setSortPrice] = useState<SortTypes>('nosort');
+    const [sortPrice, setSortPrice] = useState<SortTypes>(filterState.current.sortByPrice);
 
-    const [spiciness, setSpiciness] = useState<SortTypes>('nosort');
+    const [spiciness, setSpiciness] = useState<SortTypes>(filterState.current.spiciness);
 
     const onReset = () => {
         setSlider([minPrice.current, maxPrice.current]);
@@ -56,6 +56,9 @@ export default function FilterMenu(props: FilterMenuProps) {
                 sortPrice !== 'nosort' ? `price ${sortPrice}` : '',
             ],
         });
+        filterState.current.sortByName = sortName;
+        filterState.current.spiciness = spiciness;
+        filterState.current.sortByPrice = sortPrice;
         closeFilterMenu();
     };
 

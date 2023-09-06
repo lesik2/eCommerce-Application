@@ -1,4 +1,4 @@
-import { InputTypes, PasswordInputTypes, QueryArgs } from './types';
+import { InputTypes, PasswordInputTypes, QueryArgs, SortTypes } from './types';
 import { IProductCardProps } from '../components/ProductCard';
 import { LoginStatus } from './enums';
 
@@ -97,6 +97,8 @@ export interface IProductsContext {
     data: IProductCardProps[];
     setData: (data: IProductCardProps[]) => void;
     currentSearch: React.MutableRefObject<string>;
+    filterState: React.MutableRefObject<Record<string, SortTypes>>;
+    clearFilterState: () => void;
 }
 
 export interface IProductsPage {
