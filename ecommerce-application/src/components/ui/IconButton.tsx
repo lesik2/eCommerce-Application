@@ -15,14 +15,16 @@ import { IconButtonTypes, ButtonSize } from '../../data/types';
 type ButtonProps = {
     type: IconButtonTypes;
     size: ButtonSize;
+    className?: string;
     hoverColor?: string;
     onClick?: (e: React.FormEvent) => void;
     disabled?: boolean;
 };
 
-export default function CreateIconButton({ type, size, hoverColor, onClick, disabled }: ButtonProps) {
+export default function CreateIconButton({ type, size, className, hoverColor, onClick, disabled }: ButtonProps) {
     return (
         <IconButton
+            className={className}
             onClick={onClick}
             aria-label={type}
             size={size}

@@ -20,7 +20,8 @@ import CreateIconButton from './ui/IconButton';
 function Products(props: IProductsPage) {
     const { header, link, query } = props;
 
-    const { productsQuery, setProductsQuery, data, setData, currentSearch } = useContext(ProductsContext);
+    const { productsQuery, setProductsQuery, data, setData, currentSearch, clearFilterState } =
+        useContext(ProductsContext);
     const { filterMenuStatus, openFilterMenu, closeFilterMenu } = useContext(ModalContext);
 
     const [loadState, setLoadState] = useState(LoadStates.loading);
@@ -91,6 +92,7 @@ function Products(props: IProductsPage) {
     };
 
     useEffect(() => {
+        clearFilterState();
         fetchData(query)
             .then((res) => {
                 if (res) {
@@ -189,7 +191,7 @@ function Products(props: IProductsPage) {
             {loadState === LoadStates.error && (
                 <p className="mt-3 text-center text-bgMenu text-2xl">{errorMessage.current}</p>
             )}
-            <div className="mt-1 mx-auto px-5 max-sm:px-0 2xl:w-[80%] max-lg:w-[100%] flex flex-wrap justify-center gap-x-6 gap-y-10">
+            <div className="mt-1 pb-16 mx-auto px-5 max-sm:px-0 2xl:w-[80%] max-lg:w-[100%] flex flex-wrap justify-center gap-x-6 gap-y-10">
                 {loadState === LoadStates.success &&
                     data.map((product) => (
                         <ProductCard
