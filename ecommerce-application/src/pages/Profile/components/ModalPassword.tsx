@@ -49,9 +49,10 @@ function ModalPassword(props: IModalPassword) {
         if (!passwordInput) return;
         if (passwordInput.pattern) {
             const result = passwordInput.pattern.test(value);
-            setValidInputs({ ...validInputs, [name]: result });
             if (passwordInput.name === 'newPassword') {
-                setValidInputs({ ...validInputs, confirmPassword: values.confirmPassword === value });
+                setValidInputs({ ...validInputs, confirmPassword: values.confirmPassword === value, [name]: result });
+            } else {
+                setValidInputs({ ...validInputs, [name]: result });
             }
         } else {
             const result = values.newPassword === value;
