@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import './styles/Profile.css';
 import { Customer, MyCustomerUpdateAction } from '@commercetools/platform-sdk';
 import { AlertColor, TextField, ThemeProvider } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import CustomizedButton from '../../components/ui/CustomizedButton';
 import { IAddress } from '../../data/interfaces';
 import Address from './components/Address';
@@ -18,6 +19,7 @@ import FetchResultAlert from '../../components/FetchResultAlert';
 import PersonalInfo from './components/PersonalInfo';
 
 function Profile() {
+    const navigate = useNavigate();
     const [values, setValues] = useState({
         firstname: '',
         lastname: '',
@@ -110,18 +112,26 @@ function Profile() {
         }
     };
     useEffect(() => {
-        const id = localStorage.getItem('idOFCustomer');
-        if (id) {
-            getCustomer(id)
-                .then((res) => {
-                    changeStateOfAddress(res.body);
-                    changeStateOfPersonalInfo(res.body);
-                    setVesrion(res.body.version);
-                })
-                .catch((e) => {
-                    console.log(e);
-                });
+        if (!(localStorage.getItem('token') && localStorage.getItem('status') === 'loggedIn')) {
+            navigate('../login');
         }
+    }, [navigate]);
+    useEffect(() => {
+        if (localStorage.getItem('token') && localStorage.getItem('status') === 'loggedIn') {
+            const id = localStorage.getItem('idOFCustomer');
+            if (id) {
+                getCustomer(id)
+                    .then((res) => {
+                        changeStateOfAddress(res.body);
+                        changeStateOfPersonalInfo(res.body);
+                        setVesrion(res.body.version);
+                    })
+                    .catch((e) => {
+                        console.log(e);
+                    });
+            }
+        }
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     const handleEditMode = () => {

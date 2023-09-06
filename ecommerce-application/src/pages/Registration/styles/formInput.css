@@ -20,3 +20,6 @@
 .profile .MuiFormHelperText-root{
   width: 200px;
 }
+.profile .MuiFormControl-root input[type="date"]{
+  padding-left: 0px;
+}
