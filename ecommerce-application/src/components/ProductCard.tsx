@@ -26,9 +26,9 @@ export function ProductCard(props: IProductCardProps) {
     };
 
     return (
-        <div className="max-w-[24rem] p-2 place-self-center">
-            <div className="group relative flex items-center flex-col">
-                <div className="overflow-hidden text-center h-3/4 w-3/4 transition-transform transform group-hover:opacity-75">
+        <div className="w-[320px] last:ml-0 flex flex-col justify-end items-center overflow-hidden">
+            <div className="group relative h-full min-w-[311px] flex items-center flex-col justify-end">
+                <div className="overflow-hidden shrink h-3/4 w-3/4 transition-transform transform group-hover:opacity-75">
                     <img
                         className="object-top mx-auto w-3/4 aspect-w-1 transition-transform origin-bottom group-hover:scale-105"
                         src={picPath}
@@ -36,7 +36,7 @@ export function ProductCard(props: IProductCardProps) {
                     />
                 </div>
                 <div className="flex justify-center items-center">
-                    <h3 className="text-2xl tracking-tighter whitespace-nowrap">
+                    <h3 className="text-2xl tracking-tighter text-center">
                         <Link to={productPath}>
                             <span aria-hidden="true" className="absolute inset-0" />
                             {productName}
@@ -59,7 +59,7 @@ export function ProductCard(props: IProductCardProps) {
                 </div>
                 {ingredients !== '' && (
                     <p
-                        className="min-h-[4rem] text-center font-serif mt-1 text-xl leading-4"
+                        className="min-h-[4rem] text-center font-serif mt-1 text-xl leading-4 overflow-hidden"
                         style={{ lineHeight: '18px' }}
                     >
                         {ingredients}

@@ -189,7 +189,7 @@ function Products(props: IProductsPage) {
             {loadState === LoadStates.error && (
                 <p className="mt-3 text-center text-bgMenu text-2xl">{errorMessage.current}</p>
             )}
-            <div className="mt-1 px-5 grid grid-cols-1 justify-items-center gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
+            <div className="mt-1 mx-auto px-5 max-sm:px-0 2xl:w-[80%] max-lg:w-[100%] flex flex-wrap justify-center gap-x-6 gap-y-10">
                 {loadState === LoadStates.success &&
                     data.map((product) => (
                         <ProductCard
