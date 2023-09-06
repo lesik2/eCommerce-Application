@@ -31,7 +31,7 @@ export const Inputs: IInput[] = [
         id: '3',
         name: 'birthday',
         type: 'date',
-        label: 'DOB',
+        label: 'Date of birth',
         validdate: calculateValidDate(),
         errormessage: `A valid date is above 13 years old`,
     },
