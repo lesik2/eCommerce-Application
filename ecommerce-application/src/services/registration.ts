@@ -17,6 +17,7 @@ async function registrationWithToken(
     firstName: string,
     lastName: string,
     addresses: BaseAddress[],
+    dateOfBirth: string,
     defaultShippingAddress?: number,
     defaultBillingAddress?: number
 ) {
@@ -30,6 +31,7 @@ async function registrationWithToken(
                 lastName,
                 password,
                 addresses,
+                dateOfBirth,
                 defaultShippingAddress,
                 defaultBillingAddress,
             },
@@ -49,6 +51,7 @@ async function registrationNoToken(
     firstName: string,
     lastName: string,
     addresses: BaseAddress[],
+    dateOfBirth: string,
     defaultShippingAddress?: number,
     defaultBillingAddress?: number
 ) {
@@ -70,6 +73,7 @@ async function registrationNoToken(
                 lastName,
                 password,
                 addresses,
+                dateOfBirth,
                 defaultShippingAddress,
                 defaultBillingAddress,
             },
@@ -88,6 +92,7 @@ export default async function handleRegistration(
     firstName: string,
     lastName: string,
     addresses: BaseAddress[],
+    dateOfBirth: string,
     defaultShippingAddress?: number,
     defaultBillingAddress?: number
 ) {
@@ -101,6 +106,7 @@ export default async function handleRegistration(
                 firstName,
                 lastName,
                 addresses,
+                dateOfBirth,
                 defaultShippingAddress,
                 defaultBillingAddress
             );
@@ -112,6 +118,7 @@ export default async function handleRegistration(
             firstName,
             lastName,
             addresses,
+            dateOfBirth,
             defaultShippingAddress,
             defaultBillingAddress
         );

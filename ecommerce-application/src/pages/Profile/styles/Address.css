@@ -1,0 +1,92 @@
+.addres-item__icon{
+  width: 35px;
+}
+.address-item{
+  display: flex;
+  height: 80px;
+  background-color: #eff5f5;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  border-radius: 10px;
+}
+.address-item:hover{
+  background-color: #e0ebeb;
+}
+.addres-item__icons{
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.address-item__btns{
+  display: flex;
+}
+.shipping-billing-address{
+  display: flex;
+  gap: 10px;
+}
+.default-address{
+  display: flex;
+  gap: 10px;
+}
+.address-item__default{
+  display: block;
+  background-color: #83afaf;
+  padding: 3px 8px 3px 8px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-family:'font-serif';
+  font-weight: bold;
+}
+.address-item__text-add{
+  font-size: 15px; 
+  font-family:'font-serif'
+}
+.address-item__text-main{
+  font-size: 20px; 
+  font-family:'font-serif';
+  font-weight: bold;
+}
+@media (max-width: 736px) {
+  .addres-item__icon{
+    width: 30px;
+  }
+  .addres-item__icons{
+    gap: 10px;
+  }
+  .address-item__default{
+    padding: 3px 5px 3px 5px;
+    font-size: 13px;
+  }
+}
+@media (max-width: 625px) {
+  .shipping-billing-address{
+    flex-direction: column;
+    gap: 0px;
+  }
+  .default-address{
+    flex-direction: column;
+    gap: 5px;
+  }
+}
+@media (max-width: 450px) {
+ .address-helper-text{
+   display: none;
+ }
+ .addres-item__icon{
+   width: 25px;
+ }
+  .addres-item__icons{
+    gap: 5px;
+ }
+  .address-item__default{
+    padding: 3px 3px 3px 3px;
+    font-size: 13px;
+ }
+ .address-item__text-main{
+  font-size: 16px;
+ }
+ .address-item__text-add{
+  font-size: 14px; 
+}
+}

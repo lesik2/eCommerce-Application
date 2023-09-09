@@ -14,8 +14,12 @@ import Cart from './pages/Cart/Cart';
 import About from './pages/About/About';
 import ErrorPage from './pages/Error/Error';
 import Main from './pages/Main/Main';
+import { ProductsState } from './context/ProductsContext';
 import { ModalState } from './context/ModalContext';
 import { LoginState } from './context/LoginContext';
+import Profile from './pages/Profile/Profile';
+import { PRODUCT_PAGES } from './data/data';
+import ProductPage from './pages/ProductPage/ProductPage';
 
 const router = createBrowserRouter([
     {
@@ -36,16 +40,56 @@ const router = createBrowserRouter([
                         element: <Menu />,
                     },
                     {
+                        path: 'menu/:key',
+                        element: <ProductPage />,
+                    },
+                    {
                         path: 'soup',
                         element: <Soup />,
+                    },
+                    {
+                        path: 'soup/:key',
+                        element: <ProductPage />,
                     },
                     {
                         path: 'poke',
                         element: <Poke />,
                     },
                     {
+                        path: 'poke/:key',
+                        element: <ProductPage />,
+                    },
+                    {
                         path: 'beverages',
-                        element: <Beverages />,
+                        element: <Beverages {...PRODUCT_PAGES.Beverages} />,
+                    },
+                    {
+                        path: 'beverages/juices',
+                        element: <Beverages {...PRODUCT_PAGES.Juices} />,
+                    },
+                    {
+                        path: 'beverages/juices/:key',
+                        element: <ProductPage />,
+                    },
+                    {
+                        path: 'beverages/energetics',
+                        element: <Beverages {...PRODUCT_PAGES.Energetic} />,
+                    },
+                    {
+                        path: 'beverages/energetics/:key',
+                        element: <ProductPage />,
+                    },
+                    {
+                        path: 'beverages/soda',
+                        element: <Beverages {...PRODUCT_PAGES.Soda} />,
+                    },
+                    {
+                        path: 'beverages/soda/:key',
+                        element: <ProductPage />,
+                    },
+                    {
+                        path: 'beverages/:key',
+                        element: <ProductPage />,
                     },
                     {
                         path: 'cart',
@@ -54,6 +98,10 @@ const router = createBrowserRouter([
                     {
                         path: 'about',
                         element: <About />,
+                    },
+                    {
+                        path: 'profile',
+                        element: <Profile />,
                     },
                 ],
             },
@@ -73,7 +121,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
         <ModalState>
             <LoginState>
-                <RouterProvider router={router} />
+                <ProductsState>
+                    <RouterProvider router={router} />
+                </ProductsState>
             </LoginState>
         </ModalState>
     </React.StrictMode>

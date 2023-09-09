@@ -1,5 +1,10 @@
-function Beverages() {
-    return <h1 className="py-2 text-2xl text-center">Beverages page</h1>;
+import Products from '../../components/Products';
+import { IProductsPage } from '../../data/interfaces';
+
+function Beverages(pageBev: IProductsPage) {
+    const { header, link, query } = pageBev;
+    return <Products header={header} link={link} query={query} key={header} />;
+    // return <Products {...pageBev} />;
 }
 
 export default Beverages;
