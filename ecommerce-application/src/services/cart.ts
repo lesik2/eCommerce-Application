@@ -38,7 +38,7 @@ export async function getCartItems(): Promise<Cart | undefined> {
     return result || undefined;
 }
 type IAddItem = {
-    prodID: string;
+    productId: string;
     quantity?: number;
     variantId?: number;
     id?: string;
@@ -46,7 +46,7 @@ type IAddItem = {
 };
 
 // eslint-disable-next-line consistent-return
-export async function addItem({ prodID, quantity = 1, variantId = 1, id, version = 1 }: IAddItem) {
+export async function addItem({ productId, quantity = 1, variantId = 1, id, version = 1 }: IAddItem) {
     const ID = id || (await createCart().then((res: void | Cart) => (typeof res === 'object' ? res.id : undefined)));
     if (ID) {
         return handleFlows()
@@ -56,7 +56,7 @@ export async function addItem({ prodID, quantity = 1, variantId = 1, id, version
             .post({
                 body: {
                     version,
-                    actions: [{ action: 'addLineItem', productId: prodID, variantId, quantity }],
+                    actions: [{ action: 'addLineItem', productId, variantId, quantity }],
                 },
             })
             .execute()

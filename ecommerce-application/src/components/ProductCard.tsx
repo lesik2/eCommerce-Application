@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable max-len */
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import CustomizedButton from './ui/CustomizedButton';
-import QuantitySelector from './ui/QuantitySelector';
 import Chili from '../assets/img/chili.svg';
 import Image from './ui/Image';
+import { IAddToCartAction, ICartState } from '../reducer/reducer';
+import { addItem } from '../services/cart';
 
 export interface IProductCardProps {
     productName: string;
@@ -15,16 +15,33 @@ export interface IProductCardProps {
     ingredients?: string;
     picPath?: string;
     spiciness?: boolean;
+    productId: string;
 }
 export const MessageOnLimit = `Planning a big order? Connect with us directly for special arrangements and personalized assistance. Let's make your meal for a larger group memorable!`;
 
-export function ProductCard(props: IProductCardProps) {
-    const { productName, productPrice, productDiscountPrice, ingredients, productPath, picPath, spiciness } = props;
-    const [messageOnLimit, setMessageOnLimit] = useState('');
-    const handleOrderLimit = (isLimit: boolean) => {
-        isLimit ? setMessageOnLimit(MessageOnLimit) : setMessageOnLimit('');
+export function ProductCard({
+    product,
+    state,
+    dispatch,
+}: {
+    product: IProductCardProps;
+    state: ICartState;
+    dispatch: React.Dispatch<IAddToCartAction>;
+}) {
+    const { productName, productPrice, productDiscountPrice, ingredients, productPath, picPath, spiciness, productId } =
+        product;
+    const disabled = state
+        ? state.cartLineItems?.map((item) => item.productKey)?.some((item) => item === productPath)
+        : false;
+    const addToCart: () => void = () => {
+        addItem({ productId, id: state?.cartId, version: state.cartVersion }).then((res) => {
+            if (res)
+                dispatch({
+                    type: 'ADD_TO_CART',
+                    payload: { cartLineItems: res.lineItems, cartId: res.id, cartVersion: res.version },
+                });
+        });
     };
-
     return (
         <div className="max-w-[24rem] p-2 place-self-center">
             <div className="group relative flex items-center flex-col">
@@ -42,7 +59,7 @@ export function ProductCard(props: IProductCardProps) {
                             {productName}
                         </Link>
                     </h3>
-                    {productDiscountPrice !== 0 && (
+                    {productDiscountPrice && (
                         <>
                             <p className="text-2xl ml-2 font-medium" style={{ textDecoration: 'line-through' }}>
                                 {productPrice}
@@ -66,7 +83,7 @@ export function ProductCard(props: IProductCardProps) {
                     </p>
                 )}
             </div>
-            <div className={`flex justify-center items-center ${ingredients ? 'mt-[0px]' : 'md:mt-[68px] mt-[10px]'}`}>
+            <div className={`flex justify-center items-center ${ingredients ? 'mt-[0px]' : 'mt-[10px]'}`}>
                 <CustomizedButton
                     sx={{
                         '&&': {
@@ -79,19 +96,12 @@ export function ProductCard(props: IProductCardProps) {
                     }}
                     variant="contained"
                     className="font-serif"
+                    onClick={addToCart}
+                    disabled={disabled}
                 >
-                    + SELECT
+                    {disabled ? 'ADDED IN CART' : '+ SELECT'}
                 </CustomizedButton>
-                <QuantitySelector onQuantityReached={handleOrderLimit} />
             </div>
-            <p className="text-xs pt-4 text-center">{messageOnLimit}</p>
         </div>
     );
 }
-
-ProductCard.defaultProps = {
-    productDiscountPrice: 0,
-    ingredients: '',
-    picPath: '../',
-    spiciness: false,
-};

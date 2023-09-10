@@ -55,7 +55,7 @@ function ProductPage() {
                     const productName = mainData.name['en-US'];
                     const ingredients = mainData.description ? mainData.description['en-US'] : undefined;
                     const getProductData = (variant: ProductVariant) => {
-                        const prices = variant.prices?.find((price) => price.country === 'PT');
+                        const prices = variant.prices?.find((price) => price.value.centAmount);
                         const productPrice = prices
                             ? prices.value.centAmount / 10 ** prices.value.fractionDigits
                             : undefined;
