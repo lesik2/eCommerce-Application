@@ -249,3 +249,5 @@ export const toastProps = {
 
 // eslint-disable-next-line max-len
 export const MessageOnLimit = `Planning a big order? Connect with us directly for special arrangements and personalized assistance. Let's make your meal for a larger group memorable!`;
+
+export const ANIM_TIME = 300;

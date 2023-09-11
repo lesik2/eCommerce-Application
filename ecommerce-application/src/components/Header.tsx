@@ -2,11 +2,11 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import { Link, useNavigate } from 'react-router-dom';
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Image from './ui/Image';
 import Logo from '../assets/img/logo.svg';
 import CreateIconButton from './ui/IconButton';
-import { HeaderData } from '../data/data';
+import { ANIM_TIME, HeaderData } from '../data/data';
 import { ModalContext } from '../context/ModalContext';
 import Modal from './Modal';
 import { LoginContext } from '../context/LoginContext';
@@ -20,6 +20,10 @@ export default function Header() {
 
     const { loginStatus, loginMenu, logoutMenu } = useContext(LoginContext);
 
+    const [userMenu, setUserMenu] = useState(false);
+
+    const [isMenuShowed, showMenu] = useState(false);
+
     const navigate = useNavigate();
 
     const checkLoginStatus = () => {
@@ -27,13 +31,19 @@ export default function Header() {
             loginMenu();
         }
     };
-    const handleUserMenu = () => {
-        if (userMenuStatus) {
-            closeUserMenu();
-        } else {
-            openUserMenu();
-        }
-    };
+    // const handleUserMenu = () => {
+    //     if (userMenuStatus) {
+    //         setUserMenu(false);
+    //         setTimeout(() => {
+    //             closeUserMenu();
+    //         }, ANIM_TIME);
+    //     } else {
+    //         openUserMenu();
+    //         setTimeout(() => {
+    //             setUserMenu(true);
+    //         }, ANIM_TIME);
+    //     }
+    // };
 
     const handleLogout = () => {
         logoutMenu();
@@ -45,6 +55,20 @@ export default function Header() {
     useEffect(() => {
         checkLoginStatus();
     });
+
+    useEffect(() => {
+        if (userMenuStatus) {
+            setUserMenu(true);
+            setTimeout(() => {
+                showMenu(true);
+            }, ANIM_TIME);
+        } else {
+            showMenu(false);
+            setTimeout(() => {
+                setUserMenu(false);
+            }, ANIM_TIME);
+        }
+    }, [userMenuStatus]);
 
     return (
         <header
@@ -80,14 +104,18 @@ export default function Header() {
                     </Link>
                 )}
                 {loginStatus === LoginStatus.loggedIn && (
-                    <div onClick={handleUserMenu}>
+                    <div onClick={openUserMenu}>
                         <CreateIconButton type="logged" size="large" />
                     </div>
                 )}
             </div>
-            {userMenuStatus && (
+            {userMenu && (
                 <Modal onClose={closeUserMenu}>
-                    <div className="w-[320px] px-3 py-3 text-center rounded-md bg-white/95 absolute top-[60px] right-0 z-20">
+                    <div
+                        className={`absolute w-[320px] px-3 py-3 text-center rounded-md bg-white/95 top-[60px] right-0 z-20 transition-all duration-${ANIM_TIME} ${
+                            isMenuShowed ? 'right-0' : 'right-[-320px]'
+                        }`}
+                    >
                         <h3 className="mb-5">Hello, Username!</h3>
                         <Link
                             className="block text-center py-2 text-xl text-[blue] underline"

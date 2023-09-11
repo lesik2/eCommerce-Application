@@ -6,7 +6,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import { Link } from 'react-router-dom';
 import { ModalContext } from '../context/ModalContext';
 import { ProductsContext } from '../context/ProductsContext';
-import { QUERIES, toastProps } from '../data/data';
+import { ANIM_TIME, QUERIES, toastProps } from '../data/data';
 import { LoadStates } from '../data/enums';
 import { IProductsPage } from '../data/interfaces';
 import { QueryArgs } from '../data/types';
@@ -26,6 +26,9 @@ function Products(props: IProductsPage) {
 
     const [loadState, setLoadState] = useState(LoadStates.loading);
     const [searchValue, setSearch] = useState('');
+    const [filterMenu, setFilterMenu] = useState(false);
+    const [isMenuShowed, showMenu] = useState(false);
+
     // const [searchButtonState, setSearchButton] = useState(true);
 
     const currentPage = useRef<QueryArgs>({});
@@ -140,6 +143,21 @@ function Products(props: IProductsPage) {
             setProductsQuery(null);
         };
     }, [productsQuery]);
+
+    useEffect(() => {
+        if (filterMenuStatus) {
+            setFilterMenu(true);
+            setTimeout(() => {
+                showMenu(true);
+            }, ANIM_TIME);
+        } else {
+            showMenu(false);
+            setTimeout(() => {
+                setFilterMenu(false);
+            }, ANIM_TIME);
+        }
+    }, [filterMenuStatus]);
+
     return (
         <>
             <header>
@@ -206,9 +224,14 @@ function Products(props: IProductsPage) {
                         />
                     ))}
             </div>
-            {filterMenuStatus && (
+            {filterMenu && (
                 <Modal onClose={closeFilterMenu}>
-                    <FilterMenu onClose={closeFilterMenu} />
+                    <FilterMenu
+                        onClose={closeFilterMenu}
+                        className={`transition-all duration-${ANIM_TIME} ${
+                            isMenuShowed ? 'right-0' : 'right-[-384px]'
+                        }`}
+                    />
                 </Modal>
             )}
             <ToastContainer {...toastProps} position="bottom-center" />
