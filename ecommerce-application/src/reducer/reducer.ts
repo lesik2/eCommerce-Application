@@ -4,7 +4,7 @@ export interface IAddToCartAction {
     type: 'ADD_TO_CART' | 'SET_INITIAL_STATE';
     payload: ICartState;
 }
-type CartAction = IAddToCartAction;
+export type CartAction = IAddToCartAction;
 
 export interface ICartState {
     cartLineItems: LineItem[] | [];

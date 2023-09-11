@@ -23,6 +23,7 @@ function ProductPage() {
     const navigate = useNavigate();
 
     const [data, setData] = useState<IProductPageLayoutProps>({
+        productId: '',
         productName: '',
         productPrice: 0,
         productDiscountPrice: 0,
@@ -52,9 +53,11 @@ function ProductPage() {
             .then((res) => {
                 if (res) {
                     const mainData = res.body;
+                    const productId = mainData.id;
                     const productName = mainData.name['en-US'];
                     const ingredients = mainData.description ? mainData.description['en-US'] : undefined;
                     const getProductData = (variant: ProductVariant) => {
+                        const variantId = variant.id;
                         const prices = variant.prices?.find((price) => price.value.centAmount);
                         const productPrice = prices
                             ? prices.value.centAmount / 10 ** prices.value.fractionDigits
@@ -65,9 +68,14 @@ function ProductPage() {
                         const images = variant.images ? variant.images : undefined;
                         const picPaths = images ? images.map((el) => el.url) : [];
                         const { attributes } = variant;
-                        return { productPrice, productDiscountPrice, picPaths, attributes };
+                        return { variantId, productPrice, productDiscountPrice, picPaths, attributes };
                     };
-                    const masterProductData = { productName, ingredients, ...getProductData(mainData.masterVariant) };
+                    const masterProductData = {
+                        productId,
+                        productName,
+                        ingredients,
+                        ...getProductData(mainData.masterVariant),
+                    };
                     if (!mainData.variants.length) {
                         setData(masterProductData);
                     } else {
@@ -89,6 +97,7 @@ function ProductPage() {
         <>
             {!pathError && (
                 <ProductPageLayout
+                    productId={data.productId}
                     productName={data.productName}
                     productPrice={data.productPrice}
                     productDiscountPrice={data.productDiscountPrice}

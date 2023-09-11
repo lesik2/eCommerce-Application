@@ -1,41 +1,24 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable max-len */
 import { Link } from 'react-router-dom';
+import { useContext } from 'react';
 import CustomizedButton from './ui/CustomizedButton';
 import Chili from '../assets/img/chili.svg';
 import Image from './ui/Image';
-import { IAddToCartAction, ICartState } from '../reducer/reducer';
 import { addItem } from '../services/cart';
+import { CartContext } from '../context/CartContext';
+import { IProductCardProps } from '../data/interfaces';
 
-export interface IProductCardProps {
-    productName: string;
-    productPrice: number;
-    productPath: string;
-    productDiscountPrice?: number;
-    ingredients?: string;
-    picPath?: string;
-    spiciness?: boolean;
-    productId: string;
-}
-export const MessageOnLimit = `Planning a big order? Connect with us directly for special arrangements and personalized assistance. Let's make your meal for a larger group memorable!`;
-
-export function ProductCard({
-    product,
-    state,
-    dispatch,
-}: {
-    product: IProductCardProps;
-    state: ICartState;
-    dispatch: React.Dispatch<IAddToCartAction>;
-}) {
+export default function ProductCard({ product }: { product: IProductCardProps }) {
     const { productName, productPrice, productDiscountPrice, ingredients, productPath, picPath, spiciness, productId } =
         product;
+    const { state, dispatch } = useContext(CartContext);
     const disabled = state
         ? state.cartLineItems?.map((item) => item.productKey)?.some((item) => item === productPath)
         : false;
     const addToCart: () => void = () => {
-        addItem({ productId, id: state?.cartId, version: state.cartVersion }).then((res) => {
-            if (res)
+        addItem({ productId, id: state?.cartId, version: state?.cartVersion }).then((res) => {
+            if (res && dispatch)
                 dispatch({
                     type: 'ADD_TO_CART',
                     payload: { cartLineItems: res.lineItems, cartId: res.id, cartVersion: res.version },

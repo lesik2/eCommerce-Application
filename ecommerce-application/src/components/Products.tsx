@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 import { ClientResponse } from '@commercetools/platform-sdk';
 import { Box, TextField } from '@mui/material';
-import { useContext, useEffect, useReducer, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import { Link } from 'react-router-dom';
 import { ModalContext } from '../context/ModalContext';
@@ -14,10 +14,8 @@ import handleFlows from '../services/handleFlows';
 import processProducts from '../services/processProducts';
 import FilterMenu from './FilterMenu';
 import Modal from './Modal';
-import { ProductCard } from './ProductCard';
 import CreateIconButton from './ui/IconButton';
-import { cartReducer } from '../reducer/reducer';
-import { getCartItems } from '../services/cart';
+import ProductCard from './ProductCard';
 
 function Products(props: IProductsPage) {
     const { header, link, query } = props;
@@ -28,25 +26,6 @@ function Products(props: IProductsPage) {
     const [loadState, setLoadState] = useState(LoadStates.loading);
     const [searchValue, setSearch] = useState('');
     // const [searchButtonState, setSearchButton] = useState(true);
-
-    const [state, dispatch] = useReducer(cartReducer, { cartLineItems: [], cartId: '', cartVersion: 1 });
-    useEffect(() => {
-        if (!localStorage.getItem('token')) return;
-        const getItemsFromCart = async () => {
-            await getCartItems()
-                .then((res) => {
-                    return {
-                        cartLineItems: res?.lineItems || [],
-                        cartId: res?.id || '',
-                        cartVersion: res?.version || 1,
-                    };
-                })
-                .then((initialState) => {
-                    dispatch({ type: 'SET_INITIAL_STATE', payload: initialState });
-                });
-        };
-        getItemsFromCart();
-    }, []);
 
     const currentPage = useRef<QueryArgs>({});
     const errorMessage = useRef('');
@@ -213,14 +192,7 @@ function Products(props: IProductsPage) {
             <div className="mt-1 px-5 grid grid-cols-1 justify-items-center gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
                 {loadState === LoadStates.success &&
                     data.map((product) => {
-                        return (
-                            <ProductCard
-                                key={product.productName}
-                                state={state}
-                                product={product}
-                                dispatch={dispatch}
-                            />
-                        );
+                        return <ProductCard key={product.productName} product={product} />;
                     })}
             </div>
             {filterMenuStatus && (

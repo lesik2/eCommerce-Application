@@ -1,7 +1,6 @@
 import React, { createContext, useRef, useState } from 'react';
-import { IProductCardProps } from '../components/ProductCard';
 /* eslint-disable react/jsx-no-constructed-context-values */
-import { IProductsContext } from '../data/interfaces';
+import { IProductCardProps, IProductsContext } from '../data/interfaces';
 import { QueryArgs } from '../data/types';
 
 export const ProductsContext = createContext<IProductsContext>({

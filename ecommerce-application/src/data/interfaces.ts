@@ -1,6 +1,6 @@
 import { InputTypes, PasswordInputTypes, QueryArgs } from './types';
-import { IProductCardProps } from '../components/ProductCard';
 import { LoginStatus } from './enums';
+import { IAddToCartAction, ICartState } from '../reducer/reducer';
 
 export interface IInput {
     id: string;
@@ -97,6 +97,22 @@ export interface IProductsContext {
     data: IProductCardProps[];
     setData: (data: IProductCardProps[]) => void;
     currentSearch: React.MutableRefObject<string>;
+}
+
+export interface IProductCardProps {
+    productName: string;
+    productPrice: number;
+    productPath: string;
+    productDiscountPrice?: number;
+    ingredients?: string;
+    picPath?: string;
+    spiciness?: boolean;
+    productId: string;
+}
+
+export interface ICartContext {
+    state: ICartState | null;
+    dispatch: React.Dispatch<IAddToCartAction> | null;
 }
 
 export interface IProductsPage {
