@@ -33,6 +33,7 @@ function ProductPage() {
         variants: undefined,
     });
     useEffect(() => {
+        console.log(key);
         // eslint-disable-next-line consistent-return
         const fetchData = async () => {
             try {

@@ -69,12 +69,24 @@ const router = createBrowserRouter([
                         element: <Beverages {...PRODUCT_PAGES.Juices} />,
                     },
                     {
+                        path: 'beverages/juices/:key',
+                        element: <ProductPage />,
+                    },
+                    {
                         path: 'beverages/energetics',
                         element: <Beverages {...PRODUCT_PAGES.Energetic} />,
                     },
                     {
+                        path: 'beverages/energetics/:key',
+                        element: <ProductPage />,
+                    },
+                    {
                         path: 'beverages/soda',
                         element: <Beverages {...PRODUCT_PAGES.Soda} />,
+                    },
+                    {
+                        path: 'beverages/soda/:key',
+                        element: <ProductPage />,
                     },
                     {
                         path: 'beverages/:key',

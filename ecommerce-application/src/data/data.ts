@@ -31,7 +31,7 @@ export const Inputs: IInput[] = [
         id: '3',
         name: 'birthday',
         type: 'date',
-        label: 'DOB',
+        label: 'Date of birth',
         validdate: calculateValidDate(),
         errormessage: `A valid date is above 13 years old`,
     },
@@ -220,7 +220,7 @@ export const PRODUCT_PAGES: Record<string, IProductsPage> = {
     Juices: {
         header: 'Juices',
         link: ['Menu', 'Beverages', 'Juices'],
-        query: { filter: 'categories.id:subtree("a70bf52f-f970-4d88-8d47-9498fac1638d")', search: 'juice' },
+        query: { filter: 'categories.id:"a95e7b18-d491-4fe9-8664-e5629ce7ca94"' },
     },
     Energetic: {
         header: 'Energetic',

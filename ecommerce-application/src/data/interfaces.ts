@@ -1,4 +1,4 @@
-import { InputTypes, PasswordInputTypes, QueryArgs } from './types';
+import { InputTypes, PasswordInputTypes, QueryArgs, SortTypes } from './types';
 import { LoginStatus } from './enums';
 import { IAddToCartAction, ICartState } from '../reducer/reducer';
 
@@ -97,6 +97,13 @@ export interface IProductsContext {
     data: IProductCardProps[];
     setData: (data: IProductCardProps[]) => void;
     currentSearch: React.MutableRefObject<string>;
+    filterState: React.MutableRefObject<Record<string, SortTypes>>;
+    clearFilterState: () => void;
+}
+
+export interface ICartContext {
+    state: ICartState | null;
+    dispatch: React.Dispatch<IAddToCartAction> | null;
 }
 
 export interface IProductCardProps {
@@ -110,16 +117,12 @@ export interface IProductCardProps {
     productId: string;
 }
 
-export interface ICartContext {
-    state: ICartState | null;
-    dispatch: React.Dispatch<IAddToCartAction> | null;
-}
-
 export interface IProductsPage {
     header: string;
     link: string[];
     query: QueryArgs;
 }
+
 export interface IAdditionalAddress {
     defaultShipping: boolean;
     defaultBilling: boolean;
