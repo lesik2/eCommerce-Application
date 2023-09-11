@@ -160,6 +160,11 @@ export const HeaderData = {
     subtitleLine2: 'we deliver 10 a.m. to 00:00 a.m.',
 };
 
+export const FooterData = {
+    titleLine: 'Contact us:',
+    subtitleLine: '06 593 97 301',
+};
+
 export const NavLinks = [
     {
         id: 'link1',

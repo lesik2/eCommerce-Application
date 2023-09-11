@@ -31,19 +31,6 @@ export default function Header() {
             loginMenu();
         }
     };
-    // const handleUserMenu = () => {
-    //     if (userMenuStatus) {
-    //         setUserMenu(false);
-    //         setTimeout(() => {
-    //             closeUserMenu();
-    //         }, ANIM_TIME);
-    //     } else {
-    //         openUserMenu();
-    //         setTimeout(() => {
-    //             setUserMenu(true);
-    //         }, ANIM_TIME);
-    //     }
-    // };
 
     const handleLogout = () => {
         logoutMenu();
