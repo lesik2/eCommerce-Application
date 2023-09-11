@@ -6,8 +6,8 @@ import CustomizedButton from '../../../components/ui/CustomizedButton';
 import Spicy from '../../../assets/img/spiciness.svg';
 import ImageSlider from './ImageSlider';
 import PortionButton from './PortionButton';
+import { addItem, removeItem } from '../../../services/cart';
 import { CartContext } from '../../../context/CartContext';
-import { addItem } from '../../../services/cart';
 
 export interface IProductPageLayoutProps {
     productId: string;
@@ -65,6 +65,15 @@ export function ProductPageLayout(props: IProductPageLayoutProps) {
             if (res && dispatch)
                 dispatch({
                     type: 'ADD_TO_CART',
+                    payload: { cartLineItems: res.lineItems, cartId: res.id, cartVersion: res.version },
+                });
+        });
+    };
+    const removeFromCart: () => void = () => {
+        removeItem({ productId, id: state?.cartId, version: state?.cartVersion }).then((res) => {
+            if (res && dispatch)
+                dispatch({
+                    type: 'REMOVE_FROM_CART',
                     payload: { cartLineItems: res.lineItems, cartId: res.id, cartVersion: res.version },
                 });
         });
@@ -138,7 +147,7 @@ export function ProductPageLayout(props: IProductPageLayoutProps) {
                             </div>
                         </>
                     )}
-                    <div className="flex items-center">
+                    <div className="flex items-center col-span-2">
                         <CustomizedButton
                             sx={{
                                 '&&': {
@@ -155,6 +164,25 @@ export function ProductPageLayout(props: IProductPageLayoutProps) {
                         >
                             {disabled ? 'ADDED IN CART' : '+ SELECT'}
                         </CustomizedButton>
+                        {disabled && (
+                            <CustomizedButton
+                                sx={{
+                                    '&&': {
+                                        fontSize: 16,
+                                        marginLeft: '10px',
+                                        paddingLeft: '20px',
+                                        paddingRight: '20px',
+                                        fontFamily: 'Poiret One, ui-sans-serif',
+                                    },
+                                }}
+                                variant="contained"
+                                className="font-serif"
+                                onClick={removeFromCart}
+                                disabled={!disabled}
+                            >
+                                REMOVE FROM CART
+                            </CustomizedButton>
+                        )}
                     </div>
                 </div>
             </div>

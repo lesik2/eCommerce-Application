@@ -1,6 +1,6 @@
 import { InputTypes, PasswordInputTypes, QueryArgs, SortTypes } from './types';
 import { LoginStatus } from './enums';
-import { IAddToCartAction, ICartState } from '../reducer/reducer';
+import { IAddToCartAction, ICartState } from '../reducer/cartReducer';
 
 export interface IInput {
     id: string;

@@ -1,5 +1,5 @@
 import { createContext, useEffect, useMemo, useReducer } from 'react';
-import { IAddToCartAction, cartReducer } from '../reducer/reducer';
+import { IAddToCartAction, cartReducer } from '../reducer/cartReducer';
 import { getCartItems } from '../services/cart';
 import { ICartContext } from '../data/interfaces';
 

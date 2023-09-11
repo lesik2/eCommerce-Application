@@ -65,3 +65,31 @@ export async function addItem({ productId, quantity = 1, variantId = 1, id, vers
             .catch(console.log);
     }
 }
+
+// eslint-disable-next-line consistent-return
+export async function removeItem({ productId, id, version = 1 }: IAddItem) {
+    const ID = id || (await createCart().then((res: void | Cart) => (typeof res === 'object' ? res.id : undefined)));
+    if (ID) {
+        const lineItem = await handleFlows()
+            .me()
+            .carts()
+            .withId({ ID })
+            .get()
+            .execute()
+            .then((res) => res.body.lineItems.find((item) => item.productId === productId));
+        if (lineItem)
+            return handleFlows()
+                .me()
+                .carts()
+                .withId({ ID })
+                .post({
+                    body: {
+                        version,
+                        actions: [{ action: 'removeLineItem', lineItemId: lineItem.id }],
+                    },
+                })
+                .execute()
+                .then((res) => res.body)
+                .catch(console.log);
+    }
+}

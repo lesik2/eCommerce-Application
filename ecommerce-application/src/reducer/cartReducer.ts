@@ -1,7 +1,7 @@
 import { LineItem } from '@commercetools/platform-sdk';
 
 export interface IAddToCartAction {
-    type: 'ADD_TO_CART' | 'SET_INITIAL_STATE';
+    type: 'ADD_TO_CART' | 'SET_INITIAL_STATE' | 'REMOVE_FROM_CART';
     payload: ICartState;
 }
 export type CartAction = IAddToCartAction;
@@ -25,6 +25,13 @@ export function cartReducer(state: ICartState, action: CartAction): ICartState {
             return {
                 ...state,
                 cartLineItems: [...state.cartLineItems, ...action.payload.cartLineItems],
+                cartId: action.payload.cartId,
+                cartVersion: action.payload.cartVersion,
+            };
+        case 'REMOVE_FROM_CART':
+            return {
+                // ...state,
+                cartLineItems: [...action.payload.cartLineItems],
                 cartId: action.payload.cartId,
                 cartVersion: action.payload.cartVersion,
             };
