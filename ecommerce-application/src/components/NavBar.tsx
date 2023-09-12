@@ -95,7 +95,7 @@ export default function NavBar() {
                             </NavLink>
                             {navlink.menu !== undefined && haveDropDown.current && (
                                 <ul
-                                    className={`absolute left-1/2 w-auto px-[20px] py-[5px] rounded-3xl bg-btnHover transition-all duration-${ANIM_TIME} ${
+                                    className={`absolute left-1/2 w-auto px-[20px] py-[5px] rounded-3xl bg-btnHover z-20 ${
                                         dropdown ? 'top-8 visible opacity-100' : 'top-0 invisible opacity-0'
                                     }`}
                                 >

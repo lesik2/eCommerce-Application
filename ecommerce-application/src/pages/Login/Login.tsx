@@ -94,65 +94,72 @@ function Login() {
         return loginData;
     };
     return (
-        <div className="register-wrapper">
-            <div className="register">
-                <div className="register-menu">
-                    <h2 className="register-title">LOGIN</h2>
-                    <div className="register-signIn">
-                        <p>Do not have an account?</p>
-                        <Link to="/registration">
-                            <CustomizedButton
-                                sx={{ '&&': { fontSize: 15, paddingLeft: '20px', paddingRight: '20px' } }}
-                                variant="contained"
-                            >
-                                +SIGN UP
-                            </CustomizedButton>
-                        </Link>
+        <>
+            {/* empty div instead of Navbar(layout) */}
+            <div className="" />
+
+            <div className="register-wrapper">
+                <div className="register">
+                    <div className="register-menu">
+                        <h2 className="register-title">LOGIN</h2>
+                        <div className="register-signIn">
+                            <p>Do not have an account?</p>
+                            <Link to="/registration">
+                                <CustomizedButton
+                                    sx={{ '&&': { fontSize: 15, paddingLeft: '20px', paddingRight: '20px' } }}
+                                    variant="contained"
+                                >
+                                    +SIGN UP
+                                </CustomizedButton>
+                            </Link>
+                        </div>
                     </div>
-                </div>
-                <form className="register-form" onSubmit={handleSubmit}>
-                    <fieldset className="register-form__user">
-                        {Inputs.filter((input) => input.name === 'email' || input.name === 'password').map((input) => (
-                            <FormInput
-                                key={input.id}
-                                input={input}
-                                values={values}
-                                setValues={setValues}
-                                validInputs={validInputs}
-                                setValidInputs={setValidInputs}
-                                setAlertOpen={() => setAlertOpen(false)}
-                                required
+                    <form className="register-form" onSubmit={handleSubmit}>
+                        <fieldset className="register-form__user">
+                            {Inputs.filter((input) => input.name === 'email' || input.name === 'password').map(
+                                (input) => (
+                                    <FormInput
+                                        key={input.id}
+                                        input={input}
+                                        values={values}
+                                        setValues={setValues}
+                                        validInputs={validInputs}
+                                        setValidInputs={setValidInputs}
+                                        setAlertOpen={() => setAlertOpen(false)}
+                                        required
+                                    />
+                                )
+                            )}
+                        </fieldset>
+                        {error && (
+                            <FetchResultAlert
+                                severity={sev}
+                                message={error}
+                                isOpen={alertOpen}
+                                onChange={handleAlertToggle}
                             />
-                        ))}
-                    </fieldset>
-                    {error && (
-                        <FetchResultAlert
-                            severity={sev}
-                            message={error}
-                            isOpen={alertOpen}
-                            onChange={handleAlertToggle}
-                        />
-                    )}
-                    {successMessage && (
-                        <FetchResultAlert
-                            severity={sev}
-                            message={successMessage}
-                            isOpen={alertOpen}
-                            onChange={handleAlertToggle}
-                        />
-                    )}
-                    <CustomizedButton
-                        type="submit"
-                        sx={{ fontSize: 17, marginTop: 5 }}
-                        className="register-form__submit"
-                        variant="contained"
-                        disabled={disableButton}
-                    >
-                        SIGN IN
-                    </CustomizedButton>
-                </form>
+                        )}
+                        {successMessage && (
+                            <FetchResultAlert
+                                severity={sev}
+                                message={successMessage}
+                                isOpen={alertOpen}
+                                onChange={handleAlertToggle}
+                            />
+                        )}
+                        <CustomizedButton
+                            type="submit"
+                            sx={{ fontSize: 17, marginTop: 5 }}
+                            className="register-form__submit"
+                            variant="contained"
+                            disabled={disableButton}
+                        >
+                            SIGN IN
+                        </CustomizedButton>
+                    </form>
+                </div>
             </div>
-        </div>
+        </>
     );
 }
 

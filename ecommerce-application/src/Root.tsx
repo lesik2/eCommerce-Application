@@ -4,11 +4,10 @@ import Header from './components/Header';
 
 function Root() {
     return (
-        <main className="flex flex-col justify-between mx-auto h-screen">
-            <div>
-                <Header />
-                <Outlet />
-            </div>
+        <main className="grid grid-rows-[auto_1fr_auto] md:grid-rows-[auto_minmax(0,70px)_1fr_auto] mx-auto h-screen">
+            <Header />
+            <Outlet />
+
             <Footer />
         </main>
     );

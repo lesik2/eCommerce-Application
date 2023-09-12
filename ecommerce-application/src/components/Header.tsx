@@ -61,7 +61,7 @@ export default function Header() {
         <header
             className={`
             w-full h-[70px] flex justify-between items-center
-            bg-red-200 shadow-md ${headerBg} px-[10px] py-[5px] sm:px-[30px] sm:h-[80px] md:h-[100px]`}
+            bg-red-200 shadow-xl ${headerBg} px-[10px] py-[5px] sm:px-[30px] sm:h-[80px] md:h-[100px]`}
         >
             <Link to="/">
                 <Image

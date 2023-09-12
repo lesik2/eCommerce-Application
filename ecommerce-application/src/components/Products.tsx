@@ -157,9 +157,8 @@ function Products(props: IProductsPage) {
             }, ANIM_TIME);
         }
     }, [filterMenuStatus]);
-
     return (
-        <>
+        <div className="h-full bg-[url('./assets/img/bg_product.svg'),_url('./assets/img/bg_product2.svg')] bg-content bg-right bg-no-repeat bg-fixed bg-[position:right_top_-100px,_left_0px_top_400px]">
             <header>
                 <title className="flex justify-between px-2 lg:px-5">
                     <h1 className="mt-4 text-3xl text-center">{header}</h1>
@@ -235,7 +234,7 @@ function Products(props: IProductsPage) {
                 </Modal>
             )}
             <ToastContainer {...toastProps} position="bottom-center" />
-        </>
+        </div>
     );
 }
 
