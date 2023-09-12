@@ -4,6 +4,7 @@ import { Box, TextField } from '@mui/material';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import { Link } from 'react-router-dom';
+import SyncIcon from '@mui/icons-material/Sync';
 import { ModalContext } from '../context/ModalContext';
 import { ProductsContext } from '../context/ProductsContext';
 import { ANIM_TIME, QUERIES, toastProps } from '../data/data';
@@ -158,7 +159,7 @@ function Products(props: IProductsPage) {
         }
     }, [filterMenuStatus]);
     return (
-        <div className="h-full bg-[url('./assets/img/bg_product.svg'),_url('./assets/img/bg_product2.svg')] bg-content bg-right bg-no-repeat bg-fixed bg-[position:right_top_-100px,_left_0px_top_400px]">
+        <div className="h-full bg-[url('./assets/img/bg_product.svg'),_url('./assets/img/bg_product2.svg')] bg-content bg-no-repeat bg-fixed bg-[position:right_top_-100px,_left_0px_top_400px]">
             <header>
                 <title className="flex justify-between px-2 lg:px-5">
                     <h1 className="mt-4 text-3xl text-center">{header}</h1>
@@ -200,7 +201,9 @@ function Products(props: IProductsPage) {
                 </nav>
             </header>
             {loadState === LoadStates.loading && (
-                <p className="mt-3 text-center text-bgMenu animate-pulse text-2xl">Loading...</p>
+                <p className="mt-6 text-center text-bgMenu animate-spin text-2xl">
+                    <SyncIcon fontSize="inherit" sx={{ fontSize: '80px' }} />
+                </p>
             )}
             {loadState === LoadStates.notfound && (
                 <p className="mt-3 text-center text-bgMenu text-2xl">Products not found</p>

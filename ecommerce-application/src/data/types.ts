@@ -17,7 +17,6 @@ export type PasswordInputTypes = 'currentPassword' | 'newPassword' | 'confirmPas
 
 export type ButtonSize = 'small' | 'medium' | 'large';
 
-
 export type IconButtonTypes =
     | 'cart'
     | 'login'
