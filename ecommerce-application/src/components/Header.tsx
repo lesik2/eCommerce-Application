@@ -26,6 +26,8 @@ export default function Header() {
 
     const [isMenuShowed, showMenu] = useState(false);
 
+    const [username, setUsername] = useState('Username');
+
     const navigate = useNavigate();
 
     const checkLoginStatus = () => {
@@ -44,6 +46,14 @@ export default function Header() {
     useEffect(() => {
         checkLoginStatus();
     });
+
+    useEffect(() => {
+        let usernameLocalStorage = 'Username';
+        if (localStorage.getItem('username')) {
+            usernameLocalStorage = localStorage.getItem('username') || 'Username';
+        }
+        setUsername(usernameLocalStorage || 'Username');
+    }, [openUserMenu]);
 
     useEffect(() => {
         if (userMenuStatus) {
@@ -105,7 +115,7 @@ export default function Header() {
                             isMenuShowed ? 'right-0' : 'right-[-320px]'
                         }`}
                     >
-                        <h3 className="mb-5">Hello, Username!</h3>
+                        <h3 className="mb-5">Hello, {username}!</h3>
                         <Link
                             className="flex items-center gap-2 text-left text-serif py-2 text-xl hover:underline"
                             to="../profile"
