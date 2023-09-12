@@ -96,7 +96,7 @@ function Login() {
     return (
         <>
             {/* empty div instead of Navbar(layout) */}
-            <div className="" />
+            <div className="hidden md:block" />
 
             <div className="register-wrapper">
                 <div className="register">
