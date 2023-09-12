@@ -6,6 +6,7 @@ import CartItem from './components/CartItem';
 import './Cart.css';
 import CreateIconButton from '../../components/ui/IconButton';
 import CustomizedButton from '../../components/ui/CustomizedButton';
+import { getCartItems, removeCart } from '../../services/cart';
 
 function Cart() {
     const { state, dispatch } = useContext(CartContext);
@@ -36,6 +37,24 @@ function Cart() {
             .map((item) => item.totalPrice.centAmount / 10 ** item.totalPrice.fractionDigits)
             .reduce((sum, prev) => sum + prev, 0);
     };
+
+    const clearCart = async () => {
+        const id = state?.cartId;
+        const version = state?.cartVersion;
+        if (id && version) {
+            removeCart(id, version).then(async () => {
+                const res = await getCartItems();
+                const initialState = {
+                    cartLineItems: res?.lineItems || [],
+                    cartId: res?.id || '',
+                    cartVersion: res?.version || 1,
+                };
+                if (dispatch) {
+                    dispatch({ type: 'SET_INITIAL_STATE', payload: initialState });
+                }
+            });
+        }
+    };
     useEffect(() => {
         setItemsCount(state?.cartLineItems.length || 0);
     }, [state]);
@@ -46,7 +65,7 @@ function Cart() {
                 {itemsCount ? (
                     <div className="remove-cart">
                         <p>Clear cart: </p>
-                        <CreateIconButton type="remove-cart" size="large" />
+                        <CreateIconButton onClick={clearCart} type="remove-cart" size="large" />
                     </div>
                 ) : null}
             </div>

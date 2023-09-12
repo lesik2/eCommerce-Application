@@ -45,7 +45,6 @@ type IAddItem = {
     id?: string;
     version?: number;
 };
-
 // eslint-disable-next-line consistent-return
 export async function addItem({ productId, quantity = 1, variantId = 1, id, version = 1 }: IAddItem) {
     const ID = id || (await createCart().then((res: void | Cart) => (typeof res === 'object' ? res.id : undefined)));
@@ -64,6 +63,17 @@ export async function addItem({ productId, quantity = 1, variantId = 1, id, vers
             .then((res) => res.body)
             .catch(console.log);
     }
+}
+// eslint-disable-next-line consistent-return
+export async function removeCart(id: string, version: number) {
+    return handleFlows()
+        .me()
+        .carts()
+        .withId({ ID: id })
+        .delete({ queryArgs: { version } })
+        .execute()
+        .then((res) => res.body)
+        .catch(console.log);
 }
 
 // eslint-disable-next-line consistent-return
