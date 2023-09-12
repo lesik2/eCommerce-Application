@@ -3,6 +3,8 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import { Link, useNavigate } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
+import PersonIcon from '@mui/icons-material/Person';
+import LogoutIcon from '@mui/icons-material/Logout';
 import Image from './ui/Image';
 import Logo from '../assets/img/logo.svg';
 import CreateIconButton from './ui/IconButton';
@@ -99,21 +101,26 @@ export default function Header() {
             {userMenu && (
                 <Modal onClose={closeUserMenu}>
                     <div
-                        className={`absolute w-[320px] px-3 py-3 text-center rounded-md bg-white/95 top-[60px] right-0 z-20 transition-all duration-${ANIM_TIME} ${
+                        className={`absolute w-[320px] px-5 py-3 text-center rounded-md bg-white/95 top-[60px] right-0 z-20 transition-all duration-${ANIM_TIME} ${
                             isMenuShowed ? 'right-0' : 'right-[-320px]'
                         }`}
                     >
                         <h3 className="mb-5">Hello, Username!</h3>
                         <Link
-                            className="block text-center py-2 text-xl text-[blue] underline"
+                            className="flex items-center gap-2 text-left text-serif py-2 text-xl hover:underline"
                             to="../profile"
                             onClick={closeUserMenu}
                         >
-                            to profile
+                            <PersonIcon fontSize="small" />
+                            Profile
                         </Link>
-                        <span onClick={handleLogout}>
-                            <CreateIconButton type="logout" size="large" />
-                        </span>
+                        <div
+                            className="flex items-center gap-2 text-left text-serif py-2 cursor-pointer text-xl hover:underline"
+                            onClick={handleLogout}
+                        >
+                            <LogoutIcon fontSize="small" />
+                            Logout
+                        </div>
                     </div>
                 </Modal>
             )}
