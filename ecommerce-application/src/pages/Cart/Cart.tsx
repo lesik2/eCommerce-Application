@@ -59,7 +59,7 @@ function Cart() {
                         {state?.cartLineItems.map((item, i) => (
                             <CartItem
                                 key={item.id}
-                                id={item.id}
+                                id={item.productId}
                                 name={item.name['en-US']}
                                 price={item.price.value.centAmount / 10 ** item.price.value.fractionDigits}
                                 discountPrice={calculateDiscountPrice(item)}
@@ -71,6 +71,7 @@ function Cart() {
                                 dispatch={dispatch}
                                 index={i + 1}
                                 setItemsCount={setItemsCount}
+                                state={state}
                             />
                         ))}
                     </div>
