@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import { LineItem } from '@commercetools/platform-sdk/dist/declarations/src';
 import { Link } from 'react-router-dom';
+import { TextField } from '@mui/material';
 import { CartContext } from '../../context/CartContext';
 import CartItem from './components/CartItem';
 import './Cart.css';
@@ -94,7 +95,23 @@ function Cart() {
                             />
                         ))}
                     </div>
-                    <div className="cart-order">
+                    <form className="cart-promo-code" onSubmit={() => console.log('ds')}>
+                        <TextField
+                            className="cart-promocode"
+                            id="standard-basic"
+                            placeholder="Enter Promo Code"
+                            variant="standard"
+                            autoComplete="off"
+                        />
+                        <CustomizedButton
+                            sx={[{ '&&': { fontSize: 13, padding: '7px 16px 7px 16px' } }]}
+                            variant="contained"
+                            className="font-serif"
+                        >
+                            Apply Promo Code
+                        </CustomizedButton>
+                    </form>
+                    <div className="cart-total-price">
                         <p style={{ fontSize: '24px' }}>Total price:</p>
                         <p style={{ fontSize: '38px' }}>{calculateTotalPrice()} €</p>
                     </div>

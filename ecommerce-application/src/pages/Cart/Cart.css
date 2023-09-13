@@ -24,13 +24,18 @@
   flex-direction: column;
   background-color: #ffffff;
 }
-.cart-order{
-  margin: 45px 0px 0px 0px;
+.cart-total-price{
   background-color: #ffffff;
   height: 150px;
   display: flex;
   justify-content: center;
   flex-direction: column;
+  align-items: center;
+}
+.cart-promo-code{
+  display: flex;
+  gap: 40px;
+  margin: 25px 0px 45px 20px;
   align-items: center;
 }
 .remove-cart{
@@ -45,4 +50,21 @@
   justify-content: center;
   align-items: center;
   gap: 80px;
+}
+.cart-promocode .MuiInputBase-input{
+  font-size: 22px;
+}
+@media (max-width: 520px) {
+  .cart-promo-code{
+    gap: 20px;
+    margin: 25px 0px 45px 5px;
+  }
+  .cart-promocode .MuiInputBase-input{
+    font-size: 17px;
+  }
+}
+@media (max-width: 400px) {
+  .cart-promo-code{
+    gap: 10px;
+  }
 }
