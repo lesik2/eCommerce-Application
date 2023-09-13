@@ -1,9 +1,10 @@
+import { useState } from 'react';
 import {
     Button,
     Card,
-    CardActions,
     CardContent,
     CardMedia,
+    Link,
     List,
     ListItem,
     ListItemIcon,
@@ -11,10 +12,17 @@ import {
     Typography,
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
+import GitHubIcon from '@mui/icons-material/GitHub';
 import { IAboutUs } from '../data/aboutData';
 
 export default function AboutUsCard(props: IAboutUs) {
     const { name, roles, bio, img, GitHub } = props;
+    const [expanded, setExpanded] = useState(false);
+
+    const toggleExpand = () => {
+        setExpanded(!expanded);
+    };
+
     return (
         <Card sx={{ width: 340, backgroundColor: '#D9D9D9' }}>
             <CardMedia
@@ -28,26 +36,69 @@ export default function AboutUsCard(props: IAboutUs) {
                 title="face"
             />
             <CardContent sx={{ textAlign: 'justify' }}>
-                <Typography gutterBottom variant="h5" component="div">
-                    {name}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
+                <Link href={GitHub} color="inherit" underline="hover">
+                    <Typography
+                        gutterBottom
+                        variant="h5"
+                        component="div"
+                        align="center"
+                        fontFamily="Poiret One, ui-sans-serif"
+                        fontWeight="600"
+                    >
+                        {name}
+                        <GitHubIcon sx={{ marginLeft: 2 }} />
+                    </Typography>
+                </Link>
+
+                <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    fontFamily="Poiret One, ui-sans-serif"
+                    fontSize="1rem"
+                    fontWeight="600"
+                    sx={{
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        display: '-webkit-box',
+                        WebkitLineClamp: 4,
+                        WebkitBoxOrient: 'vertical',
+                    }}
+                >
                     {bio}
                 </Typography>
+                {!expanded && (
+                    <Button
+                        color="primary"
+                        onClick={toggleExpand}
+                        sx={{ fontFamily: 'Russo One, ui-serif', color: 'rgba(0, 0, 0, 0.6)' }}
+                    >
+                        Show More
+                    </Button>
+                )}
+                {expanded && (
+                    <Button
+                        color="primary"
+                        onClick={toggleExpand}
+                        sx={{ fontFamily: 'Russo One, ui-serif', color: 'rgba(0, 0, 0, 0.6)' }}
+                    >
+                        Show Less
+                    </Button>
+                )}
                 <List>
                     {roles.map((el) => (
-                        <ListItem>
+                        <ListItem key={el}>
                             <ListItemIcon sx={{ minWidth: '40px' }}>
                                 <AddIcon />
                             </ListItemIcon>
-                            <ListItemText primary={el} />
+                            <ListItemText
+                                primary={el}
+                                disableTypography
+                                sx={{ fontFamily: 'Russo One, ui-serif', color: 'rgba(0, 0, 0, 0.6)' }}
+                            />
                         </ListItem>
                     ))}
                 </List>
             </CardContent>
-            <CardActions>
-                <Button size="small">{GitHub}</Button>
-            </CardActions>
         </Card>
     );
 }
