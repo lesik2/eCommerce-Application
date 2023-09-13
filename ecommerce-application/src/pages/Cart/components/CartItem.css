@@ -47,3 +47,43 @@
   bottom: 5px;
   right: 20px;
 }
+@media (max-width: 600px) {
+  .cart-item{
+    gap: 10px;
+  }
+  .main-info-item{
+    margin-left: 0px;
+  }
+  .additional-info-item{
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-left: 10px;
+  }
+  .item-total-price{
+    bottom: 0px;
+  }
+  
+}
+@media (max-width: 480px) {
+  .cart-item{
+    gap: 0px;
+  }
+  .portion{
+    padding: 5px 10px 5px 10px;
+    font-size: 12px;
+  }
+  .img-item{
+    width: 120px;
+  }
+  .item-total-price{
+    font-size: 20px;
+    right: 10px;
+  }
+  .delete-item{
+    right: 0px;
+  }
+  .price{
+    font-size: 20px;
+  }
+}

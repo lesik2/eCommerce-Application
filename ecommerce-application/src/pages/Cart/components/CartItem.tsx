@@ -88,13 +88,15 @@ function CartItem(props: ICArtItem) {
                 <p className="text-xs pt-4 text-center">{messageOnLimit}</p>
                 {discountPrice !== 0 && (
                     <div className="flex">
-                        <p className="text-2xl ml-2 font-medium" style={{ textDecoration: 'line-through' }}>
+                        <p className="price text-2xl ml-2 font-medium" style={{ textDecoration: 'line-through' }}>
                             {price}
                         </p>
-                        <p className="text-2xl ml-2 font-medium text-mainRed whitespace-nowrap">{discountPrice} €</p>
+                        <p className="price text-2xl ml-2 font-medium text-mainRed whitespace-nowrap">
+                            {discountPrice} €
+                        </p>
                     </div>
                 )}
-                {discountPrice === 0 && <p className="text-2xl ml-2 font-medium whitespace-nowrap">{price} €</p>}
+                {discountPrice === 0 && <p className="price text-2xl ml-2 font-medium whitespace-nowrap">{price} €</p>}
             </div>
             <div className="additional-info-item">
                 {spiciness === true && <Image className="w-10" image={Chili} alt="chili" />}
