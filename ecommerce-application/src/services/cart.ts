@@ -45,6 +45,12 @@ type IAddItem = {
     id?: string;
     version?: number;
 };
+type IChangeItem = {
+    lineId: string;
+    quantity: number;
+    id?: string;
+    version?: number;
+};
 // eslint-disable-next-line consistent-return
 export async function addItem({ productId, quantity = 1, variantId = 1, id, version = 1 }: IAddItem) {
     const ID = id || (await createCart().then((res: void | Cart) => (typeof res === 'object' ? res.id : undefined)));
@@ -57,6 +63,25 @@ export async function addItem({ productId, quantity = 1, variantId = 1, id, vers
                 body: {
                     version,
                     actions: [{ action: 'addLineItem', productId, variantId, quantity }],
+                },
+            })
+            .execute()
+            .then((res) => res.body)
+            .catch(console.log);
+    }
+}
+// eslint-disable-next-line consistent-return
+export async function changeItem({ lineId, quantity, id, version = 1 }: IChangeItem) {
+    const ID = id || (await createCart().then((res: void | Cart) => (typeof res === 'object' ? res.id : undefined)));
+    if (ID) {
+        return handleFlows()
+            .me()
+            .carts()
+            .withId({ ID })
+            .post({
+                body: {
+                    version,
+                    actions: [{ action: 'changeLineItemQuantity', lineItemId: lineId, quantity }],
                 },
             })
             .execute()
