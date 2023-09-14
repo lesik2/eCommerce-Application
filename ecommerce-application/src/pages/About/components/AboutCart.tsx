@@ -11,7 +11,7 @@ import {
     ListItemText,
     Typography,
 } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
+import RamenDiningIcon from '@mui/icons-material/RamenDining';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import { IAboutUs } from '../data/aboutData';
 
@@ -56,39 +56,33 @@ export default function AboutUsCard(props: IAboutUs) {
                     fontFamily="Poiret One, ui-sans-serif"
                     fontSize="1rem"
                     fontWeight="600"
-                    sx={{
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        display: '-webkit-box',
-                        WebkitLineClamp: 4,
-                        WebkitBoxOrient: 'vertical',
-                    }}
+                    sx={
+                        expanded
+                            ? {}
+                            : {
+                                  overflow: 'hidden',
+                                  textOverflow: 'ellipsis',
+                                  display: '-webkit-box',
+                                  WebkitLineClamp: 4,
+                                  WebkitBoxOrient: 'vertical',
+                              }
+                    }
                 >
                     {bio}
                 </Typography>
-                {!expanded && (
-                    <Button
-                        color="primary"
-                        onClick={toggleExpand}
-                        sx={{ fontFamily: 'Russo One, ui-serif', color: 'rgba(0, 0, 0, 0.6)' }}
-                    >
-                        Show More
-                    </Button>
-                )}
-                {expanded && (
-                    <Button
-                        color="primary"
-                        onClick={toggleExpand}
-                        sx={{ fontFamily: 'Russo One, ui-serif', color: 'rgba(0, 0, 0, 0.6)' }}
-                    >
-                        Show Less
-                    </Button>
-                )}
+                <Button
+                    color="primary"
+                    onClick={toggleExpand}
+                    sx={{ fontFamily: 'Russo One, ui-serif', color: 'rgba(0, 0, 0, 0.6)' }}
+                >
+                    {expanded ? 'Show Less' : 'Show More'}
+                </Button>
+
                 <List>
                     {roles.map((el) => (
                         <ListItem key={el}>
                             <ListItemIcon sx={{ minWidth: '40px' }}>
-                                <AddIcon />
+                                <RamenDiningIcon />
                             </ListItemIcon>
                             <ListItemText
                                 primary={el}
