@@ -30,8 +30,9 @@ export interface ICArtItem {
     lineId: string;
     promoCode: boolean;
 }
+export const MessageOnLimit = ``;
 // eslint-disable-next-line max-len
-export const MessageOnLimit = `Planning a big order? Connect with us directly for special arrangements and personalized assistance. Let's make your meal for a larger group memorable!`;
+export const message = `Planning a big order? Connect with us directly for special arrangements and personalized assistance. Let's make your meal for a larger group memorable!`;
 function CartItem(props: ICArtItem) {
     const {
         productId,
