@@ -90,6 +90,22 @@ export async function changeItem({ lineId, quantity, id, version = 1 }: IChangeI
     }
 }
 // eslint-disable-next-line consistent-return
+export async function addDiscountCode(id: string, version: number, code: string) {
+    return handleFlows()
+        .me()
+        .carts()
+        .withId({ ID: id })
+        .post({
+            body: {
+                version,
+                actions: [{ action: 'addDiscountCode', code }],
+            },
+        })
+        .execute()
+        .then((res) => res.body)
+        .catch(console.log);
+}
+// eslint-disable-next-line consistent-return
 export async function removeCart(id: string, version: number) {
     return handleFlows()
         .me()
@@ -100,7 +116,6 @@ export async function removeCart(id: string, version: number) {
         .then((res) => res.body)
         .catch(console.log);
 }
-
 // eslint-disable-next-line consistent-return
 export async function removeItem({ productId, id, version = 1 }: IAddItem) {
     const ID = id || (await createCart().then((res: void | Cart) => (typeof res === 'object' ? res.id : undefined)));

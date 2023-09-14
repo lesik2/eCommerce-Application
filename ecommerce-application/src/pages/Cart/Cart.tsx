@@ -7,10 +7,13 @@ import CartItem from './components/CartItem';
 import './Cart.css';
 import CreateIconButton from '../../components/ui/IconButton';
 import CustomizedButton from '../../components/ui/CustomizedButton';
-import { getCartItems, removeCart } from '../../services/cart';
+import { addDiscountCode, getCartItems, removeCart } from '../../services/cart';
+import roundValue from '../../utils/MathFunctions';
 
 function Cart() {
     const { state, dispatch } = useContext(CartContext);
+    const [code, setCode] = useState('');
+    const [promoCode, setPromoCode] = useState(false);
     const [itemsCount, setItemsCount] = useState(state?.cartLineItems.length || 0);
     const calculateDiscountPrice = (item: LineItem) => {
         const { discounted } = item.price;
@@ -34,9 +37,20 @@ function Cart() {
         return spiciness;
     };
     const calculateTotalPrice = () => {
-        return state?.cartLineItems
+        const result = state?.cartLineItems
             .map((item) => item.totalPrice.centAmount / 10 ** item.totalPrice.fractionDigits)
             .reduce((sum, prev) => sum + prev, 0);
+        return result || 0;
+    };
+    const calculateTotalPriceWithoutPromoCode = () => {
+        const result = state?.cartLineItems
+            .map((item) => {
+                const discount = calculateDiscountPrice(item);
+                const price = item.price.value.centAmount / 10 ** item.price.value.fractionDigits;
+                return discount === 0 ? price * item.quantity : discount * item.quantity;
+            })
+            .reduce((sum, prev) => sum + prev, 0);
+        return result || 0;
     };
 
     const clearCart = async () => {
@@ -52,6 +66,23 @@ function Cart() {
                 };
                 if (dispatch) {
                     dispatch({ type: 'SET_INITIAL_STATE', payload: initialState });
+                }
+            });
+        }
+    };
+    const applyPromoCode = () => {
+        if (code === '') return;
+        const id = state?.cartId;
+        const version = state?.cartVersion;
+        if (id && version) {
+            addDiscountCode(id, version, code).then((res) => {
+                if (res && dispatch) {
+                    setCode('');
+                    setPromoCode(true);
+                    dispatch({
+                        type: 'ADD_TO_CART',
+                        payload: { cartLineItems: res.lineItems, cartId: res.id, cartVersion: res.version },
+                    });
                 }
             });
         }
@@ -92,33 +123,49 @@ function Cart() {
                                 index={i + 1}
                                 state={state}
                                 lineId={item.id}
+                                promoCode={promoCode}
                             />
                         ))}
                     </div>
-                    <form className="cart-promo-code" onSubmit={() => console.log('ds')}>
+                    <form className="cart-promo-code">
                         <TextField
                             className="cart-promocode"
                             id="standard-basic"
                             placeholder="Enter Promo Code"
                             variant="standard"
                             autoComplete="off"
+                            value={code}
+                            onChange={(e) => setCode(e.target.value)}
                         />
                         <CustomizedButton
-                            sx={[{ '&&': { fontSize: 13, padding: '7px 16px 7px 16px' } }]}
+                            sx={[{ '&&': { fontSize: 12, padding: '7px 16px 7px 16px', fontWeight: 'bold' } }]}
                             variant="contained"
                             className="font-serif"
+                            onClick={applyPromoCode}
                         >
                             Apply Promo Code
                         </CustomizedButton>
                     </form>
                     <div className="cart-total-price">
                         <p style={{ fontSize: '24px' }}>Total price:</p>
-                        <p style={{ fontSize: '38px' }}>{calculateTotalPrice()} €</p>
+                        {promoCode ? (
+                            <div className="flex">
+                                <p className="price text-4xl ml-2  " style={{ textDecoration: 'line-through' }}>
+                                    {roundValue(calculateTotalPriceWithoutPromoCode())}
+                                </p>
+                                <span className="price text-4xl ml-2  "> / </span>
+                                <p className="price text-4xl ml-2 font-medium text-mainRed whitespace-nowrap">
+                                    {roundValue(calculateTotalPrice())} €
+                                </p>
+                            </div>
+                        ) : (
+                            <p className="text-4xl">{roundValue(calculateTotalPrice())} €</p>
+                        )}
                     </div>
                 </>
             ) : (
                 <div className="empty-cart">
-                    <p style={{ fontSize: '30px' }}>Cart is empty</p>
+                    <p>Cart is empty</p>
                     <Link to="../menu">
                         <CustomizedButton
                             sx={{

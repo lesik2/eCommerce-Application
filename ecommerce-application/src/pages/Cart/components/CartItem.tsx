@@ -12,6 +12,7 @@ import Chili from '../../../assets/img/chili.svg';
 import Image from '../../../components/ui/Image';
 import CreateIconButton from '../../../components/ui/IconButton';
 import { changeItem, removeItem } from '../../../services/cart';
+import roundValue from '../../../utils/MathFunctions';
 
 export interface ICArtItem {
     productId: string;
@@ -27,6 +28,7 @@ export interface ICArtItem {
     dispatch: React.Dispatch<IAddToCartAction> | null;
     state: ICartState | null;
     lineId: string;
+    promoCode: boolean;
 }
 // eslint-disable-next-line max-len
 export const MessageOnLimit = `Planning a big order? Connect with us directly for special arrangements and personalized assistance. Let's make your meal for a larger group memorable!`;
@@ -45,6 +47,7 @@ function CartItem(props: ICArtItem) {
         dispatch,
         state,
         lineId,
+        promoCode,
     } = props;
     const [messageOnLimit, setMessageOnLimit] = useState('');
     const handleOrderLimit = (isLimit: boolean) => {
@@ -106,7 +109,20 @@ function CartItem(props: ICArtItem) {
             <div className="delete-item" onClick={removeFromCart}>
                 <CreateIconButton type="close" size="large" />
             </div>
-            <p className="text-2xl ml-2 font-medium whitespace-nowrap item-total-price">{totalPrice} €</p>
+            {promoCode &&
+            (discountPrice !== 0
+                ? roundValue(discountPrice * quantity) !== totalPrice
+                : roundValue(price * quantity) !== totalPrice) ? (
+                <div className="flex item-total-price">
+                    <p className="price text-2xl ml-2 font-medium" style={{ textDecoration: 'line-through' }}>
+                        {discountPrice !== 0 ? roundValue(discountPrice * quantity) : roundValue(price * quantity)}
+                    </p>
+                    <span className="price text-2xl ml-2 font-medium"> / </span>
+                    <p className="price text-2xl ml-2 font-medium text-mainRed whitespace-nowrap">{totalPrice} €</p>
+                </div>
+            ) : (
+                <p className="text-2xl ml-2 font-medium whitespace-nowrap item-total-price">{totalPrice} €</p>
+            )}
         </div>
     );
 }

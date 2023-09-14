@@ -50,6 +50,7 @@
   justify-content: center;
   align-items: center;
   gap: 80px;
+  font-size: 30px;
 }
 .cart-promocode .MuiInputBase-input{
   font-size: 22px;
@@ -61,6 +62,10 @@
   }
   .cart-promocode .MuiInputBase-input{
     font-size: 17px;
+  }
+  .empty-cart{
+    flex-direction: column;
+    gap: 10px;
   }
 }
 @media (max-width: 400px) {
