@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { MenuItem, MenuType } from '../../data/types';
-import List from './List';
 import CreateIconButton from './IconButton';
 import { ANIM_TIME } from '../../data/data';
 
@@ -39,10 +38,10 @@ export default function SubMenuItem(props: ItemsProps) {
                           } px-[15px] py-[5px] rounded-3xl`
                 }
             >
-                <List className="flex items-center gap-1">
+                <div className="flex items-center gap-1">
                     {item.name}
                     {item.submenu && type === 'main' && <KeyboardArrowDownIcon fontSize="inherit" color="inherit" />}
-                </List>
+                </div>
             </NavLink>
             {item.submenu && type === 'aside' && (
                 <CreateIconButton type="arrow" size="small" hoverColor="#D9D9D9" onClick={onArrow} />
