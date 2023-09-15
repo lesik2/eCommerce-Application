@@ -185,7 +185,11 @@ export const NavLinks = [
         id: 'link4',
         name: 'BEVERAGES',
         url: '/beverages',
-        menu: ['Juices', 'Energetics', 'Soda'],
+        submenu: [
+            { id: 'link41', name: 'Juices', url: 'juices' },
+            { id: 'link42', name: 'Energetics', url: 'energetics' },
+            { id: 'link43', name: 'Soda', url: 'soda' },
+        ],
     },
     {
         id: 'link5',
