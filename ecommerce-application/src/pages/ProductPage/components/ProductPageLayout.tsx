@@ -1,22 +1,23 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable max-len */
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { Attribute } from '@commercetools/platform-sdk';
 import CustomizedButton from '../../../components/ui/CustomizedButton';
-import QuantitySelector from '../../../components/ui/QuantitySelector';
 import Spicy from '../../../assets/img/spiciness.svg';
 import ImageSlider from './ImageSlider';
 import PortionButton from './PortionButton';
-import { MessageOnLimit } from '../../../data/data';
+import { addItem, removeItem } from '../../../services/cart';
+import { CartContext } from '../../../context/CartContext';
 
 export interface IProductPageLayoutProps {
+    productId: string;
     productName?: string;
     productPrice?: number;
     productDiscountPrice?: number;
     ingredients?: string;
     picPaths?: string[];
     attributes?: Attribute[] | undefined;
-    variants?: IProductPageLayoutProps[] | never[];
+    variants?: Partial<IProductPageLayoutProps>[] | never[];
 }
 
 const gridStyle = {
@@ -28,17 +29,15 @@ const gridStyle = {
 };
 
 export function ProductPageLayout(props: IProductPageLayoutProps) {
-    const { productName, productPrice, productDiscountPrice, ingredients, picPaths, attributes, variants } = props;
+    const { productId, productName, productPrice, productDiscountPrice, ingredients, picPaths, attributes, variants } =
+        props;
+    const { state, dispatch } = useContext(CartContext);
     const spiciness = attributes?.find((attribute) => attribute.name === 'spiciness')?.value;
     const portion = attributes?.find((attribute) => attribute.name === 'portion')?.value.key;
     const portionVariants = variants?.length
         ? variants.map((variant) => variant.attributes?.find((attr) => attr.name === 'portion')?.value.key)
         : undefined;
     const portions = portionVariants ? [portion, ...portionVariants] : [portion];
-    const [messageOnLimit, setMessageOnLimit] = useState('');
-    const handleOrderLimit = (isLimit: boolean) => {
-        isLimit ? setMessageOnLimit(MessageOnLimit) : setMessageOnLimit('');
-    };
     const productPrices = variants?.length
         ? [productPrice, ...variants.map((variant) => variant.productPrice)]
         : [productPrice];
@@ -58,7 +57,27 @@ export function ProductPageLayout(props: IProductPageLayoutProps) {
         setPrice(productPrices[index]);
         setDiscountPrice(productDiscountPrices[index]);
     };
-
+    const disabled = state
+        ? state.cartLineItems?.map((item) => item.productId)?.some((item) => item === productId)
+        : false;
+    const addToCart: () => void = () => {
+        addItem({ productId, id: state?.cartId, version: state?.cartVersion }).then((res) => {
+            if (res && dispatch)
+                dispatch({
+                    type: 'ADD_TO_CART',
+                    payload: { cartLineItems: res.lineItems, cartId: res.id, cartVersion: res.version },
+                });
+        });
+    };
+    const removeFromCart: () => void = () => {
+        removeItem({ productId, id: state?.cartId, version: state?.cartVersion }).then((res) => {
+            if (res && dispatch)
+                dispatch({
+                    type: 'REMOVE_FROM_CART',
+                    payload: { cartLineItems: res.lineItems, cartId: res.id, cartVersion: res.version },
+                });
+        });
+    };
     return (
         <div className="max-w-full">
             <h3 className="text-2xl pl-[20%] max-w-2xl max-sm:pl-0 pt-5 tracking-tighter whitespace-nowrap max-sm:text-center">
@@ -128,16 +147,11 @@ export function ProductPageLayout(props: IProductPageLayoutProps) {
                             </div>
                         </>
                     )}
-
-                    <QuantitySelector onQuantityReached={handleOrderLimit} />
-                    <p className="text-xs text-left max-w-[400px] max-sm:order-last max-sm:col-span-2">
-                        {messageOnLimit}
-                    </p>
-                    <div className="flex items-center">
+                    <div className="flex items-center col-span-2">
                         <CustomizedButton
                             sx={{
                                 '&&': {
-                                    fontSize: 20,
+                                    fontSize: 18,
                                     paddingLeft: '20px',
                                     paddingRight: '20px',
                                     fontFamily: 'Poiret One, ui-sans-serif',
@@ -145,9 +159,30 @@ export function ProductPageLayout(props: IProductPageLayoutProps) {
                             }}
                             variant="contained"
                             className="font-serif"
+                            onClick={addToCart}
+                            disabled={disabled}
                         >
-                            + SELECT
+                            {disabled ? 'ADDED IN CART' : '+ SELECT'}
                         </CustomizedButton>
+                        {disabled && (
+                            <CustomizedButton
+                                sx={{
+                                    '&&': {
+                                        fontSize: 16,
+                                        marginLeft: '10px',
+                                        paddingLeft: '20px',
+                                        paddingRight: '20px',
+                                        fontFamily: 'Poiret One, ui-sans-serif',
+                                    },
+                                }}
+                                variant="contained"
+                                className="font-serif"
+                                onClick={removeFromCart}
+                                disabled={!disabled}
+                            >
+                                REMOVE FROM CART
+                            </CustomizedButton>
+                        )}
                     </div>
                 </div>
             </div>
