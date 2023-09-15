@@ -67,7 +67,7 @@ export async function addItem({ productId, quantity = 1, variantId = 1, id, vers
 }
 
 // eslint-disable-next-line consistent-return
-export async function removeItem({ productId, id, version = 1 }: IAddItem) {
+export async function removeItem({ productId, variantId = 1, id, version = 1 }: IAddItem) {
     const ID = id || (await createCart().then((res: void | Cart) => (typeof res === 'object' ? res.id : undefined)));
     if (ID) {
         const lineItem = await handleFlows()
@@ -76,7 +76,9 @@ export async function removeItem({ productId, id, version = 1 }: IAddItem) {
             .withId({ ID })
             .get()
             .execute()
-            .then((res) => res.body.lineItems.find((item) => item.productId === productId));
+            .then((res) =>
+                res.body.lineItems.find((item) => item.productId === productId && item.variant.id === variantId)
+            );
         if (lineItem)
             return handleFlows()
                 .me()

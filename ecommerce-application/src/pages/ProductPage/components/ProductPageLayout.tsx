@@ -58,16 +58,23 @@ export function ProductPageLayout(props: IProductPageLayoutProps) {
         setDiscountPrice(productDiscountPrices[index]);
     };
     const disabled = state
-        ? state.cartLineItems?.map((item) => item.productId)?.some((item) => item === productId)
+        ? state.cartLineItems
+              ?.map((item) => ({
+                  productId: item.productId,
+                  variantId: item.variant.id,
+              }))
+              ?.some((item) => item.productId === productId && item.variantId === activeButton + 1)
         : false;
     const addToCart: () => void = () => {
-        addItem({ productId, id: state?.cartId, version: state?.cartVersion }).then((res) => {
-            if (res && dispatch)
-                dispatch({
-                    type: 'ADD_TO_CART',
-                    payload: { cartLineItems: res.lineItems, cartId: res.id, cartVersion: res.version },
-                });
-        });
+        addItem({ productId, variantId: activeButton + 1, id: state?.cartId, version: state?.cartVersion }).then(
+            (res) => {
+                if (res && dispatch)
+                    dispatch({
+                        type: 'ADD_TO_CART',
+                        payload: { cartLineItems: res.lineItems, cartId: res.id, cartVersion: res.version },
+                    });
+            }
+        );
     };
     const removeFromCart: () => void = () => {
         removeItem({ productId, id: state?.cartId, version: state?.cartVersion }).then((res) => {
