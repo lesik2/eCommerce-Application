@@ -2,12 +2,12 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import { NavLink, Outlet } from 'react-router-dom';
 import { Button } from '@material-tailwind/react';
-import { useContext, useState } from 'react';
-import { NavLinks } from '../data/data';
-import List from './ui/List';
+import { useContext, useEffect, useState } from 'react';
+import { ANIM_TIME, NavLinks } from '../data/data';
 import { ModalContext } from '../context/ModalContext';
 import Modal from './Modal';
 import CreateIconButton from './ui/IconButton';
+import SubMenuItem from './ui/SubMenuItem';
 
 const FixedMenu = {
     menu: {
@@ -35,62 +35,30 @@ const FixedMenu = {
 export default function NavBar() {
     const { navMenuStatus, openNavMenu, closeNavMenu } = useContext(ModalContext);
 
-    const [dropdown, setDropdown] = useState(false);
+    const [navMenu, setNavMenu] = useState(false);
 
-    const handleToggle = () => {
+    const [isNavMenuShowed, showNavMenu] = useState(false);
+
+    useEffect(() => {
         if (navMenuStatus) {
-            closeNavMenu();
+            showNavMenu(true);
+            setTimeout(() => {
+                setNavMenu(true);
+            }, ANIM_TIME);
         } else {
-            openNavMenu();
+            setNavMenu(false);
+            setTimeout(() => {
+                showNavMenu(false);
+            }, ANIM_TIME);
         }
-    };
-
-    const onMouseEnter = () => {
-        setDropdown(true);
-    };
-
-    const onMouseLeave = () => {
-        setDropdown(false);
-    };
+    }, [navMenuStatus]);
 
     return (
         <>
             <nav className="relative hidden h-[70px] px-[10px] py-[10px] items-center bg-bgMenu md:flex">
                 <ul className="w-full mx-[40px] font-serif text-xl text-white flex justify-items-start gap-[3%] lg:mx-[50px] lg:text-2xl lg:gap-[5%]">
                     {NavLinks.map((navlink) => (
-                        <div
-                            className="last:ml-auto"
-                            onMouseEnter={navlink.name === 'BEVERAGES' ? onMouseEnter : undefined}
-                            onMouseLeave={navlink.name === 'BEVERAGES' ? onMouseLeave : undefined}
-                            key={navlink.id}
-                        >
-                            <NavLink
-                                to={navlink.url}
-                                className={({ isActive }) =>
-                                    isActive
-                                        ? 'relative flex flex-col gap-1 px-[15px] py-[5px] rounded-3xl hover:bg-bntActive/80  cursor-pointer bg-bntActive'
-                                        : 'relative flex flex-col gap-1 px-[15px] py-[5px] rounded-3xl hover:bg-btnHover cursor-pointer'
-                                }
-                            >
-                                <List className="relative flex items-center gap-1">
-                                    {navlink.name}
-                                    {navlink.menu !== undefined && <CreateIconButton type="arrow" size="small" />}
-                                </List>
-                            </NavLink>
-                            {navlink.menu !== undefined && dropdown && (
-                                <ul className="absolute top-12 left-1/2 w-auto px-[20px] py-[5px] rounded-3xl bg-btnHover">
-                                    {navlink.menu.map((l) => (
-                                        <NavLink
-                                            key={l}
-                                            className={({ isActive }) => (isActive ? 'underline' : '')}
-                                            to={`beverages/${l.toLowerCase()}`}
-                                        >
-                                            <li className="hover:underline">{l}</li>
-                                        </NavLink>
-                                    ))}
-                                </ul>
-                            )}
-                        </div>
+                        <SubMenuItem item={navlink} type="main" key={navlink.id} />
                     ))}
                 </ul>
             </nav>
@@ -105,7 +73,7 @@ export default function NavBar() {
                         {FixedMenu.menu.title}
                     </Button>
                 </NavLink>
-                <Button variant="filled" onClick={handleToggle} className={`${FixedMenu.burgerStyle}`}>
+                <Button variant="filled" onClick={openNavMenu} className={`${FixedMenu.burgerStyle}`}>
                     <div className="space-y-1">
                         <span className={`${FixedMenu.burgerSpanStyle}`} />
                         <span className={`${FixedMenu.burgerSpanStyle}`} />
@@ -122,23 +90,16 @@ export default function NavBar() {
                     </Button>
                 </NavLink>
             </nav>
-            {navMenuStatus && (
+            {isNavMenuShowed && (
                 <Modal onClose={closeNavMenu}>
-                    <nav className="fixed top-0 left-0 items-center w-[320px] h-full px-[10px] py-20 bg-bgMenu/75 z-20">
+                    <nav
+                        className={`fixed top-0 left-0 items-center w-[320px] h-full px-[10px] py-20 bg-bgMenu/75 z-20 transition-all duration-${ANIM_TIME} ${
+                            navMenu ? 'left-0' : 'left-[-320px]'
+                        }`}
+                    >
                         <ul className="w-full font-serif text-2xl text-white flex flex-col items-center gap-3">
                             {NavLinks.map((navlink) => (
-                                <NavLink
-                                    to={navlink.url}
-                                    onClick={closeNavMenu}
-                                    className={({ isActive }) =>
-                                        isActive
-                                            ? 'px-[15px] py-[5px] rounded-3xl hover:none bg-bntActive'
-                                            : 'px-[15px] py-[5px] rounded-3xl hover:bg-btnHover cursor-pointer'
-                                    }
-                                    key={navlink.id}
-                                >
-                                    <List className="">{navlink.name}</List>
-                                </NavLink>
+                                <SubMenuItem item={navlink} type="aside" key={navlink.id} onClose={closeNavMenu} />
                             ))}
                         </ul>
                         <div onClick={closeNavMenu} className="absolute top-6 right-6 text-white">

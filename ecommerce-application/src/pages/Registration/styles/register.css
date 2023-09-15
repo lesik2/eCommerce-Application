@@ -11,6 +11,12 @@
   flex-direction: column;
   font-family: 'Russo One';
 }
+
+@media (min-width: 768px) {
+  .register{
+    padding-top: 0;
+  }
+}
 .register-menu{
   display: flex;
   width: 100%;

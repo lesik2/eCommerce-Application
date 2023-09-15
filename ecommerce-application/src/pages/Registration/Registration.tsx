@@ -180,164 +180,169 @@ function Registration() {
         return validation || emptyValues;
     }, [validInputs, values]);
     return (
-        <div className="register-wrapper">
-            <div className="register">
-                <div className="register-menu">
-                    <h2 className="register-title">SIGN UP</h2>
-                    <div className="register-signIn">
-                        <p>Have an account?</p>
-                        <Link to="/login">
-                            <CustomizedButton
-                                sx={{ '&&': { fontSize: 15, paddingLeft: '20px', paddingRight: '20px' } }}
-                                variant="contained"
-                            >
-                                +LOG IN
-                            </CustomizedButton>
-                        </Link>
+        <>
+            {/* empty div instead of Navbar(layout) */}
+            <div className="" />
+
+            <div className="register-wrapper">
+                <div className="register">
+                    <div className="register-menu">
+                        <h2 className="register-title">SIGN UP</h2>
+                        <div className="register-signIn">
+                            <p>Have an account?</p>
+                            <Link to="/login">
+                                <CustomizedButton
+                                    sx={{ '&&': { fontSize: 15, paddingLeft: '20px', paddingRight: '20px' } }}
+                                    variant="contained"
+                                >
+                                    +LOG IN
+                                </CustomizedButton>
+                            </Link>
+                        </div>
                     </div>
-                </div>
-                <form className="register-form" onSubmit={handleSubmit}>
-                    <fieldset className="register-form__user">
-                        {Inputs.map((input) => (
-                            <FormInput
-                                key={input.id}
-                                input={input}
-                                values={values}
-                                setValues={setValues}
-                                validInputs={validInputs}
-                                setValidInputs={setValidInputs}
-                                passwordValue={input.name === 'confirmPassword' ? values.password : ''}
-                                required
+                    <form className="register-form" onSubmit={handleSubmit}>
+                        <fieldset className="register-form__user">
+                            {Inputs.map((input) => (
+                                <FormInput
+                                    key={input.id}
+                                    input={input}
+                                    values={values}
+                                    setValues={setValues}
+                                    validInputs={validInputs}
+                                    setValidInputs={setValidInputs}
+                                    passwordValue={input.name === 'confirmPassword' ? values.password : ''}
+                                    required
+                                />
+                            ))}
+                        </fieldset>
+                        <fieldset className="register-form__address">
+                            <div className="register-form__default">
+                                <p className="adrees-title">Shipping address*:</p>
+                                <ThemeProvider theme={theme}>
+                                    <FormControlLabel
+                                        sx={{ m: 0 }}
+                                        control={
+                                            <Checkbox
+                                                checked={defaultShippingAddress}
+                                                onChange={handleChangeShipping}
+                                                inputProps={{ 'aria-label': 'controlled' }}
+                                                color="default"
+                                            />
+                                        }
+                                        label="defaultShippingAddress"
+                                    />
+                                </ThemeProvider>
+                            </div>
+                            <div className="register-form__user">
+                                <ThemeProvider theme={theme}>
+                                    <FormSelect
+                                        values={values}
+                                        setValues={setValues}
+                                        validInputs={validInputs}
+                                        setValidInputs={setValidInputs}
+                                        name="ShippingCountry"
+                                    />
+                                </ThemeProvider>
+
+                                {ShippingAddressInputs.map((input) => (
+                                    <FormInput
+                                        key={input.id}
+                                        input={input}
+                                        values={values}
+                                        setValues={setValues}
+                                        validInputs={validInputs}
+                                        setValidInputs={setValidInputs}
+                                        required
+                                    />
+                                ))}
+                            </div>
+                        </fieldset>
+                        <fieldset className="register-form__address">
+                            <div className="register-form__default">
+                                <p className="adrees-title">Billing address*:</p>
+                                <ThemeProvider theme={theme}>
+                                    <FormControlLabel
+                                        sx={{ m: 0 }}
+                                        control={
+                                            <Checkbox
+                                                checked={defaultBillingAddress}
+                                                onChange={handleChangeBilling}
+                                                inputProps={{ 'aria-label': 'controlled' }}
+                                                color="default"
+                                            />
+                                        }
+                                        label="defaultBillingAddress"
+                                    />
+                                    <FormControlLabel
+                                        sx={{ m: 0 }}
+                                        control={
+                                            <Checkbox
+                                                checked={sameBillingAddress}
+                                                onChange={handleChangeSameBilling}
+                                                inputProps={{ 'aria-label': 'controlled' }}
+                                                color="default"
+                                                disabled={disableCheckBox}
+                                            />
+                                        }
+                                        label="Set billing as shipping address"
+                                    />
+                                </ThemeProvider>
+                            </div>
+
+                            <div className={sameBillingAddress ? 'register-form__user close' : 'register-form__user'}>
+                                <ThemeProvider theme={theme}>
+                                    <FormSelect
+                                        values={values}
+                                        setValues={setValues}
+                                        validInputs={validInputs}
+                                        setValidInputs={setValidInputs}
+                                        name="BillingCountry"
+                                    />
+                                </ThemeProvider>
+
+                                {BillingAddressInputs.map((input) => (
+                                    <FormInput
+                                        key={input.id}
+                                        input={input}
+                                        values={values}
+                                        setValues={setValues}
+                                        validInputs={validInputs}
+                                        setValidInputs={setValidInputs}
+                                        required
+                                    />
+                                ))}
+                            </div>
+                        </fieldset>
+                        {error && (
+                            <FetchResultAlert
+                                severity={sev}
+                                message={error}
+                                isOpen={alertOpen}
+                                onChange={handleAlertToggle}
                             />
-                        ))}
-                    </fieldset>
-                    <fieldset className="register-form__address">
-                        <div className="register-form__default">
-                            <p className="adrees-title">Shipping address*:</p>
-                            <ThemeProvider theme={theme}>
-                                <FormControlLabel
-                                    sx={{ m: 0 }}
-                                    control={
-                                        <Checkbox
-                                            checked={defaultShippingAddress}
-                                            onChange={handleChangeShipping}
-                                            inputProps={{ 'aria-label': 'controlled' }}
-                                            color="default"
-                                        />
-                                    }
-                                    label="defaultShippingAddress"
-                                />
-                            </ThemeProvider>
-                        </div>
-                        <div className="register-form__user">
-                            <ThemeProvider theme={theme}>
-                                <FormSelect
-                                    values={values}
-                                    setValues={setValues}
-                                    validInputs={validInputs}
-                                    setValidInputs={setValidInputs}
-                                    name="ShippingCountry"
-                                />
-                            </ThemeProvider>
+                        )}
+                        {successMessage && (
+                            <FetchResultAlert
+                                severity={sev}
+                                message={successMessage}
+                                isOpen={alertOpen}
+                                onChange={handleAlertToggle}
+                            />
+                        )}
 
-                            {ShippingAddressInputs.map((input) => (
-                                <FormInput
-                                    key={input.id}
-                                    input={input}
-                                    values={values}
-                                    setValues={setValues}
-                                    validInputs={validInputs}
-                                    setValidInputs={setValidInputs}
-                                    required
-                                />
-                            ))}
-                        </div>
-                    </fieldset>
-                    <fieldset className="register-form__address">
-                        <div className="register-form__default">
-                            <p className="adrees-title">Billing address*:</p>
-                            <ThemeProvider theme={theme}>
-                                <FormControlLabel
-                                    sx={{ m: 0 }}
-                                    control={
-                                        <Checkbox
-                                            checked={defaultBillingAddress}
-                                            onChange={handleChangeBilling}
-                                            inputProps={{ 'aria-label': 'controlled' }}
-                                            color="default"
-                                        />
-                                    }
-                                    label="defaultBillingAddress"
-                                />
-                                <FormControlLabel
-                                    sx={{ m: 0 }}
-                                    control={
-                                        <Checkbox
-                                            checked={sameBillingAddress}
-                                            onChange={handleChangeSameBilling}
-                                            inputProps={{ 'aria-label': 'controlled' }}
-                                            color="default"
-                                            disabled={disableCheckBox}
-                                        />
-                                    }
-                                    label="Set billing as shipping address"
-                                />
-                            </ThemeProvider>
-                        </div>
-
-                        <div className={sameBillingAddress ? 'register-form__user close' : 'register-form__user'}>
-                            <ThemeProvider theme={theme}>
-                                <FormSelect
-                                    values={values}
-                                    setValues={setValues}
-                                    validInputs={validInputs}
-                                    setValidInputs={setValidInputs}
-                                    name="BillingCountry"
-                                />
-                            </ThemeProvider>
-
-                            {BillingAddressInputs.map((input) => (
-                                <FormInput
-                                    key={input.id}
-                                    input={input}
-                                    values={values}
-                                    setValues={setValues}
-                                    validInputs={validInputs}
-                                    setValidInputs={setValidInputs}
-                                    required
-                                />
-                            ))}
-                        </div>
-                    </fieldset>
-                    {error && (
-                        <FetchResultAlert
-                            severity={sev}
-                            message={error}
-                            isOpen={alertOpen}
-                            onChange={handleAlertToggle}
-                        />
-                    )}
-                    {successMessage && (
-                        <FetchResultAlert
-                            severity={sev}
-                            message={successMessage}
-                            isOpen={alertOpen}
-                            onChange={handleAlertToggle}
-                        />
-                    )}
-
-                    <CustomizedButton
-                        type="submit"
-                        sx={{ fontSize: 17, marginTop: 5 }}
-                        className="register-form__submit"
-                        variant="contained"
-                        disabled={disableButton}
-                    >
-                        SIGN UP
-                    </CustomizedButton>
-                </form>
+                        <CustomizedButton
+                            type="submit"
+                            sx={{ fontSize: 17, marginTop: 5 }}
+                            className="register-form__submit"
+                            variant="contained"
+                            disabled={disableButton}
+                        >
+                            SIGN UP
+                        </CustomizedButton>
+                    </form>
+                </div>
             </div>
-        </div>
+        </>
     );
 }
 export default Registration;

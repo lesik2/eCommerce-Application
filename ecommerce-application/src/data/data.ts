@@ -160,6 +160,11 @@ export const HeaderData = {
     subtitleLine2: 'we deliver 10 a.m. to 00:00 a.m.',
 };
 
+export const FooterData = {
+    titleLine: 'Contact us:',
+    subtitleLine: '06 593 97 301',
+};
+
 export const NavLinks = [
     {
         id: 'link1',
@@ -180,7 +185,11 @@ export const NavLinks = [
         id: 'link4',
         name: 'BEVERAGES',
         url: '/beverages',
-        menu: ['Juices', 'Energetics', 'Soda'],
+        submenu: [
+            { id: 'link41', name: 'Juices', url: 'juices' },
+            { id: 'link42', name: 'Energetics', url: 'energetics' },
+            { id: 'link43', name: 'Soda', url: 'soda' },
+        ],
     },
     {
         id: 'link5',
@@ -249,3 +258,5 @@ export const toastProps = {
 
 // eslint-disable-next-line max-len
 export const MessageOnLimit = `Planning a big order? Connect with us directly for special arrangements and personalized assistance. Let's make your meal for a larger group memorable!`;
+
+export const ANIM_TIME = 300;
