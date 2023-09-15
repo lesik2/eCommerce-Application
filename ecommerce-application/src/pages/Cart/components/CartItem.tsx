@@ -28,7 +28,7 @@ export interface ICArtItem {
     dispatch: React.Dispatch<IAddToCartAction> | null;
     state: ICartState | null;
     lineId: string;
-    promoCode: boolean;
+    promoCode: number;
 }
 export const MessageOnLimit = ``;
 // eslint-disable-next-line max-len

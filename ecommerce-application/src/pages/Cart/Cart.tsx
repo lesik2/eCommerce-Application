@@ -1,7 +1,9 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useContext, useEffect, useState } from 'react';
 import { LineItem } from '@commercetools/platform-sdk/dist/declarations/src';
 import { Link } from 'react-router-dom';
 import { TextField } from '@mui/material';
+import { toast, ToastContainer } from 'react-toastify';
 import { CartContext } from '../../context/CartContext';
 import CartItem from './components/CartItem';
 import './Cart.css';
@@ -9,6 +11,7 @@ import CreateIconButton from '../../components/ui/IconButton';
 import CustomizedButton from '../../components/ui/CustomizedButton';
 import { addDiscountCode, getCartItems, removeCart } from '../../services/cart';
 import roundValue from '../../utils/MathFunctions';
+import { toastProps } from '../../data/data';
 
 function Cart() {
     const { state, dispatch } = useContext(CartContext);
@@ -75,19 +78,30 @@ function Cart() {
         const id = state?.cartId;
         const version = state?.cartVersion;
         if (id && version) {
-            addDiscountCode(id, version, code).then((res) => {
-                if (res && dispatch) {
+            addDiscountCode(id, version, code.trim())
+                .then((res) => {
+                    if (res && dispatch) {
+                        setCode('');
+                        setPromoCode(true);
+                        dispatch({
+                            type: 'ADD_TO_CART',
+                            payload: { cartLineItems: res.lineItems, cartId: res.id, cartVersion: res.version },
+                        });
+                    }
+                })
+                .catch((error) => {
+                    toast.error(
+                        error instanceof Error ? error.message : 'This discount code was not found',
+                        toastProps
+                    );
                     setCode('');
-                    setPromoCode(true);
-                    dispatch({
-                        type: 'ADD_TO_CART',
-                        payload: { cartLineItems: res.lineItems, cartId: res.id, cartVersion: res.version },
-                    });
-                }
-            });
+                });
         }
     };
     useEffect(() => {
+        if (calculateTotalPrice() !== calculateTotalPriceWithoutPromoCode()) {
+            setPromoCode(true);
+        }
         setItemsCount(state?.cartLineItems.length || 0);
     }, [state]);
     return (
@@ -123,7 +137,7 @@ function Cart() {
                                 index={i + 1}
                                 state={state}
                                 lineId={item.id}
-                                promoCode={promoCode}
+                                promoCode={item.discountedPricePerQuantity.length}
                             />
                         ))}
                     </div>
@@ -162,6 +176,7 @@ function Cart() {
                             <p className="text-4xl">{roundValue(calculateTotalPrice())} €</p>
                         )}
                     </div>
+                    <ToastContainer {...toastProps} position="bottom-center" />
                 </>
             ) : (
                 <div className="empty-cart">

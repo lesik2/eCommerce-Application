@@ -102,8 +102,7 @@ export async function addDiscountCode(id: string, version: number, code: string)
             },
         })
         .execute()
-        .then((res) => res.body)
-        .catch(console.log);
+        .then((res) => res.body);
 }
 // eslint-disable-next-line consistent-return
 export async function removeCart(id: string, version: number) {
