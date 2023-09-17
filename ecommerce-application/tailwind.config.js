@@ -37,6 +37,20 @@ export default {
                 serif: ['"Poiret One"', 'ui-sans-serif'],
                 sans: ['"Russo One"', 'ui-serif'],
             },
+            animation: {
+                ticker: 'ticker 15s linear infinite',
+                ticker2: 'ticker2 15s linear infinite',
+            },
+            keyframes: {
+                ticker: {
+                    '0%': { transform: 'translateX(0%)' },
+                    '100%': { transform: 'translateX(-100%)' },
+                },
+                ticker2: {
+                    '0%': { transform: 'translateX(100%)' },
+                    '100%': { transform: 'translateX(0%)' },
+                },
+            },
         },
     },
     plugins: [],
