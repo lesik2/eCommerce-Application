@@ -135,13 +135,10 @@ function Products(props: IProductsPage) {
             if (Array.isArray(productsQuery.sort) && productsQuery.sort !== undefined) {
                 currentSort.current = productsQuery.sort.join('') === '' ? DEFAULT_SORT : productsQuery.sort;
             }
-            console.log(productsQuery.filter);
-
             if (Array.isArray(productsQuery.filter) && productsQuery.filter !== undefined) {
                 currentFilter.current = productsQuery.filter.join('') === '' ? '' : productsQuery.filter;
             }
 
-            console.log(currentFilter.current);
             const req: QueryArgs = {
                 filter: [currentPage.current.filter as string, ...currentFilter.current],
                 sort: currentSort.current || DEFAULT_SORT,
