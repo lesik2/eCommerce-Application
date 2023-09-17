@@ -209,7 +209,7 @@ export const PRODUCT_PAGES: Record<string, IProductsPage> = {
     Menu: {
         header: 'Menu',
         link: ['Menu'],
-        query: { filter: '' },
+        query: { filter: 'categories:exists' },
     },
     Poke: {
         header: 'Poke',
@@ -234,12 +234,12 @@ export const PRODUCT_PAGES: Record<string, IProductsPage> = {
     Energetic: {
         header: 'Energetic',
         link: ['Menu', 'Beverages', 'Energetic'],
-        query: { filter: 'categories.id:subtree("a70bf52f-f970-4d88-8d47-9498fac1638d")', search: 'burn' },
+        query: { filter: 'categories.id:"45580055-180b-4554-953e-da56ca188d41"' },
     },
     Soda: {
         header: 'Soda',
         link: ['Menu', 'Beverages', 'Soda'],
-        query: { filter: 'categories.id:subtree("a70bf52f-f970-4d88-8d47-9498fac1638d")', search: 'soda' },
+        query: { filter: 'categories.id:"9dad1e5b-90fc-40d4-8b63-d34eec4d9117"' },
     },
 };
 

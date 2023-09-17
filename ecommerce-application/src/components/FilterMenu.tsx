@@ -52,10 +52,10 @@ export default function FilterMenu(props: FilterMenuProps) {
     const onFilter = () => {
         setProductsQuery({
             filter: [
-                // minPrice.current + maxPrice.current !== sliderValue[0] + sliderValue[1]
-                //     ? `variants.price.centAmount:range (${sliderValue[0] * 100} to ${sliderValue[1] * 100})`
-                //     : '',
-                `variants.price.centAmount:range (${sliderValue[0] * 100} to ${sliderValue[1] * 100})`,
+                minPrice.current + maxPrice.current !== sliderValue[0] + sliderValue[1]
+                    ? `variants.price.centAmount:range (${sliderValue[0] * 100} to ${sliderValue[1] * 100})`
+                    : '',
+                // `variants.price.centAmount:range (${sliderValue[0] * 100} to ${sliderValue[1] * 100})`,
                 spiciness === 'spicy' ? 'variants.attributes.spiciness:true' : '',
                 spiciness === 'notspicy' ? 'variants.attributes.spiciness:missing' : '',
             ],

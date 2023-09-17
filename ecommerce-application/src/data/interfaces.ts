@@ -115,6 +115,7 @@ export interface IProductCardProps {
     picPath?: string;
     spiciness?: boolean;
     productId: string;
+    ref?: (node: React.ReactNode) => void;
 }
 
 export interface IProductsPage {

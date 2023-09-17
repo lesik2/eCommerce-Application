@@ -41,6 +41,8 @@ export type QueryArgs = {
     filter?: string | string[];
     search?: string;
     sort?: string | string[];
+    offset?: number;
+    limit?: number;
 };
 
 export type MenuItem = {
