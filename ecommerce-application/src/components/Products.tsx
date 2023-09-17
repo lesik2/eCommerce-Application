@@ -239,9 +239,9 @@ function Products(props: IProductsPage) {
                     })}
             </div>
             {loadState === LoadStates.loading && (
-                <p className="mt-6 text-center text-bgMenu animate-spin text-2xl">
+                <div className="w-[80px] h-[80px] mx-auto mt-6 text-bgMenu animate-spin">
                     <SyncIcon fontSize="inherit" sx={{ fontSize: '80px' }} />
-                </p>
+                </div>
             )}
             {loadState === LoadStates.notfound && (
                 <p className="mt-3 text-center text-bgMenu text-2xl">Products not found</p>
