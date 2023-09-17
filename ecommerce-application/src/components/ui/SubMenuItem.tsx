@@ -50,7 +50,7 @@ export default function SubMenuItem(props: ItemsProps) {
             {item.submenu && (
                 <ul
                     className={`absolute  w-auto px-[20px] py-[5px] rounded-3xl z-20 duration-${ANIM_TIME} ${
-                        type === 'main' && 'left-1/2 bg-btnHover'
+                        type === 'main' && 'left-2/3 bg-btnHover'
                     } ${type === 'aside' && 'left-full bg-gray-400 transition-all'} ${
                         dropdown ? 'top-8 visible opacity-100' : 'top-0 invisible opacity-0'
                     }`}
