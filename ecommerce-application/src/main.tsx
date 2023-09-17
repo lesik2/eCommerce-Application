@@ -8,7 +8,6 @@ import Registration from './pages/Registration/Registration';
 import Menu from './pages/Menu/Menu';
 import NavBar from './components/NavBar';
 import Soup from './pages/Soup/Soup';
-import Poke from './pages/Poke/Poke';
 import Beverages from './pages/Beverages/Beverages';
 import Cart from './pages/Cart/Cart';
 import About from './pages/About/About';
@@ -20,6 +19,7 @@ import { LoginState } from './context/LoginContext';
 import Profile from './pages/Profile/Profile';
 import { PRODUCT_PAGES } from './data/data';
 import ProductPage from './pages/ProductPage/ProductPage';
+import Maindish from './pages/Maindish/Maindish';
 
 const router = createBrowserRouter([
     {
@@ -45,18 +45,58 @@ const router = createBrowserRouter([
                     },
                     {
                         path: 'soup',
-                        element: <Soup />,
+                        element: <Soup {...PRODUCT_PAGES.Soup} />,
+                    },
+                    {
+                        path: 'soup/broth',
+                        element: <Soup {...PRODUCT_PAGES.Broth} />,
+                    },
+                    {
+                        path: 'soup/broth/:key',
+                        element: <ProductPage />,
+                    },
+                    {
+                        path: 'soup/ramen/:key',
+                        element: <ProductPage />,
+                    },
+                    {
+                        path: 'soup/ramen',
+                        element: <Soup {...PRODUCT_PAGES.Ramen} />,
                     },
                     {
                         path: 'soup/:key',
                         element: <ProductPage />,
                     },
                     {
-                        path: 'poke',
-                        element: <Poke />,
+                        path: 'maindish',
+                        element: <Maindish {...PRODUCT_PAGES.Maindish} />,
                     },
                     {
-                        path: 'poke/:key',
+                        path: 'maindish/:key',
+                        element: <ProductPage />,
+                    },
+                    {
+                        path: 'maindish/poke',
+                        element: <Maindish {...PRODUCT_PAGES.Poke} />,
+                    },
+                    {
+                        path: 'maindish/poke/:key',
+                        element: <ProductPage />,
+                    },
+                    {
+                        path: 'maindish/wok',
+                        element: <Maindish {...PRODUCT_PAGES.Wok} />,
+                    },
+                    {
+                        path: 'maindish/wok/:key',
+                        element: <ProductPage />,
+                    },
+                    {
+                        path: 'maindish/sides',
+                        element: <Maindish {...PRODUCT_PAGES.Sides} />,
+                    },
+                    {
+                        path: 'maindish/sides/:key',
                         element: <ProductPage />,
                     },
                     {
@@ -103,10 +143,6 @@ const router = createBrowserRouter([
                         path: 'profile',
                         element: <Profile />,
                     },
-                    // {
-                    //     path: 'registration',
-                    //     element: <Registration />,
-                    // },
                 ],
             },
             {

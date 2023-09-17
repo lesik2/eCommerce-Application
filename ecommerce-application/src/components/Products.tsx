@@ -187,7 +187,7 @@ function Products(props: IProductsPage) {
                                 <>
                                     <Link
                                         className="underline hover:text-black cursor-pointer"
-                                        to={`../${l.toLowerCase()}`}
+                                        to={`../${l.split(' ').join('').toLowerCase()}`}
                                     >
                                         {l}
                                     </Link>

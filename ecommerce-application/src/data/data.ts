@@ -173,13 +173,22 @@ export const NavLinks = [
     },
     {
         id: 'link2',
-        name: 'POKE BOWL',
-        url: '/poke',
+        name: 'SOUP',
+        url: '/soup',
+        submenu: [
+            { id: 'link21', name: 'Broth', url: 'broth' },
+            { id: 'link22', name: 'Ramen', url: 'ramen' },
+        ],
     },
     {
         id: 'link3',
-        name: 'SOUP',
-        url: '/soup',
+        name: 'MAIN DISH',
+        url: '/maindish',
+        submenu: [
+            { id: 'link31', name: 'Poke', url: 'poke' },
+            { id: 'link32', name: 'Wok', url: 'wok' },
+            { id: 'link33', name: 'Sides', url: 'sides' },
+        ],
     },
     {
         id: 'link4',
@@ -211,15 +220,40 @@ export const PRODUCT_PAGES: Record<string, IProductsPage> = {
         link: ['Menu'],
         query: { filter: '' },
     },
-    Poke: {
-        header: 'Poke',
-        link: ['Menu', 'Poke'],
-        query: { filter: 'categories.id:subtree("09773f55-97a1-4d2b-bf6d-8c2b4d6493b7")' },
-    },
     Soup: {
         header: 'Soup',
         link: ['Menu', 'Soup'],
         query: { filter: 'categories.id:subtree("c9858d51-af4c-4836-b003-e4eda2ac5853")' },
+    },
+    Broth: {
+        header: 'Broth',
+        link: ['Menu', 'Soup', 'Broth'],
+        query: { filter: 'categories.id:subtree("2ecc92cf-f5b4-4fd7-8899-947a8190bd32")' },
+    },
+    Ramen: {
+        header: 'Ramen',
+        link: ['Menu', 'Soup', 'Ramen'],
+        query: { filter: 'categories.id:subtree("9aef815d-f3e2-4ebf-a69d-07252d586482")' },
+    },
+    Maindish: {
+        header: 'Main dish',
+        link: ['Menu', 'Main Dish'],
+        query: { filter: 'categories.id:subtree("40433b4a-e31e-40fe-99bf-7ed7df3b506c")' },
+    },
+    Poke: {
+        header: 'Poke',
+        link: ['Menu', 'Main Dish', 'Poke'],
+        query: { filter: 'categories.id:subtree("09cdd25d-d4e6-430a-9f5a-f7424479006f")' },
+    },
+    Wok: {
+        header: 'Wok',
+        link: ['Menu', 'Main Dish', 'Wok'],
+        query: { filter: 'categories.id:subtree("c553bfdf-f49f-4269-bee8-68ade489301b")' },
+    },
+    Sides: {
+        header: 'Sides',
+        link: ['Menu', 'Main Dish', 'Sides'],
+        query: { filter: 'categories.id:subtree("c2f3ed29-aa03-41ea-a385-ec2a35a932b3")' },
     },
     Beverages: {
         header: 'Beverages',
