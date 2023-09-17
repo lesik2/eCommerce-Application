@@ -56,7 +56,7 @@ export default function NavBar() {
     return (
         <>
             <nav className="relative hidden h-[70px] px-[10px] py-[10px] items-center bg-bgMenu md:flex">
-                <ul className="w-full mx-[40px] font-serif text-xl text-white flex justify-items-start gap-[3%] lg:mx-[50px] lg:text-2xl lg:gap-[5%]">
+                <ul className="w-full mx-[40px] font-serif text-xl text-white flex justify-items-start gap-[2%] lg:mx-[50px] lg:text-2xl lg:gap-[5%]">
                     {NavLinks.map((navlink) => (
                         <SubMenuItem item={navlink} type="main" key={navlink.id} />
                     ))}
