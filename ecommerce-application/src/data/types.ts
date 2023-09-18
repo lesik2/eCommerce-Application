@@ -17,7 +17,6 @@ export type PasswordInputTypes = 'currentPassword' | 'newPassword' | 'confirmPas
 
 export type ButtonSize = 'small' | 'medium' | 'large';
 
-
 export type IconButtonTypes =
     | 'cart'
     | 'login'
@@ -29,7 +28,8 @@ export type IconButtonTypes =
     | 'search'
     | 'arrow'
     | 'pen'
-    | 'delete';
+    | 'delete'
+    | 'remove-cart';
 
 export type SortButtonsTypes = 'name' | 'price' | 'spicy';
 
