@@ -20,6 +20,7 @@ import { LoginState } from './context/LoginContext';
 import Profile from './pages/Profile/Profile';
 import { PRODUCT_PAGES } from './data/data';
 import ProductPage from './pages/ProductPage/ProductPage';
+import { CartState } from './context/CartContext';
 
 const router = createBrowserRouter([
     {
@@ -122,7 +123,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         <ModalState>
             <LoginState>
                 <ProductsState>
-                    <RouterProvider router={router} />
+                    <CartState>
+                        <RouterProvider router={router} />
+                    </CartState>
                 </ProductsState>
             </LoginState>
         </ModalState>

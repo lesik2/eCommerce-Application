@@ -1,15 +1,7 @@
-import {
-    BaseAddress,
-    MyCustomerUpdateAction,
-    ApiRoot,
-    createApiBuilderFromCtpClient,
-} from '@commercetools/platform-sdk';
-import { ClientBuilder, PasswordAuthMiddlewareOptions } from '@commercetools/sdk-client-v2';
-import { httpMiddlewareOptions } from './credentialsFlow';
-import { anonymousClient } from './anonymousClient';
-import SCOPES from './scopes';
-import tokenCache from './tokenCache';
+import { BaseAddress, MyCustomerUpdateAction } from '@commercetools/platform-sdk';
+import { getApiRootFromClient } from './credentialsFlow';
 import handleFlows from './handleFlows';
+import { getAnonymousClient, getClientWithPassword } from './clientBuilders';
 
 async function registrationWithToken(
     email: string,
@@ -55,12 +47,9 @@ async function registrationNoToken(
     defaultShippingAddress?: number,
     defaultBillingAddress?: number
 ) {
-    const client = anonymousClient;
-    const getApiRoot: () => ApiRoot = () => {
-        return createApiBuilderFromCtpClient(client);
-    };
+    const client = getAnonymousClient();
 
-    const reqestBuilder = getApiRoot().withProjectKey({
+    const reqestBuilder = getApiRootFromClient(client).withProjectKey({
         projectKey: import.meta.env.VITE_PROJECT_KEY,
     });
     const register = reqestBuilder
@@ -148,30 +137,8 @@ export default async function handleRegistration(
                 }
             });
             if (actions.length) {
-                const passwordMiddlewareOptions: PasswordAuthMiddlewareOptions = {
-                    host: import.meta.env.VITE_AUTH_URL,
-                    projectKey: import.meta.env.VITE_PROJECT_KEY,
-                    credentials: {
-                        clientId: import.meta.env.VITE_CLIENT_ID,
-                        clientSecret: import.meta.env.VITE_CLIENT_SECRET,
-                        user: {
-                            username: email,
-                            password,
-                        },
-                    },
-                    scopes: SCOPES,
-                    fetch,
-                    tokenCache,
-                };
-                const newClient = new ClientBuilder()
-                    .withPasswordFlow(passwordMiddlewareOptions)
-                    .withHttpMiddleware(httpMiddlewareOptions)
-                    .withLoggerMiddleware()
-                    .build();
-                const getNewApiRoot: () => ApiRoot = () => {
-                    return createApiBuilderFromCtpClient(newClient);
-                };
-                const newReqestBuilder = getNewApiRoot().withProjectKey({
+                const newClient = getClientWithPassword(email.toLocaleLowerCase(), password);
+                const newReqestBuilder = getApiRootFromClient(newClient).withProjectKey({
                     projectKey: import.meta.env.VITE_PROJECT_KEY,
                 });
                 newReqestBuilder
