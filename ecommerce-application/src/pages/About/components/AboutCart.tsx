@@ -24,7 +24,15 @@ export default function AboutUsCard(props: IAboutUs) {
     };
 
     return (
-        <Card sx={{ width: 340, backgroundColor: '#D9D9D9' }}>
+        <Card
+            sx={{
+                width: 340,
+                backgroundColor: '#D9D9D9',
+                borderRadius: '40px',
+                border: '4px solid #FDE828',
+                boxShadow: '0px 4px 4px 0px rgba(0, 0, 0, 0.25)',
+            }}
+        >
             <CardMedia
                 sx={{
                     height: '150px',
