@@ -11,6 +11,7 @@ function About() {
             style={{
                 background: 'linear-gradient(180deg, #FFF 0%, rgba(255, 255, 255, 0.00) 100%)',
                 paddingTop: '20px',
+                paddingBottom: '20px',
             }}
         >
             <Container maxWidth="xl">
