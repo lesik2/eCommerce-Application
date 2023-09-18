@@ -36,9 +36,10 @@ export default function AboutUsCard(props: IAboutUs) {
             <CardMedia
                 sx={{
                     height: '150px',
-                    maxWidth: '50%',
-                    width: 'auto',
+                    aspectRatio: '1 / 1',
                     margin: 'auto',
+                    borderRadius: '50%',
+                    marginTop: '20px',
                 }}
                 image={img}
                 title="face"
