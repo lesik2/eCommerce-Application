@@ -51,3 +51,10 @@ export type MenuItem = {
     url: string;
     submenu?: MenuItem[];
 };
+
+export type MenuItem = {
+    id: string;
+    name: string;
+    url: string;
+    submenu?: MenuItem[];
+};

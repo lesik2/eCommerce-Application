@@ -19,6 +19,7 @@ import { LoginState } from './context/LoginContext';
 import Profile from './pages/Profile/Profile';
 import { PRODUCT_PAGES } from './data/data';
 import ProductPage from './pages/ProductPage/ProductPage';
+import Maindish from './pages/Maindish/Maindish';
 import { CartState } from './context/CartContext';
 import Maindish from './pages/Maindish/Maindish';
 

@@ -219,10 +219,6 @@ function Products(props: IProductsPage) {
                 </nav>
             </header>
             <div className="mt-1 pb-16 mx-auto px-5 max-sm:px-0 2xl:w-[80%] max-lg:w-[100%] flex flex-wrap justify-center gap-x-6 gap-y-10">
-                {/* {loadState === LoadStates.success &&
-                    data.map((product) => {
-                        return <ProductCard key={product.productName} product={product} />;
-                    })} */}
                 {loadState !== LoadStates.notfound &&
                     data.map((product, index) => {
                         if (data.length === index + 1) {
