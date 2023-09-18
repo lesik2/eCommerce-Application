@@ -1,5 +1,6 @@
 /* eslint-disable max-len */
 import image from '../../../assets/img/face.png';
+import baranov_ava from '../../../assets/img/baranovdv.jpg';
 
 export interface IAboutUs {
     name: string;
@@ -11,9 +12,9 @@ export interface IAboutUs {
 
 const aboutDmitry = {
     name: 'Dmitry',
-    roles: ['Routing, Navigation', 'Main page', 'Filtering, Sourting, Searching'],
-    bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-    img: image,
+    roles: ['Routing, Navigation', 'Main page', 'Filtering, Sorting, Searching'],
+    bio: 'I am an engineer with over 13 years of experience in hardware development, service and automation. I started studying web development from December 2022 at RS School from Stage 0.',
+    img: baranov_ava,
     GitHub: 'https://github.com/baranovdv',
 };
 const aboutAlexey = {
