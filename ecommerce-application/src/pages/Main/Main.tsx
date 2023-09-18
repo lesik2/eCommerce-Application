@@ -15,7 +15,7 @@ function Main() {
                     Try our <span className="text-mainRed">Chilli</span> menu!
                 </Link>
             </div>
-            <div className="absolute w-full bottom-6 left-0 h-8 bg-white">
+            <div className="absolute w-full bottom-6 left-0 h-8 bg-white overflow-x-hidden">
                 <div className="absolute top-1 w-full whitespace-nowrap animate-ticker">
                     {PROMO_TEXT[0]}
                     <span className="text-mainRed">{promoCode}</span>
