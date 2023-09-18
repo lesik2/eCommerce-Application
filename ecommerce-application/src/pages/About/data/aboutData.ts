@@ -1,6 +1,7 @@
 /* eslint-disable max-len */
 import image from '../../../assets/img/face.png';
 import baranov_ava from '../../../assets/img/baranovdv.jpg';
+import alex_ava from '../../../assets/img/alex.jpg';
 
 export interface IAboutUs {
     name: string;
@@ -20,8 +21,8 @@ const aboutDmitry = {
 const aboutAlexey = {
     name: 'Alexey',
     roles: ['Registration page', 'User Profile Page', 'Cart'],
-    bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-    img: image,
+    bio: 'I am a student at Belarusian State University of Informatics and Radioelectronics, majoring in Information Systems and Technologies in Business Management. I started studying Frontend development in this year with the Stage 1 RS School course.',
+    img: alex_ava,
     GitHub: 'https://github.com/lesik2',
 };
 const aboutIrina = {
