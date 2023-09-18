@@ -1,13 +1,13 @@
 /* eslint-disable max-len */
 import { ClientResponse } from '@commercetools/platform-sdk';
 import { Box, TextField } from '@mui/material';
-import { useContext, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import { Link } from 'react-router-dom';
 import SyncIcon from '@mui/icons-material/Sync';
 import { ModalContext } from '../context/ModalContext';
 import { ProductsContext } from '../context/ProductsContext';
-import { ANIM_TIME, QUERIES, toastProps } from '../data/data';
+import { ANIM_TIME, toastProps } from '../data/data';
 import { LoadStates } from '../data/enums';
 import { IProductsPage } from '../data/interfaces';
 import { QueryArgs } from '../data/types';
@@ -19,6 +19,9 @@ import CreateIconButton from './ui/IconButton';
 import ProductCard from './ProductCard';
 
 function Products(props: IProductsPage) {
+    const LIMIT_OF_PRODS = 4;
+    const DEFAULT_SORT = 'createdAt desc';
+
     const { header, link, query } = props;
 
     const { productsQuery, setProductsQuery, data, setData, currentSearch, clearFilterState } =
@@ -29,35 +32,30 @@ function Products(props: IProductsPage) {
     const [searchValue, setSearch] = useState('');
     const [filterMenu, setFilterMenu] = useState(false);
     const [isMenuShowed, showMenu] = useState(false);
-
-    // const [searchButtonState, setSearchButton] = useState(true);
+    const [isMore, setIsMore] = useState(true);
 
     const currentPage = useRef<QueryArgs>({});
     const errorMessage = useRef('');
+    const currentLimit = useRef(LIMIT_OF_PRODS);
+    const currentSort = useRef<string | string[]>(DEFAULT_SORT);
+    const currentFilter = useRef<string | string[]>('');
+    const observer = useRef<IntersectionObserver>();
 
     // eslint-disable-next-line consistent-return
     const fetchData = async (q: QueryArgs) => {
         try {
-            let res: ClientResponse;
-            if (q.filter === QUERIES.MENU_QUERY.filter) {
-                res = await handleFlows()
-                    .productProjections()
-                    .get({ queryArgs: { limit: 30 } })
-                    .execute();
-            } else {
-                res = await handleFlows()
-                    .productProjections()
-                    .search()
-                    .get({
-                        queryArgs: {
-                            filter: q.filter,
-                            sort: q.sort,
-                            'text.en-us': q.search,
-                            limit: 30,
-                        },
-                    })
-                    .execute();
-            }
+            const res = await handleFlows()
+                .productProjections()
+                .search()
+                .get({
+                    queryArgs: {
+                        filter: q.filter,
+                        sort: q.sort,
+                        'text.en-us': q.search,
+                        limit: q.limit || LIMIT_OF_PRODS,
+                    },
+                })
+                .execute();
 
             return res;
         } catch (error) {
@@ -66,6 +64,7 @@ function Products(props: IProductsPage) {
     };
 
     function responseHandler(res: ClientResponse) {
+        setIsMore(res.body.total > res.body.limit);
         const processedProducts = processProducts(res);
         if (processedProducts.length === 0) {
             setLoadState(LoadStates.notfound);
@@ -79,24 +78,38 @@ function Products(props: IProductsPage) {
         const input = e.target.value;
         const regex = /[a-z,A-Z,\s]/g;
         setSearch(input.match(regex)?.join('') || '');
-
-        // if (e.target.value.length > 0) {
-        //     setSearchButton(false);
-        // } else {
-        //     setSearchButton(true);
-        // }
     };
 
     const onSearchButton = (e: React.FormEvent) => {
         e.preventDefault();
         setProductsQuery({
-            filter: [''],
             search: searchValue,
         });
     };
 
+    const lastProductRef = useCallback(
+        (node: HTMLDivElement) => {
+            if (loadState !== LoadStates.success) return;
+            if (observer.current) observer.current.disconnect();
+            observer.current = new IntersectionObserver((entries) => {
+                if (entries[0].isIntersecting && isMore) {
+                    currentLimit.current += LIMIT_OF_PRODS;
+                    setProductsQuery({
+                        limit: currentLimit.current,
+                    });
+                }
+            });
+            if (node) observer.current.observe(node);
+        },
+        [loadState, isMore]
+    );
+
     useEffect(() => {
+        // currentLimit.current = 0;
+        setData([]);
         clearFilterState();
+        currentSearch.current = '';
+        query.sort = [DEFAULT_SORT];
         fetchData(query)
             .then((res) => {
                 if (res) {
@@ -110,22 +123,27 @@ function Products(props: IProductsPage) {
                 );
             });
         currentPage.current.filter = query.filter;
-        if (query.search !== undefined) {
-            currentSearch.current = query.search;
-        }
     }, []);
     // &${productsQuery}
     useEffect(() => {
         setLoadState(LoadStates.loading);
-        if (productsQuery !== null && currentPage.current.filter !== undefined && productsQuery.filter !== undefined) {
+        if (productsQuery !== null && currentPage.current.filter !== undefined) {
             if (productsQuery.search !== undefined) {
                 currentSearch.current =
                     productsQuery.search !== currentSearch.current ? productsQuery.search : currentSearch.current;
             }
+            if (Array.isArray(productsQuery.sort) && productsQuery.sort !== undefined) {
+                currentSort.current = productsQuery.sort.join('') === '' ? DEFAULT_SORT : productsQuery.sort;
+            }
+            if (Array.isArray(productsQuery.filter) && productsQuery.filter !== undefined) {
+                currentFilter.current = productsQuery.filter.join('') === '' ? '' : productsQuery.filter;
+            }
+
             const req: QueryArgs = {
-                filter: [currentPage.current.filter as string, ...productsQuery.filter],
-                sort: productsQuery.sort,
+                filter: [currentPage.current.filter as string, ...currentFilter.current],
+                sort: currentSort.current || DEFAULT_SORT,
                 search: currentSearch.current,
+                limit: currentLimit.current,
             };
             fetchData(req)
                 .then((res) => {
@@ -200,10 +218,23 @@ function Products(props: IProductsPage) {
                     ))}
                 </nav>
             </header>
+            <div className="mt-1 pb-16 mx-auto px-5 max-sm:px-0 2xl:w-[80%] max-lg:w-[100%] flex flex-wrap justify-center gap-x-6 gap-y-10">
+                {loadState !== LoadStates.notfound &&
+                    data.map((product, index) => {
+                        if (data.length === index + 1) {
+                            return (
+                                <div key={product.productName} ref={lastProductRef}>
+                                    <ProductCard product={product} />
+                                </div>
+                            );
+                        }
+                        return <ProductCard key={product.productName} product={product} />;
+                    })}
+            </div>
             {loadState === LoadStates.loading && (
-                <p className="mt-6 text-center text-bgMenu animate-spin text-2xl">
+                <div className="w-[80px] h-[80px] mx-auto mt-6 text-bgMenu animate-spin">
                     <SyncIcon fontSize="inherit" sx={{ fontSize: '80px' }} />
-                </p>
+                </div>
             )}
             {loadState === LoadStates.notfound && (
                 <p className="mt-3 text-center text-bgMenu text-2xl">Products not found</p>
@@ -211,12 +242,6 @@ function Products(props: IProductsPage) {
             {loadState === LoadStates.error && (
                 <p className="mt-3 text-center text-bgMenu text-2xl">{errorMessage.current}</p>
             )}
-            <div className="mt-1 pb-16 mx-auto px-5 max-sm:px-0 2xl:w-[80%] max-lg:w-[100%] flex flex-wrap justify-center gap-x-6 gap-y-10">
-                {loadState === LoadStates.success &&
-                    data.map((product) => {
-                        return <ProductCard key={product.productName} product={product} />;
-                    })}
-            </div>
             {filterMenu && (
                 <Modal onClose={closeFilterMenu}>
                     <FilterMenu
