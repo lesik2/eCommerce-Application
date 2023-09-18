@@ -28,7 +28,8 @@ export type IconButtonTypes =
     | 'search'
     | 'arrow'
     | 'pen'
-    | 'delete';
+    | 'delete'
+    | 'remove-cart';
 
 export type SortButtonsTypes = 'name' | 'price' | 'spicy';
 

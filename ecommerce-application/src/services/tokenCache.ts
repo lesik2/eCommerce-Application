@@ -13,8 +13,7 @@ const tokenCache: TokenCache = {
         return { token: '', expirationTime: 86400000, refreshToken: '' };
     },
     set: (cache) => {
-        const cachedToken = localStorage.getItem('token');
-        if (!cachedToken) localStorage.setItem('token', JSON.stringify(cache));
+        localStorage.setItem('token', JSON.stringify(cache));
     },
 };
 

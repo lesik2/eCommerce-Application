@@ -15,8 +15,8 @@ import handleFlows from '../services/handleFlows';
 import processProducts from '../services/processProducts';
 import FilterMenu from './FilterMenu';
 import Modal from './Modal';
-import { ProductCard } from './ProductCard';
 import CreateIconButton from './ui/IconButton';
+import ProductCard from './ProductCard';
 
 function Products(props: IProductsPage) {
     const { header, link, query } = props;
@@ -213,18 +213,9 @@ function Products(props: IProductsPage) {
             )}
             <div className="mt-1 pb-16 mx-auto px-5 max-sm:px-0 2xl:w-[80%] max-lg:w-[100%] flex flex-wrap justify-center gap-x-6 gap-y-10">
                 {loadState === LoadStates.success &&
-                    data.map((product) => (
-                        <ProductCard
-                            key={product.productName}
-                            productName={product.productName}
-                            productPrice={product.productPrice}
-                            productDiscountPrice={product.productDiscountPrice}
-                            spiciness={product.spiciness}
-                            ingredients={product.ingredients}
-                            productPath={product.productPath}
-                            picPath={product.picPath}
-                        />
-                    ))}
+                    data.map((product) => {
+                        return <ProductCard key={product.productName} product={product} />;
+                    })}
             </div>
             {filterMenu && (
                 <Modal onClose={closeFilterMenu}>

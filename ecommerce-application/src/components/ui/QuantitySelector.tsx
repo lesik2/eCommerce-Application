@@ -5,12 +5,13 @@ import RemoveIcon from '@mui/icons-material/Remove';
 
 type QuantitySelectorProps = {
     onQuantityReached: (isLimit: boolean) => void;
+    quantity: number;
+    setQuantity: React.Dispatch<React.SetStateAction<number>>;
 };
 
-function QuantitySelector({ onQuantityReached }: QuantitySelectorProps) {
-    const [quantity, setQuantity] = useState(1);
+function QuantitySelector({ onQuantityReached, quantity, setQuantity }: QuantitySelectorProps) {
     const [addDisabled, setAddDisabled] = useState(false);
-    const [removeDisabled, setRemoveDisabled] = useState(true);
+    const [removeDisabled, setRemoveDisabled] = useState(quantity === 1);
     const orderLimit = 16;
     const handleIncrease = () => {
         setRemoveDisabled(false);
