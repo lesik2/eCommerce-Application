@@ -3,6 +3,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import { Link, useNavigate } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
+import { Badge } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
 import LogoutIcon from '@mui/icons-material/Logout';
 import Image from './ui/Image';
@@ -14,6 +15,7 @@ import Modal from './Modal';
 import { LoginContext } from '../context/LoginContext';
 import { LoginStatus } from '../data/enums';
 import logout from '../services/logout';
+import { CartContext } from '../context/CartContext';
 
 const headerBg = 'bg-gradient-menu from-bgStart from-0% via-bgMid via-90% to-bgEnd to-100%';
 
@@ -68,6 +70,7 @@ export default function Header() {
             }, ANIM_TIME);
         }
     }, [userMenuStatus]);
+    const { state } = useContext(CartContext);
 
     return (
         <header
@@ -95,7 +98,16 @@ export default function Header() {
             </div>
             <div className="flex gap-1">
                 <Link className="hidden md:block" to="cart">
-                    <CreateIconButton type="cart" size="large" />
+                    <div style={{ position: 'relative' }}>
+                        <CreateIconButton type="cart" size="large" />
+                        {state && state.cartLineItems.length > 0 && (
+                            <Badge
+                                badgeContent={state?.cartLineItems.length}
+                                color="success"
+                                style={{ position: 'absolute', top: '10px', right: '10px' }}
+                            />
+                        )}
+                    </div>
                 </Link>
                 {loginStatus === LoginStatus.anonim && (
                     <Link to="login">
