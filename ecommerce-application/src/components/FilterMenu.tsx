@@ -11,16 +11,24 @@ import SortButtons from './ui/SortButtons';
 
 type FilterMenuProps = {
     onClose: () => void;
+    className: string;
 };
 
 export default function FilterMenu(props: FilterMenuProps) {
-    const { onClose } = props;
+    const { onClose, className } = props;
 
     const { setProductsQuery, data, currentSearch, filterState } = useContext(ProductsContext);
 
     const { openFilterMenu, closeFilterMenu } = useContext(ModalContext);
 
-    let pricesArray = data.map((item) => item.productPrice as number);
+    let pricesArray = data
+        .map((item) => item.productPrice as number)
+        .reduce((acc, item) => {
+            if (item) {
+                (acc as number[]).push(item);
+            }
+            return acc;
+        }, []);
 
     const minPrice = useRef(Math.min(...pricesArray));
     const maxPrice = useRef(Math.max(...pricesArray));
@@ -63,13 +71,21 @@ export default function FilterMenu(props: FilterMenuProps) {
     };
 
     useEffect(() => {
-        pricesArray = data.map((item) => item.productPrice as number);
+        pricesArray = data
+            .map((item) => item.productPrice as number)
+            .reduce((acc, item) => {
+                if (item) {
+                    (acc as number[]).push(item);
+                }
+                return acc;
+            }, []);
+
         minPrice.current = Math.min(...pricesArray);
         maxPrice.current = Math.max(...pricesArray);
     }, [openFilterMenu]);
 
     return (
-        <aside className="absolute top-0 right-0 w-96 h-full py-10 px-5 bg-white/95 z-20">
+        <aside className={`absolute top-0 right-0 w-96 h-full py-10 px-5 bg-white/95 z-20 ${className}`}>
             <div className="flex flex-col gap-6 items-center">
                 <div className="w-full flex flex-col items-center px-4">
                     <h2 className="text-2xl">Filter</h2>

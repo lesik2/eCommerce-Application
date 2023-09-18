@@ -21,6 +21,7 @@ export default {
             bgStart: '#FDE828',
             bgMid: '#F0C448',
             bgEnd: '#EFC14B',
+            bgFooter: '#606060',
             menuTextActive: '#509046',
             menuBtnColor: '#EFC14B',
             menuBtnColorHover: '#AB820A',
@@ -35,6 +36,20 @@ export default {
             fontFamily: {
                 serif: ['"Poiret One"', 'ui-sans-serif'],
                 sans: ['"Russo One"', 'ui-serif'],
+            },
+            animation: {
+                ticker: 'ticker 15s linear infinite',
+                ticker2: 'ticker2 15s linear infinite',
+            },
+            keyframes: {
+                ticker: {
+                    '0%': { transform: 'translateX(0%)' },
+                    '100%': { transform: 'translateX(-100%)' },
+                },
+                ticker2: {
+                    '0%': { transform: 'translateX(100%)' },
+                    '100%': { transform: 'translateX(0%)' },
+                },
             },
         },
     },

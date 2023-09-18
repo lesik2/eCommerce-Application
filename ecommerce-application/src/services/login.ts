@@ -39,6 +39,10 @@ async function loginWithToken(
         })
         .execute()
         .then((res) => res.body);
+    if (clientData) {
+        localStorage.setItem('status', 'loggedIn');
+        localStorage.setItem('username', clientData.customer.lastName || 'Username');
+    }
     return { clientData, reqestBuilder };
 }
 
@@ -68,6 +72,10 @@ export async function loginNoToken(
         .post(postOptions)
         .execute()
         .then((res) => res.body);
+    if (clientData) {
+        localStorage.setItem('status', 'loggedIn');
+        localStorage.setItem('username', clientData.customer.lastName || 'Username');
+    }
     return { clientData, reqestBuilder };
 }
 

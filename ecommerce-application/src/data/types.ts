@@ -35,8 +35,17 @@ export type SortButtonsTypes = 'name' | 'price' | 'spicy';
 
 export type SortTypes = 'nosort' | 'asc' | 'desc' | 'spicy' | 'notspicy';
 
+export type MenuType = 'main' | 'aside';
+
 export type QueryArgs = {
     filter?: string | string[];
     search?: string;
     sort?: string | string[];
+};
+
+export type MenuItem = {
+    id: string;
+    name: string;
+    url: string;
+    submenu?: MenuItem[];
 };
