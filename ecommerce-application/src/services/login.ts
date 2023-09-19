@@ -1,13 +1,11 @@
 /* eslint-disable consistent-return */
-import { CustomerSignInResult, ApiRoot, createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
-import { ClientBuilder, PasswordAuthMiddlewareOptions } from '@commercetools/sdk-client-v2';
+import { CustomerSignInResult, MyCustomerSignin } from '@commercetools/platform-sdk';
 // eslint-disable-next-line max-len
 import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/declarations/src/generated/client/by-project-key-request-builder';
-import { httpMiddlewareOptions } from './credentialsFlow';
-import SCOPES from './scopes';
-import tokenCache from './tokenCache';
+import { getApiRootFromClient } from './credentialsFlow';
+import { getClientWithExistingToken, getClientWithPassword } from './clientBuilders';
 
-const tokenData = localStorage.getItem('token') || '';
+const tokenData = () => localStorage.getItem('token') || '';
 
 async function loginWithToken(
     username: string,
@@ -19,37 +17,32 @@ async function loginWithToken(
       }
     | undefined
 > {
-    const client = new ClientBuilder()
-        .withExistingTokenFlow(`Bearer ${JSON.parse(tokenData).token}`, {
-            force: true,
-        })
-        .withHttpMiddleware(httpMiddlewareOptions)
-        .withLoggerMiddleware()
-        .build();
-    const getApiRoot: () => ApiRoot = () => {
-        return createApiBuilderFromCtpClient(client);
-    };
-    const postOptions = {
-        body: {
-            email: username,
-            password,
-        },
-        headers: {
-            Authorization: `Bearer ${JSON.parse(tokenData).token}}`,
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-        },
-    };
-    const reqestBuilder = getApiRoot().withProjectKey({
+    const client = getClientWithExistingToken();
+    const reqestBuilder: ByProjectKeyRequestBuilder = getApiRootFromClient(client).withProjectKey({
         projectKey: import.meta.env.VITE_PROJECT_KEY,
     });
+    const postOptions: MyCustomerSignin = {
+        email: username,
+        password,
+        activeCartSignInMode: 'MergeWithExistingCustomerCart',
+    };
     const clientData = await reqestBuilder
         .me()
         .login()
-        .post(postOptions)
+        .post({
+            headers: {
+                Authorization: `Bearer ${JSON.parse(tokenData()).token}}`,
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: postOptions,
+        })
         .execute()
         .then((res) => res.body);
-    if (clientData) localStorage.setItem('status', 'loggedIn');
+    if (clientData) {
+        localStorage.setItem('status', 'loggedIn');
+        localStorage.setItem('username', clientData.customer.lastName || 'Username');
+    }
     return { clientData, reqestBuilder };
 }
 
@@ -63,36 +56,14 @@ export async function loginNoToken(
       }
     | undefined
 > {
-    const passwordMiddlewareOptions: PasswordAuthMiddlewareOptions = {
-        host: import.meta.env.VITE_AUTH_URL,
-        projectKey: import.meta.env.VITE_PROJECT_KEY,
-        credentials: {
-            clientId: import.meta.env.VITE_CLIENT_ID,
-            clientSecret: import.meta.env.VITE_CLIENT_SECRET,
-            user: {
-                username,
-                password,
-            },
-        },
-        scopes: SCOPES,
-        fetch,
-        tokenCache,
-    };
-    const client = new ClientBuilder()
-        .withPasswordFlow(passwordMiddlewareOptions)
-        .withHttpMiddleware(httpMiddlewareOptions)
-        .withLoggerMiddleware()
-        .build();
-    const getApiRoot: () => ApiRoot = () => {
-        return createApiBuilderFromCtpClient(client);
-    };
+    const client = getClientWithPassword(username, password);
     const postOptions = {
         body: {
             email: username,
             password,
         },
     };
-    const reqestBuilder = getApiRoot().withProjectKey({
+    const reqestBuilder: ByProjectKeyRequestBuilder = getApiRootFromClient(client).withProjectKey({
         projectKey: import.meta.env.VITE_PROJECT_KEY,
     });
     const clientData = await reqestBuilder
@@ -101,16 +72,45 @@ export async function loginNoToken(
         .post(postOptions)
         .execute()
         .then((res) => res.body);
-    if (clientData) localStorage.setItem('status', 'loggedIn');
+    if (clientData) {
+        localStorage.setItem('status', 'loggedIn');
+        localStorage.setItem('username', clientData.customer.lastName || 'Username');
+    }
     return { clientData, reqestBuilder };
 }
 
-export default async function handleLogin(email: string, password: string) {
+export default async function handleLogin(
+    email: string,
+    password: string
+): Promise<
+    | {
+          clientData: CustomerSignInResult;
+          reqestBuilder: ByProjectKeyRequestBuilder;
+      }
+    | undefined
+> {
     const username = email.toLocaleLowerCase();
-    if (tokenData) {
-        const requestBuilder = await loginWithToken(username, password);
-        return requestBuilder;
+    try {
+        if (tokenData()) {
+            const result = await loginWithToken(username, password);
+            const newClient = getClientWithPassword(username, password);
+            const newReqestBuilder = getApiRootFromClient(newClient).withProjectKey({
+                projectKey: import.meta.env.VITE_PROJECT_KEY,
+            });
+            const clientData = await newReqestBuilder
+                .me()
+                .get()
+                .execute()
+                .then((res) => res.body);
+            if (clientData) localStorage.setItem('status', 'loggedIn');
+            if (result) return result;
+        }
+        const response = await loginNoToken(username, password);
+        if (response) {
+            localStorage.setItem('status', 'loggedIn');
+            return response;
+        }
+    } catch (error) {
+        console.log(error);
     }
-    const requestBuilder = await loginNoToken(username, password);
-    return requestBuilder;
 }

@@ -2,16 +2,20 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import { Link, useNavigate } from 'react-router-dom';
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { Badge } from '@mui/material';
+import PersonIcon from '@mui/icons-material/Person';
+import LogoutIcon from '@mui/icons-material/Logout';
 import Image from './ui/Image';
 import Logo from '../assets/img/logo.svg';
 import CreateIconButton from './ui/IconButton';
-import { HeaderData } from '../data/data';
+import { ANIM_TIME, HeaderData } from '../data/data';
 import { ModalContext } from '../context/ModalContext';
 import Modal from './Modal';
 import { LoginContext } from '../context/LoginContext';
 import { LoginStatus } from '../data/enums';
 import logout from '../services/logout';
+import { CartContext } from '../context/CartContext';
 
 const headerBg = 'bg-gradient-menu from-bgStart from-0% via-bgMid via-90% to-bgEnd to-100%';
 
@@ -20,18 +24,17 @@ export default function Header() {
 
     const { loginStatus, loginMenu, logoutMenu } = useContext(LoginContext);
 
+    const [userMenu, setUserMenu] = useState(false);
+
+    const [isMenuShowed, showMenu] = useState(false);
+
+    const [username, setUsername] = useState('Username');
+
     const navigate = useNavigate();
 
     const checkLoginStatus = () => {
         if (localStorage.getItem('token') && localStorage.getItem('status') === 'loggedIn') {
             loginMenu();
-        }
-    };
-    const handleUserMenu = () => {
-        if (userMenuStatus) {
-            closeUserMenu();
-        } else {
-            openUserMenu();
         }
     };
 
@@ -46,11 +49,34 @@ export default function Header() {
         checkLoginStatus();
     });
 
+    useEffect(() => {
+        let usernameLocalStorage = 'Username';
+        if (localStorage.getItem('username')) {
+            usernameLocalStorage = localStorage.getItem('username') || 'Username';
+        }
+        setUsername(usernameLocalStorage || 'Username');
+    }, [openUserMenu]);
+
+    useEffect(() => {
+        if (userMenuStatus) {
+            setUserMenu(true);
+            setTimeout(() => {
+                showMenu(true);
+            }, ANIM_TIME);
+        } else {
+            showMenu(false);
+            setTimeout(() => {
+                setUserMenu(false);
+            }, ANIM_TIME);
+        }
+    }, [userMenuStatus]);
+    const { state } = useContext(CartContext);
+
     return (
         <header
             className={`
             w-full h-[70px] flex justify-between items-center
-            bg-red-200 shadow-md ${headerBg} px-[10px] py-[5px] sm:px-[30px] sm:h-[80px] md:h-[100px]`}
+            bg-red-200 shadow-xl ${headerBg} px-[10px] py-[5px] sm:px-[30px] sm:h-[80px] md:h-[100px]`}
         >
             <Link to="/">
                 <Image
@@ -72,7 +98,16 @@ export default function Header() {
             </div>
             <div className="flex gap-1">
                 <Link className="hidden md:block" to="cart">
-                    <CreateIconButton type="cart" size="large" />
+                    <div style={{ position: 'relative' }}>
+                        <CreateIconButton type="cart" size="large" />
+                        {state && state.cartLineItems.length > 0 && (
+                            <Badge
+                                badgeContent={state?.cartLineItems.length}
+                                color="success"
+                                style={{ position: 'absolute', top: '10px', right: '10px' }}
+                            />
+                        )}
+                    </div>
                 </Link>
                 {loginStatus === LoginStatus.anonim && (
                     <Link to="login">
@@ -80,25 +115,34 @@ export default function Header() {
                     </Link>
                 )}
                 {loginStatus === LoginStatus.loggedIn && (
-                    <div onClick={handleUserMenu}>
+                    <div onClick={openUserMenu}>
                         <CreateIconButton type="logged" size="large" />
                     </div>
                 )}
             </div>
-            {userMenuStatus && (
+            {userMenu && (
                 <Modal onClose={closeUserMenu}>
-                    <div className="w-[320px] px-3 py-3 text-center rounded-md bg-white/95 absolute top-[60px] right-0 z-20">
-                        <h3 className="mb-5">Hello, Username!</h3>
+                    <div
+                        className={`absolute w-[320px] px-5 py-3 text-center rounded-md bg-white/95 top-[60px] right-0 z-20 transition-all duration-${ANIM_TIME} ${
+                            isMenuShowed ? 'right-0' : 'right-[-320px]'
+                        }`}
+                    >
+                        <h3 className="mb-5">Hello, {username}!</h3>
                         <Link
-                            className="block text-center py-2 text-xl text-[blue] underline"
+                            className="flex items-center gap-2 text-left text-serif py-2 text-xl hover:underline"
                             to="../profile"
                             onClick={closeUserMenu}
                         >
-                            to profile
+                            <PersonIcon fontSize="small" />
+                            Profile
                         </Link>
-                        <span onClick={handleLogout}>
-                            <CreateIconButton type="logout" size="large" />
-                        </span>
+                        <div
+                            className="flex items-center gap-2 text-left text-serif py-2 cursor-pointer text-xl hover:underline"
+                            onClick={handleLogout}
+                        >
+                            <LogoutIcon fontSize="small" />
+                            Logout
+                        </div>
                     </div>
                 </Modal>
             )}

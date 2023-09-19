@@ -1,30 +1,30 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable max-len */
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useContext } from 'react';
 import CustomizedButton from './ui/CustomizedButton';
-import QuantitySelector from './ui/QuantitySelector';
 import Chili from '../assets/img/chili.svg';
 import Image from './ui/Image';
+import { addItem } from '../services/cart';
+import { CartContext } from '../context/CartContext';
+import { IProductCardProps } from '../data/interfaces';
 
-export interface IProductCardProps {
-    productName: string;
-    productPrice: number;
-    productPath: string;
-    productDiscountPrice?: number;
-    ingredients?: string;
-    picPath?: string;
-    spiciness?: boolean;
-}
-export const MessageOnLimit = `Planning a big order? Connect with us directly for special arrangements and personalized assistance. Let's make your meal for a larger group memorable!`;
-
-export function ProductCard(props: IProductCardProps) {
-    const { productName, productPrice, productDiscountPrice, ingredients, productPath, picPath, spiciness } = props;
-    const [messageOnLimit, setMessageOnLimit] = useState('');
-    const handleOrderLimit = (isLimit: boolean) => {
-        isLimit ? setMessageOnLimit(MessageOnLimit) : setMessageOnLimit('');
+export default function ProductCard({ product }: { product: IProductCardProps }) {
+    const { productName, productPrice, productDiscountPrice, ingredients, productPath, picPath, spiciness, productId } =
+        product;
+    const { state, dispatch } = useContext(CartContext);
+    const disabled = state
+        ? state.cartLineItems?.map((item) => item.productKey)?.some((item) => item === productPath)
+        : false;
+    const addToCart: () => void = () => {
+        addItem({ productId, id: state?.cartId, version: state?.cartVersion }).then((res) => {
+            if (res && dispatch)
+                dispatch({
+                    type: 'ADD_TO_CART',
+                    payload: { cartLineItems: res.lineItems, cartId: res.id, cartVersion: res.version },
+                });
+        });
     };
-
     return (
         <div className="w-[320px] last:ml-0 flex flex-col justify-end items-center overflow-hidden">
             <div className="group relative h-full min-w-[311px] flex items-center flex-col justify-end">
@@ -42,7 +42,7 @@ export function ProductCard(props: IProductCardProps) {
                             {productName}
                         </Link>
                     </h3>
-                    {productDiscountPrice !== 0 && (
+                    {productDiscountPrice && (
                         <>
                             <p className="text-2xl ml-2 font-medium" style={{ textDecoration: 'line-through' }}>
                                 {productPrice}
@@ -66,7 +66,7 @@ export function ProductCard(props: IProductCardProps) {
                     </p>
                 )}
             </div>
-            <div className={`flex justify-center items-center ${ingredients ? 'mt-[0px]' : 'md:mt-[68px] mt-[10px]'}`}>
+            <div className={`flex justify-center items-center ${ingredients ? 'mt-[0px]' : 'mt-[10px]'}`}>
                 <CustomizedButton
                     sx={{
                         '&&': {
@@ -79,19 +79,12 @@ export function ProductCard(props: IProductCardProps) {
                     }}
                     variant="contained"
                     className="font-serif"
+                    onClick={addToCart}
+                    disabled={disabled}
                 >
-                    + SELECT
+                    {disabled ? 'ADDED IN CART' : '+ SELECT'}
                 </CustomizedButton>
-                <QuantitySelector onQuantityReached={handleOrderLimit} />
             </div>
-            <p className="text-xs pt-4 text-center">{messageOnLimit}</p>
         </div>
     );
 }
-
-ProductCard.defaultProps = {
-    productDiscountPrice: 0,
-    ingredients: '',
-    picPath: '../',
-    spiciness: false,
-};

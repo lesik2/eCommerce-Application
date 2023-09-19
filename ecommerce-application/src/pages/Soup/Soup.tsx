@@ -1,10 +1,9 @@
 import Products from '../../components/Products';
-import { PRODUCT_PAGES } from '../../data/data';
+import { IProductsPage } from '../../data/interfaces';
 
-function Soup() {
-    return (
-        <Products header={PRODUCT_PAGES.Soup.header} link={PRODUCT_PAGES.Soup.link} query={PRODUCT_PAGES.Soup.query} />
-    );
+function Soup(pageSoup: IProductsPage) {
+    const { header, link, query } = pageSoup;
+    return <Products header={header} link={link} query={query} key={header} />;
 }
 
 export default Soup;

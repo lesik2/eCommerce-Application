@@ -10,6 +10,7 @@ import BackspaceIcon from '@mui/icons-material/Backspace';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import SearchIcon from '@mui/icons-material/Search';
+import RemoveShoppingCartIcon from '@mui/icons-material/RemoveShoppingCart';
 import { IconButtonTypes, ButtonSize } from '../../data/types';
 
 type ButtonProps = {
@@ -46,6 +47,7 @@ export default function CreateIconButton({ type, size, className, hoverColor, on
             {type === 'filter' && <FilterListIcon fontSize="inherit" color="inherit" />}
             {type === 'search' && <SearchIcon fontSize="inherit" color="inherit" />}
             {type === 'arrow' && <KeyboardArrowDownIcon fontSize="inherit" color="inherit" />}
+            {type === 'remove-cart' && <RemoveShoppingCartIcon fontSize="inherit" color="inherit" />}
         </IconButton>
     );
 }

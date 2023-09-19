@@ -1,6 +1,6 @@
 import { InputTypes, PasswordInputTypes, QueryArgs, SortTypes } from './types';
-import { IProductCardProps } from '../components/ProductCard';
 import { LoginStatus } from './enums';
+import { IAddToCartAction, ICartState } from '../reducer/cartReducer';
 
 export interface IInput {
     id: string;
@@ -101,11 +101,29 @@ export interface IProductsContext {
     clearFilterState: () => void;
 }
 
+export interface ICartContext {
+    state: ICartState | null;
+    dispatch: React.Dispatch<IAddToCartAction> | null;
+}
+
+export interface IProductCardProps {
+    productName: string;
+    productPrice: number;
+    productPath: string;
+    productDiscountPrice?: number;
+    ingredients?: string;
+    picPath?: string;
+    spiciness?: boolean;
+    productId: string;
+    ref?: (node: React.ReactNode) => void;
+}
+
 export interface IProductsPage {
     header: string;
     link: string[];
     query: QueryArgs;
 }
+
 export interface IAdditionalAddress {
     defaultShipping: boolean;
     defaultBilling: boolean;
