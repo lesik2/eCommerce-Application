@@ -13,6 +13,8 @@
   - Husky
   - Prettier
   - TypeScript
+  - MUI
+  - Tailwind CSS
 ### Team members
   - [IrinaOsp ](https://github.com/IrinaOsp)
   - [lesik2](https://github.com/lesik2)
