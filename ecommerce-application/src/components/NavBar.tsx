@@ -93,7 +93,7 @@ export default function NavBar() {
             {isNavMenuShowed && (
                 <Modal onClose={closeNavMenu}>
                     <nav
-                        className={`fixed top-0 left-0 items-center w-[320px] h-full px-[10px] py-20 bg-bgMenu/75 z-20 transition-all duration-${ANIM_TIME} ${
+                        className={`fixed top-0 left-0 items-center w-[320px] h-full px-[10px] py-20 bg-bgMenu/75 z-50 transition-all duration-${ANIM_TIME} ${
                             navMenu ? 'left-0' : 'left-[-320px]'
                         }`}
                     >
