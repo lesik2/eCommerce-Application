@@ -14,6 +14,7 @@ import registerUser from '../../services/registration';
 import { registrationErrorMappings } from '../../services/errors/errors';
 import { LoginContext } from '../../context/LoginContext';
 import handleLogin from '../../services/login';
+import { CartContext } from '../../context/CartContext';
 
 function Registration() {
     const navigate = useNavigate();
@@ -61,6 +62,7 @@ function Registration() {
     const [sev, setSeverity] = useState<AlertColor>('error');
     const [error, setError] = useState('');
     const { loginMenu } = useContext(LoginContext);
+    const { state } = useContext(CartContext);
     const [alertOpen, setAlertOpen] = useState(true);
     const handleAlertToggle = () => {
         setAlertOpen(!alertOpen);
@@ -134,6 +136,11 @@ function Registration() {
                 if (res && res.statusCode === 201) {
                     if (res) {
                         localStorage.setItem('idOFCustomer', res.body.customer.id);
+                        if (state && res && res.body.cart) {
+                            state.cartId = res.body.cart.id;
+                            state.cartVersion = res.body.cart.version;
+                            state.cartLineItems = res.body.cart.lineItems;
+                        }
                     }
                     setSuccessMessage(`You've successfully registered. You'll be redirected to the main page`);
                     setSeverity('success');

@@ -16,21 +16,18 @@ export function cartReducer(state: ICartState, action: CartAction): ICartState {
     switch (action.type) {
         case 'SET_INITIAL_STATE':
             return {
-                // ...state,
                 cartLineItems: [...action.payload.cartLineItems],
                 cartId: action.payload.cartId,
                 cartVersion: action.payload.cartVersion,
             };
         case 'ADD_TO_CART':
             return {
-                // ...state,
                 cartLineItems: [...action.payload.cartLineItems],
                 cartId: action.payload.cartId,
                 cartVersion: action.payload.cartVersion,
             };
         case 'REMOVE_FROM_CART':
             return {
-                // ...state,
                 cartLineItems: [...action.payload.cartLineItems],
                 cartId: action.payload.cartId,
                 cartVersion: action.payload.cartVersion,

@@ -4,7 +4,7 @@ import getApiRootAnon from './anonymousClient';
 
 const cartDraft: MyCartDraft = {
     currency: 'EUR',
-    country: 'PT',
+    // country: 'PT',
 };
 
 async function hasActiveCart(): Promise<boolean | Cart> {

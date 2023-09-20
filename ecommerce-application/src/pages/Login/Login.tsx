@@ -8,6 +8,7 @@ import CustomizedButton from '../../components/ui/CustomizedButton';
 import { Inputs } from '../../data/data';
 import FormInput from '../Registration/components/formInput';
 import { LoginContext } from '../../context/LoginContext';
+import { CartContext } from '../../context/CartContext';
 
 function Login() {
     const navigate = useNavigate();
@@ -48,6 +49,7 @@ function Login() {
     const [error, setError] = useState('');
 
     const { loginMenu } = useContext(LoginContext);
+    const { state } = useContext(CartContext);
     const [alertOpen, setAlertOpen] = useState(true);
     const handleAlertToggle = () => {
         setAlertOpen(!alertOpen);
@@ -71,6 +73,11 @@ function Login() {
             .then((res) => {
                 if (res) {
                     localStorage.setItem('idOFCustomer', res.clientData.customer.id);
+                    if (state && res && res.clientData.cart) {
+                        state.cartId = res.clientData.cart.id;
+                        state.cartVersion = res.clientData.cart.version;
+                        state.cartLineItems = res.clientData.cart.lineItems;
+                    }
                 }
                 setSuccessMessage(`Successful login. You'll be redirected to the main page`);
                 setSeverity('success');
