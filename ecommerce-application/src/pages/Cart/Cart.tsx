@@ -73,7 +73,8 @@ function Cart() {
             });
         }
     };
-    const applyPromoCode = () => {
+    const applyPromoCode = (e: React.FormEvent) => {
+        e.preventDefault();
         if (code === '') return;
         const id = state?.cartId;
         const version = state?.cartVersion;
@@ -141,7 +142,7 @@ function Cart() {
                             />
                         ))}
                     </div>
-                    <form className="cart-promo-code">
+                    <form className="cart-promo-code" onSubmit={applyPromoCode}>
                         <TextField
                             className="cart-promocode"
                             id="standard-basic"
