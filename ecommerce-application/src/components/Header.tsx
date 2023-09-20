@@ -30,6 +30,8 @@ export default function Header() {
 
     const [username, setUsername] = useState('Username');
 
+    const { state } = useContext(CartContext);
+
     const navigate = useNavigate();
 
     const checkLoginStatus = () => {
@@ -43,6 +45,11 @@ export default function Header() {
         closeUserMenu();
         logout();
         navigate('../');
+        if (state) {
+            state.cartId = '';
+            state.cartLineItems = [];
+            state.cartVersion = 0;
+        }
     };
 
     useEffect(() => {
@@ -70,7 +77,6 @@ export default function Header() {
             }, ANIM_TIME);
         }
     }, [userMenuStatus]);
-    const { state } = useContext(CartContext);
 
     return (
         <header
