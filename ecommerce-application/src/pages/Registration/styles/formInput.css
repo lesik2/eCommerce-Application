@@ -1,0 +1,25 @@
+.MuiFormControl-root input[type="date"]{
+  padding-left: 100px;
+}
+.MuiFormControl-root .MuiInputBase-root{
+  margin-top: 7px;
+}
+.MuiFormControl-root .MuiInputBase-root::before{
+  border-color: #000000;
+}
+.MuiFormControl-root .MuiInputBase-root::after{
+  border-color: #000000;
+}
+.profile .MuiFormControl-root{
+  width: 200px;
+}
+.profile .MuiInputBase-root{
+  width: 230px;
+  font-size: 20px;
+}
+.profile .MuiFormHelperText-root{
+  width: 200px;
+}
+.profile .MuiFormControl-root input[type="date"]{
+  padding-left: 0px;
+}
